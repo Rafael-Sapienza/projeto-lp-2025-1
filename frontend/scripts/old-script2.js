@@ -130,5 +130,4 @@ async function execute() {
     } catch (error) {
         console.error('Error:', error);
         document.getElementById('output').textContent = `Error: ${error}`;
-    }
-}
+    } }
