@@ -1,4 +1,4 @@
-import { blocksCategories } from "./blocks-categories.js";
+import { blocksCategories } from "./blocks-definitions/blocks-categories.js";
 
 export const validateBlock = function() {
     return;

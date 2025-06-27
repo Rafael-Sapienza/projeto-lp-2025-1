@@ -1,4 +1,4 @@
-use actix_web::{post, web, HttpResponse, Responder}; use crate::models::{ Workspace, Blocks, Block, Input, NextBlock };
+use actix_web::{web, HttpResponse, Responder}; use crate::models::{ Workspace, Blocks, Block, Input, NextBlock };
 
 
 pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
@@ -21,11 +21,9 @@ fn execute_block(block: &Block, output: &mut Vec<String>) {
                 }
             }
         }
-
         "logic_boolean" => {
             // No execution here directly
         }
-
         "if_else_block" => {
             let condition = block.inputs.as_ref()
                 .and_then(|i| i.get("CONDITION"))

@@ -1,6 +1,6 @@
 import { blocksCategories } from "./blocks-categories.js";
 
-export const customBlocks = {};
+export const textBlocks = {};
 
 // ========== TEXT ========== //
 const category = blocksCategories.text;
@@ -20,7 +20,7 @@ const print = {
     nextStatement: null,
     tooltip: "Essa mensagem vai aparecer na tela."
 };
-customBlocks.print = print;
+textBlocks.print = print;
  
 /***** JOIN *****/
 const join = {
@@ -54,7 +54,7 @@ const join = {
         },
     },
 };
-customBlocks.join = join;
+textBlocks.join = join;
 
 /***** LENGTH *****/
 const length = {
@@ -79,4 +79,4 @@ const length = {
         }
     }
 };
-customBlocks.length = length;
+textBlocks.length = length;
