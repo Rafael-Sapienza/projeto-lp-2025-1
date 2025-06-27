@@ -24,6 +24,7 @@ pub struct Block {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Input {
     pub block: Option<Box<Block>>,
+    pub shadow: Option<Box<Block>>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

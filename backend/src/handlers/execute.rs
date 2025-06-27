@@ -7,6 +7,7 @@ use serde_json;
 pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
     let mut output:Vec<String> = Vec::new();
     output.push("a".to_string());
+    output.push("b".to_string());
 
     println!("Recebi execução");
     //println!("{:#?}",payload.blocks.blocks);
