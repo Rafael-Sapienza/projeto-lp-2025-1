@@ -1,10 +1,14 @@
-// ========== TEXT ========== //
-export const textBlocks = {};
+import { blocksCategories } from "./blocks-categories.js";
 
+export const customBlocks = {};
+
+// ========== TEXT ========== //
+const category = blocksCategories.text;
 /***** PRINT *****/
 const print = {
     type: "print",
-    category: "text",
+    category: category,
+    colour: category.colour,
     message0: "escrever na tela %1",
     args0: [
         {
@@ -14,15 +18,15 @@ const print = {
     ],
     previousStatement: null,
     nextStatement: null,
-    colour: "#5ba58c",
     tooltip: "Essa mensagem vai aparecer na tela."
 };
-textBlocks.print = print;
+customBlocks.print = print;
  
 /***** JOIN *****/
 const join = {
     type: "join",
-    category: "text",
+    category: category,
+    colour: category.colour,
     message0: "juntar %1 com %2",
     args0: [
         {
@@ -35,16 +39,28 @@ const join = {
         },
     ],
     output: "String",
-    colour: "#5ba58c",
     inputsInline: true,
     tooltip: "Junta dois textos.",
+    shadow: {
+        TEXT1: {
+            shadow: {
+                type: "text",
+            },
+        },
+        TEXT2: {
+            shadow: {
+                type: "text",
+            },
+        },
+    },
 };
-textBlocks.join = join;
+customBlocks.join = join;
 
 /***** LENGTH *****/
 const length = {
     type: "length",
-    category: "text",
+    category: category,
+    colour: category.colour,
     message0: "tamanho do texto %1",
     args0: [
         {
@@ -53,7 +69,14 @@ const length = {
             check: "String",
         },
     ],
-    output: "String",
-    colour: "#5ba58c",
+    output: "Number",
+    tooltip: "Retorna o tamanho de um texto.",
+    shadow: {
+        TEXT: {
+            shadow: {
+                type: "text",
+            }
+        }
+    }
 };
-textBlocks.length = length;
+customBlocks.length = length;

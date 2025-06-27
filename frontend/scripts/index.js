@@ -1,11 +1,7 @@
-import { buildToolbox } from "./modules/blockly-setup.js";
-import { textBlocks } from "./modules/blocks-definitions.js";
+import { buildToolbox, injectWorkspace } from "./modules/blockly-setup.js";
+import { customBlocks } from "./modules/blocks-definitions.js";
 
-Blockly.defineBlocksWithJsonArray(Object.values(textBlocks));
-const toolbox = buildToolbox(Object.values(textBlocks), "categoryToolbox");
+Blockly.defineBlocksWithJsonArray(Object.values(customBlocks));
+const toolbox = buildToolbox(Object.values(customBlocks), "categoryToolbox");
+const workspace = injectWorkspace("blocklyDiv", toolbox);
 
-const workspace = Blockly.inject("blocklyDiv", {
-    renderer: "zelos", // Prettier format
-    trashcan: true,
-    toolbox,
-});

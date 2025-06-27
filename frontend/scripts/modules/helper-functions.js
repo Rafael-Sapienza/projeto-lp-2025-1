@@ -5,14 +5,13 @@ export const validateBlock = function() {
 }
 
 export const addContentWithCategory = function(block, content, contents) {
-    let category = contents.find( obj =>  obj?.["name"] === blocksCategories[block.category]["name"].toUpperCase()) || null;
-    console.log(category);
+    let category = contents.find( obj =>  obj?.["name"] === block.category["name"].toUpperCase()) || null;
 
     if (!category) {
         contents.push({
             kind: "category",
-            name: blocksCategories[block.category]["name"].toUpperCase(),
-            colour: blocksCategories[block.category]["colour"],
+            name: block.category["name"].toUpperCase(),
+            colour: block.category["colour"],
             contents: [content],
         })
     }

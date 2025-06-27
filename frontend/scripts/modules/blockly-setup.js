@@ -13,7 +13,7 @@ export const buildToolbox = function(blocks=[], kind="flyoutToolbox") {
         };
 
         if (block.hasOwnProperty("shadow")) {
-            // TODO: Implement
+            content.inputs = block.shadow;
         }
 
         if (kind === "categoryToolbox") {
@@ -27,11 +27,11 @@ export const buildToolbox = function(blocks=[], kind="flyoutToolbox") {
     return toolbox;
 }
 
-function injectWorkspace(divId, toolbox, renderer="zelos", trashcan=true) {
+export const injectWorkspace = function(divId, toolbox, renderer="zelos", trashcan=true) {
     const workspace = Blockly.inject(divId, {
-        renderer: renderer,
-        trashcan: true,
-        toolbox: toolbox,
+        renderer,
+        trashcan,
+        toolbox,
     });
     return workspace;
 }
