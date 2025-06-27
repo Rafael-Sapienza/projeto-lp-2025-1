@@ -1,14 +1,14 @@
 import { blocksCategories } from "./blocks-categories.js";
 
-export const mathBlocks = {};
+export const compareBlocks = {};
 
-const category =  blocksCategories.math;
+const category = blocksCategories.compare;
 
-const sum = {
-    type: "sum",
+const bigger = {
+    type: "bigger",
     category,
     colour: category.colour,
-    message0: "%1 + %2",
+    message0: "%1 > %2",
     args0: [
         {
             type: "input_value",
@@ -16,14 +16,15 @@ const sum = {
             check: "Number",
         },
         {
-           type: "input_value",
-           name: "NUM2",
-           check: "Number",
+            type: "input_value",
+            name: "NUM2",
+            check: "Number",
         },
+
     ],
-    output: "Number",
+    output: "Boolean",
     inputsInline: true,
-    tooltip: "Soma de dois números",
+    tooltip: "O número 1 é maior que o número 2",
     shadow: {
         NUM1: {
             shadow: {
@@ -37,13 +38,13 @@ const sum = {
         },
     },
 }
-mathBlocks.sum = sum;
+compareBlocks.bigger = bigger;
 
-const sub = {
-    type: "sub",
+const smaller = {
+    type: "smaller",
     category,
     colour: category.colour,
-    message0: "%1 - %2",
+    message0: "%1 < %2",
     args0: [
         {
             type: "input_value",
@@ -51,14 +52,15 @@ const sub = {
             check: "Number",
         },
         {
-           type: "input_value",
-           name: "NUM2",
-           check: "Number",
+            type: "input_value",
+            name: "NUM2",
+            check: "Number",
         },
+
     ],
-    output: "Number",
+    output: "Boolean",
     inputsInline: true,
-    tooltip: "Subtração de dois números",
+    tooltip: "O número 1 é menor que o número 2",
     shadow: {
         NUM1: {
             shadow: {
@@ -72,13 +74,13 @@ const sub = {
         },
     },
 }
-mathBlocks.sub = sub;
+compareBlocks.smaller = smaller;
 
-const mult = {
-    type: "mult",
+const equal = {
+    type: "equal",
     category,
     colour: category.colour,
-    message0: "%1 x %2",
+    message0: "%1 = %2",
     args0: [
         {
             type: "input_value",
@@ -86,14 +88,15 @@ const mult = {
             check: "Number",
         },
         {
-           type: "input_value",
-           name: "NUM2",
-           check: "Number",
+            type: "input_value",
+            name: "NUM2",
+            check: "Number",
         },
+
     ],
-    output: "Number",
+    output: "Boolean",
     inputsInline: true,
-    tooltip: "Multiplicação de dois números",
+    tooltip: "O número 1 é igual ao número 2",
     shadow: {
         NUM1: {
             shadow: {
@@ -107,44 +110,5 @@ const mult = {
         },
     },
 }
-mathBlocks.mult = mult;
-
-const divi = {
-    type: "divi",
-    category,
-    colour: category.colour,
-    message0: "%1 ÷ %2",
-    args0: [
-        {
-            type: "input_value",
-            name: "NUM1",
-            check: "Number",
-        },
-        {
-           type: "input_value",
-           name: "NUM2",
-           check: "Number",
-        },
-    ],
-    output: "Number",
-    inputsInline: true,
-    tooltip: "Divisão de dois números",
-    shadow: {
-        NUM1: {
-            shadow: {
-                type: "numberTemplate",
-            },
-        },
-        NUM2: {
-            shadow: {
-                type: "numberTemplate",
-            },
-        },
-    },
-}
-mathBlocks.divi = divi;
-
-
-
-
+compareBlocks.equal = equal;
 

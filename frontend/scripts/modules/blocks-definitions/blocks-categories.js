@@ -7,4 +7,8 @@ export const blocksCategories = {
         name: "matemática",
         colour: "#6884c4",
     },
+    compare: {
+        name: "comparação",
+        colour: "#DF5800",
+    },
 }
