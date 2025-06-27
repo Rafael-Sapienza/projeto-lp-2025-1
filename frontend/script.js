@@ -1,3 +1,23 @@
+/*
+Blockly.defineBlocksWithJsonArray([{
+  "type": "text",
+  "message0": "\"%1\"",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "TEXT",
+      "text": ""
+    }
+  ],
+  "output": "String",
+  "colour": 160,
+  "tooltip": "A string of text.",
+  "helpUrl": "https://www.example.com"
+}]);
+*/
+
+
+
 /***** PRINT BLOCK *****/
 Blockly.defineBlocksWithJsonArray([{
   "type": "print_block",
@@ -46,6 +66,7 @@ Blockly.defineBlocksWithJsonArray([{
       //"type" : "field_input",
       "type": "input_value",
       "name": "CONDITION",
+
       //"check": "Boolean"
     },
     {
@@ -100,6 +121,7 @@ const workspace = Blockly.inject('blocklyDiv', {
         name: "Custom Blocks",
         colour: "#5CA699",
         contents: [
+          {kind: "block", type: "text"},
           { kind: "block", type: "print_block" },
           { kind: "block", 
             type: "if_else_block",
@@ -138,7 +160,7 @@ const workspace = Blockly.inject('blocklyDiv', {
 
 
 async function execute() {
-    const workspaceJson = Blockly.serialization.workspaces.save(workspace);
+    const workspaceJson = Blockly.serialization.workspaces.save(workspace, {includeShadowBlocks: true});
     console.log(JSON.stringify(workspaceJson));
     try {
         const response = await fetch('/execute', {

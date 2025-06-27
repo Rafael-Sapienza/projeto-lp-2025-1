@@ -1,44 +1,20 @@
 [
   {
     "type": "if_else_block",
-    "id": "(nX?L#$DDsT|x7^|N8-)",
+    "id": "vaIPkyY!@]VT9bqxuph0",
     "fields": null,
     "inputs": {
-      "IF_BODY": {
-        "block": {
-          "type": "print_block",
-          "id": ".+o2hb431ingS@!}[3(+",
-          "fields": {
-            "TEXT": "2"
-          },
-          "inputs": null,
-          "next": null
-        },
-        "shadow": null
-      },
       "CONDITION": {
         "block": null,
         "shadow": {
           "type": "text",
-          "id": "yS|OX5f#T!Nr@iU*r*/s",
+          "id": "W$s)@pO7T:}6,|dGLX+m",
           "fields": {
             "TEXT": "a == b"
           },
           "inputs": null,
           "next": null
         }
-      },
-      "ELSE_BODY": {
-        "block": {
-          "type": "print_block",
-          "id": "Er+Fo_.nV3/x71)BhdfG",
-          "fields": {
-            "TEXT": "3"
-          },
-          "inputs": null,
-          "next": null
-        },
-        "shadow": null
       }
     },
     "next": null
