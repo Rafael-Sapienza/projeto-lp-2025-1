@@ -32,10 +32,12 @@ const join = {
         {
             type: "input_value",
             name: "TEXT1",
+            check: "String",
         },
         {
             type: "input_value",
             name: "TEXT2",
+            check: "String",
         },
     ],
     output: "String",
