@@ -16,7 +16,7 @@ const myTheme = Blockly.Theme.defineTheme( 'myTheme', {
     'base': Blockly.Themes.Classic,
     'fontStyle': {
     'family': 'Sour Gummy',
-    'size': 14,
+    'size': 15,
     }
 });
 
