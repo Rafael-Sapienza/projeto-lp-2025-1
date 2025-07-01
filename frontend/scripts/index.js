@@ -11,7 +11,16 @@ for (const category in customBlocks) {
 
 Blockly.defineBlocksWithJsonArray([numberTemplate]);
 Blockly.defineBlocksWithJsonArray(allBlocks);
+
+const myTheme = Blockly.Theme.defineTheme( 'myTheme', {
+    'base': Blockly.Themes.Classic,
+    'fontStyle': {
+    'family': 'Sour Gummy',
+    'size': 14,
+    }
+});
+
 const toolbox = buildToolbox(allBlocks, "categoryToolbox");
-const workspace = injectWorkspace("blocklyDiv", toolbox);
+const workspace = injectWorkspace("blocklyDiv", toolbox, myTheme);
 
 
