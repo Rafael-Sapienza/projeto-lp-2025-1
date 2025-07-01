@@ -31,3 +31,9 @@ pub struct Input {
 pub struct NextBlock {
     pub block: Box<Block>,
 }
+
+pub enum Value {
+    String(String),
+    Number(f64),
+    Boolean(bool),
+}
