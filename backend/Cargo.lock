@@ -289,6 +289,7 @@ dependencies = [
  "actix-files",
  "actix-rt",
  "actix-web",
+ "nom",
  "serde",
  "serde_json",
  "sqlx",

@@ -1,16 +1,123 @@
 [
   {
     "type": "if_else_block",
-    "id": "vaIPkyY!@]VT9bqxuph0",
     "fields": null,
     "inputs": {
+      "IF_BODY": {
+        "block": {
+          "type": "while_block",
+          "fields": null,
+          "inputs": {
+            "WHILE_BODY": {
+              "block": {
+                "type": "assignment_block",
+                "fields": {
+                  "VARIABLE": "a"
+                },
+                "inputs": {
+                  "EXPRESSION": {
+                    "block": null,
+                    "shadow": {
+                      "type": "expression_block",
+                      "fields": {
+                        "TEXT": "2"
+                      },
+                      "inputs": null,
+                      "next": null
+                    }
+                  }
+                },
+                "next": {
+                  "block": {
+                    "type": "assignment_block",
+                    "fields": {
+                      "VARIABLE": "z"
+                    },
+                    "inputs": {
+                      "EXPRESSION": {
+                        "block": null,
+                        "shadow": {
+                          "type": "expression_block",
+                          "fields": {
+                            "TEXT": "3"
+                          },
+                          "inputs": null,
+                          "next": null
+                        }
+                      }
+                    },
+                    "next": null
+                  }
+                }
+              },
+              "shadow": null
+            },
+            "CONDITION": {
+              "block": null,
+              "shadow": {
+                "type": "expression_block",
+                "fields": {
+                  "TEXT": "1"
+                },
+                "inputs": null,
+                "next": null
+              }
+            }
+          },
+          "next": {
+            "block": {
+              "type": "assignment_block",
+              "fields": {
+                "VARIABLE": "x"
+              },
+              "inputs": {
+                "EXPRESSION": {
+                  "block": null,
+                  "shadow": {
+                    "type": "expression_block",
+                    "fields": {
+                      "TEXT": "4"
+                    },
+                    "inputs": null,
+                    "next": null
+                  }
+                }
+              },
+              "next": null
+            }
+          }
+        },
+        "shadow": null
+      },
+      "ELSE_BODY": {
+        "block": {
+          "type": "assignment_block",
+          "fields": {
+            "VARIABLE": "y"
+          },
+          "inputs": {
+            "EXPRESSION": {
+              "block": null,
+              "shadow": {
+                "type": "expression_block",
+                "fields": {
+                  "TEXT": "6"
+                },
+                "inputs": null,
+                "next": null
+              }
+            }
+          },
+          "next": null
+        },
+        "shadow": null
+      },
       "CONDITION": {
         "block": null,
         "shadow": {
-          "type": "text",
-          "id": "W$s)@pO7T:}6,|dGLX+m",
+          "type": "expression_block",
           "fields": {
-            "TEXT": "a == b"
+            "TEXT": "x == 2"
           },
           "inputs": null,
           "next": null

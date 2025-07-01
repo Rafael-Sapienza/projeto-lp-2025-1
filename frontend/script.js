@@ -16,6 +16,47 @@ Blockly.defineBlocksWithJsonArray([{
 }]);
 */
 
+/***** EXPRESSION BLOCK *****/
+Blockly.defineBlocksWithJsonArray([{
+  "type": "expression_block",
+  "message0": "%1",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "TEXT",
+      "text": ""
+    }
+  ],
+  "output": "String",
+  "colour": 160,
+  "tooltip": "A string of text.",
+}]);
+
+
+Blockly.defineBlocksWithJsonArray([{
+  "type": "declaration_block",
+  "message0": "tipo %1 %2",
+  "args0": [
+    {
+      "type": "field_dropdown",
+      "name": "TYPE",
+      "options": [
+        ["int", "INT"],
+        ["float", "FLOAT"]
+      ]
+    },
+    {
+      "type": "field_input",
+      "name": "VARIABLE",
+    }
+  ],
+  "previousStatement": null,
+  "nextStatement": null,
+  "output": null,
+  "colour": 230,
+  "tooltip": "Seleciona um tipo",
+  "helpUrl": ""
+}]);
 
 
 /***** PRINT BLOCK *****/
@@ -37,7 +78,7 @@ Blockly.defineBlocksWithJsonArray([{
 
 /***** ASSIGNMENT BLOCK *****/
 Blockly.defineBlocksWithJsonArray([{
-  "type": "assignement_block",
+  "type": "assignment_block",
   "message0": "%1 = %2",
   "args0": [
     {
@@ -121,19 +162,19 @@ const workspace = Blockly.inject('blocklyDiv', {
         name: "Custom Blocks",
         colour: "#5CA699",
         contents: [
-          {kind: "block", type: "text"},
           { kind: "block", type: "print_block" },
+          { kind: "block", type: "declaration_block"},
           { kind: "block", 
             type: "if_else_block",
-            inputs: {"CONDITION": {shadow:{type:"text"}}}
+            inputs: {"CONDITION": {shadow:{type:"expression_block"}}}
           },
           { kind: "block",
             type: "while_block",
-            inputs:{"CONDITION": {shadow:{type:"text"}}}
+            inputs:{"CONDITION": {shadow:{type:"expression_block"}}}
           },
           { kind: "block",
-            type: "assignement_block",
-            inputs: {"EXPRESSION": {shadow:{type:"text"}}},
+            type: "assignment_block",
+            inputs: {"EXPRESSION": {shadow:{type:"expression_block"}}},
           }
         ]
       },

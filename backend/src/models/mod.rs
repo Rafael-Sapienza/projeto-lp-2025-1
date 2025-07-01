@@ -1,6 +1,5 @@
-use serde::{Deserialize,Serialize};
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Workspace {
@@ -15,7 +14,7 @@ pub struct Blocks {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Block {
     pub r#type: String, // "r#" is because "type" is reserved
-    pub id: String,
+    //pub id: String,
     pub fields: Option<HashMap<String, String>>,
     pub inputs: Option<HashMap<String, Input>>,
     pub next: Option<NextBlock>,
