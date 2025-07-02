@@ -3,14 +3,27 @@
     <head>
         <meta charset="utf-8">
         <title>Crabby</title>
-        <link rel="stylesheet" href="styles/index.css">
-        <script src="resources/blockly.min.js"></script>
-        <script type="module" src="scripts/index.js" defer></script>
+        <link rel="stylesheet" href="./styles/index.css">
+        <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Nova+Mono&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Chau+Philomene+One:ital@0;1&family=Nova+Mono&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <script src="./resources/blockly.min.js"></script>
+        <script type="module" src="./scripts/index.js" defer></script>
     </head>
+
+    
     <body>
-        <h2>🦀 Crabby</h2>
+    <div class="main-container"> <!-- Novo container pai -->
+        <h1 class="logo">Crabby</h1>
         <div id="blocklyDiv"></div>
-        <button>Executar</button>
-        <pre id="output">Output:</pre>
-    </body>
+        <div class="output-container">
+            <button onclick="execute()">Executar</button>
+            <pre id="output">Output:</pre>
+        </div>
+    </div>
+</body>
 </html>
