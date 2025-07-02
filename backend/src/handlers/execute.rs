@@ -71,6 +71,7 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
                             Ok(new_exp_env) =>
                             {
                                 println!("Exp Env: {:?}", new_exp_env);
+                                println!("Variables: {:?} ", new_exp_env.get_all_variables());
                             }
                             Err(e) => 
                             {

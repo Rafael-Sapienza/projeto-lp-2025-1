@@ -2,8 +2,8 @@
   {
     "type": "declaration_block",
     "fields": {
-      "VARIABLE": "x",
-      "TYPE": "INT"
+      "TYPE": "INT",
+      "VARIABLE": "x"
     },
     "inputs": null,
     "next": {
@@ -18,7 +18,7 @@
             "shadow": {
               "type": "expression_block",
               "fields": {
-                "TEXT": "2"
+                "TEXT": "3"
               },
               "inputs": null,
               "next": null
