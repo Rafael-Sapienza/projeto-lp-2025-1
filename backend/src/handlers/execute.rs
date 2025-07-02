@@ -79,6 +79,102 @@ fn execute_block(block: &Block,) -> Option<Value> {
 
             Some(Value::Number(total))
         }
+        "sum" => {
+            let mut num1: f64 = 0.0;
+            let mut num2: f64 = 0.0;
+
+            if let Some(inputs) = &block.inputs {
+                if let Some(input) = inputs.get("NUM1") {
+                    num1 = match get_number_input(input) {
+                        Some(n) => n,
+                        None => 0.0
+                    }
+                }
+            }
+
+            if let Some(inputs) = &block.inputs {
+                if let Some(input) = inputs.get("NUM2") {
+                    num2 = match get_number_input(input) {
+                        Some(n) => n,
+                        None => 0.0
+                    }
+                }
+            }
+
+            Some(Value::Number(num1 + num2))
+        }
+        "sub" => {
+            let mut num1: f64 = 0.0;
+            let mut num2: f64 = 0.0;
+
+            if let Some(inputs) = &block.inputs {
+                if let Some(input) = inputs.get("NUM1") {
+                    num1 = match get_number_input(input) {
+                        Some(n) => n,
+                        None => 0.0
+                    }
+                }
+            }
+
+            if let Some(inputs) = &block.inputs {
+                if let Some(input) = inputs.get("NUM2") {
+                    num2 = match get_number_input(input) {
+                        Some(n) => n,
+                        None => 0.0
+                    }
+                }
+            }
+
+            Some(Value::Number(num1 - num2))
+        }
+        "mult" => {
+            let mut num1: f64 = 0.0;
+            let mut num2: f64 = 0.0;
+
+            if let Some(inputs) = &block.inputs {
+                if let Some(input) = inputs.get("NUM1") {
+                    num1 = match get_number_input(input) {
+                        Some(n) => n,
+                        None => 0.0
+                    }
+                }
+            }
+
+            if let Some(inputs) = &block.inputs {
+                if let Some(input) = inputs.get("NUM2") {
+                    num2 = match get_number_input(input) {
+                        Some(n) => n,
+                        None => 0.0
+                    }
+                }
+            }
+
+            Some(Value::Number(num1 * num2))
+        }
+        "divi" => {
+            let mut num1: f64 = 0.0;
+            let mut num2: f64 = 0.0;
+
+            if let Some(inputs) = &block.inputs {
+                if let Some(input) = inputs.get("NUM1") {
+                    num1 = match get_number_input(input) {
+                        Some(n) => n,
+                        None => 0.0
+                    }
+                }
+            }
+
+            if let Some(inputs) = &block.inputs {
+                if let Some(input) = inputs.get("NUM2") {
+                    num2 = match get_number_input(input) {
+                        Some(n) => n,
+                        None => 0.0
+                    }
+                }
+            }
+
+            Some(Value::Number(num1 / num2))
+        }
         "textTemplate" => {
             if let Some(s) = get_text_template(block) {
                 Some(Value::String(s))
@@ -94,7 +190,6 @@ fn execute_block(block: &Block,) -> Option<Value> {
             else {
                 None // TODO: Create a Value::Error to handle the invalid cases
             }
-
         }
         _ => { None }
     }
