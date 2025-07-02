@@ -23,7 +23,6 @@ body {
 
 
 .blocklySvg {
-  background-color: #ffffff;   /* muda a cor de fundo do workspace */
   border-radius: 20px;     /* arredonda a borda da caixa */
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* sombra elegante */
   transition: all 0.3s ease;
@@ -86,14 +85,14 @@ body {
 
 /* arredondar também a borda da área de blocos flutuantes (flyout) */
 .blocklyFlyoutBackground {
-  fill: #ede9e96b !important;
   margin-left: 0px;
   rx: 8; /* arredonda os cantos */
 }
 
-.blocklyToolboxFlyout {
-  transform: translateX(149px) !important; /* ajuste esse valor até alinhar bem */
+/*.blocklyToolboxFlyout {
+  transform: translateX(149px) !important; ajuste esse valor até alinhar bem 
 }
+*/
 
 /* Container do output */
 .output-container {
@@ -136,3 +135,4 @@ button:hover {
     font-size: 0.95rem;
     line-height: 1.5;
 }
+
