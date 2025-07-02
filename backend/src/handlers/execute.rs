@@ -1,5 +1,6 @@
 use actix_web::{web, HttpResponse, Responder}; 
-use crate::models::{ Value, Workspace, Blocks, Block, Input, NextBlock };
+use serde_json::Value as JsonValue;
+use crate::models::{ Value, Workspace, Block, Input };
 
 
 pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
@@ -66,6 +67,18 @@ fn execute_block(block: &Block,) -> Option<Value> {
 
             Some(Value::String(format!("{}{}", left_text, right_text)))
         }
+        "length" => {
+            let mut total: f64 = 0.0;
+            if let Some(inputs) = &block.inputs {
+                if let Some(input) = inputs.get("TEXT") {
+                    if let Some(s) = get_string_input(input) {
+                        total = s.len() as f64;
+                    } 
+                }
+            }
+
+            Some(Value::Number(total))
+        }
         "textTemplate" => {
             if let Some(s) = get_text_template(block) {
                 Some(Value::String(s))
@@ -73,6 +86,15 @@ fn execute_block(block: &Block,) -> Option<Value> {
             else {
                 Some(Value::String("".to_string()))
             }
+        }
+        "numberTemplate" => {
+            if let Some(n) = get_number_template(block) {
+                Some(Value::Number(n))
+            }
+            else {
+                None // TODO: Create a Value::Error to handle the invalid cases
+            }
+
         }
         _ => { None }
     }
@@ -100,11 +122,44 @@ fn get_string_input(input : &Input) -> Option<String> {
     }
 }
 
+fn get_number_input(input: &Input) -> Option<f64> {
+    let value = if let Some(sub_block) = &input.block {
+        execute_block(sub_block)
+    }
+    else if let Some(shadow_block) = &input.shadow {
+        execute_block(shadow_block)
+    }
+    else {
+        None
+    };
+
+    match value {
+        Some(Value::Number(n)) => Some(n as f64),
+        _ => None
+    }
+}
+
+fn get_number_template(block: &Block) -> Option<f64> {
+    if let Some(fields) = &block.fields {
+        if let Some(value) = fields.get("NUM") {
+            return match value {
+                JsonValue::String(s) => s.parse::<f64>().ok(),
+                JsonValue::Number(n) => n.as_f64(),
+                _ => None
+            }
+        }
+    }
+    None
+}
+
+
 fn get_text_template(block: &Block) -> Option<String> {
     if let Some(fields) = &block.fields {
         if let Some(value) = fields.get("TEXT") {
-            if !value.is_empty() {
-                return Some(value.to_string());
+            if let JsonValue::String(s) = value {
+                if !s.is_empty() {
+                    return Some(s.to_string());
+                }
             }
         }
     }
