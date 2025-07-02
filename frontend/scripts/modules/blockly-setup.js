@@ -27,11 +27,12 @@ export const buildToolbox = function(blocks=[], kind="flyoutToolbox") {
     return toolbox;
 }
 
-export const injectWorkspace = function(divId, toolbox, renderer="zelos", trashcan=true) {
+export const injectWorkspace = function(divId, toolbox, theme, renderer="zelos", trashcan=true) {
     const workspace = Blockly.inject(divId, {
         renderer,
         trashcan,
         toolbox,
+        theme,
     });
     return workspace;
 }

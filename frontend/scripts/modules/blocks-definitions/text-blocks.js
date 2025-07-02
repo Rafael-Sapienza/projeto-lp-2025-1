@@ -12,13 +12,20 @@ const print = {
     message0: "escrever na tela %1",
     args0: [
         {
-            type: "field_input",
+            type: "input_value",
             name: "TEXT",
         },
     ],
     previousStatement: null,
     nextStatement: null,
-    tooltip: "Essa mensagem vai aparecer na tela."
+    tooltip: "Essa mensagem vai aparecer na tela.",
+    shadow: {
+        TEXT: {
+            shadow: {
+                type: "textTemplate",
+            }
+        }
+    }
 };
 textBlocks.print = print;
  
@@ -46,12 +53,12 @@ const join = {
     shadow: {
         TEXT1: {
             shadow: {
-                type: "text",
+                type: "textTemplate",
             },
         },
         TEXT2: {
             shadow: {
-                type: "text",
+                type: "textTemplate",
             },
         },
     },
@@ -76,7 +83,7 @@ const length = {
     shadow: {
         TEXT: {
             shadow: {
-                type: "text",
+                type: "textTemplate",
             }
         }
     }

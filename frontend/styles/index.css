@@ -1,4 +1,138 @@
-#blocklyDiv {
-    height: 500px;
-    width: 700px;
+body {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: url('../back.png') no-repeat center center fixed;;
+    background-size: 100% 100%;
+
 }
+
+.logo { /* título */
+  width: 600px;
+  height: 200px;
+  background-image: url('../MagicEraser_250701_105454.PNG');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  text-indent: -9999px; 
+  margin: 0 auto;
+}
+
+
+.blocklySvg {
+  border-radius: 20px;     /* arredonda a borda da caixa */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* sombra elegante */
+  transition: all 0.3s ease;
+}
+
+.blocklyToolboxCategoryLabel {
+    font-family: 'Chau Philomene One';
+    color: rgb(113, 43, 17);
+    font-size: 20px;
+}
+
+
+.blocklyTreeRowContentContainer {
+  display: flex;
+  align-items: center;  /* centraliza verticalmente */
+  height: 100%;         /* garante que ocupe toda a altura */
+  gap: 8px;             /* opcional: espaço entre ícone e texto */
+}
+
+
+.blocklyToolboxCategory.blocklyToolboxSelected {
+    padding: 5px;
+}
+
+#blockly-0 .blocklyToolboxCategory.blocklyToolboxSelected {
+    border-top-left-radius: 18px;
+}
+
+
+.blocklyToolboxCategoryContainer {
+    margin: 0px 0px 5px 5px;
+    border-bottom: #7a4323 solid 2px;
+}
+
+/* Cor lateral da categoria/bordinha (tiramos) */
+.blocklyToolboxCategory {
+    border-left: 0px !important;   
+}
+
+/* Container principal */
+.main-container {
+    width: 1100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza os itens internos */
+    gap: 15px; /* Espaçamento uniforme */
+}
+
+/* Área do Blockly */
+#blocklyDiv {
+    width: 100%;
+    height: 500px;
+    background: rgb(255, 255, 255);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    overflow: hidden; /* força os cantos arredondados */
+    position: relative;
+}
+
+/* arredondar também a borda da área de blocos flutuantes (flyout) */
+.blocklyFlyoutBackground {
+  margin-left: 0px;
+  rx: 8; /* arredonda os cantos */
+}
+
+/*.blocklyToolboxFlyout {
+  transform: translateX(149px) !important; ajuste esse valor até alinhar bem 
+}
+*/
+
+/* Container do output */
+.output-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza botão e output */
+    gap: 15px;
+}
+
+/* Botão */
+button {
+    padding: 12px 24px;
+    background: #8a4c28;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: auto;
+}
+
+button:hover {
+    background: #7a4323;
+    transform: translateY(-2px);
+}
+
+/* Área de output */
+#output {
+    width: 100%;
+    min-height: 80px;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid #e0e0e0;
+    font-family: 'Consolas', monospace;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
