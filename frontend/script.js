@@ -42,7 +42,9 @@ Blockly.defineBlocksWithJsonArray([{
       "name": "TYPE",
       "options": [
         ["int", "INT"],
-        ["float", "FLOAT"]
+        ["float", "FLOAT"],
+        ["string", "STRING"],
+        ["bool", "BOOL"]
       ]
     },
     {

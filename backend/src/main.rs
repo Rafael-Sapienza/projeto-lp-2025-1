@@ -5,6 +5,10 @@ mod handlers;
 mod ir;
 mod models;
 mod routes;
+mod parser;
+mod environment;
+mod type_checker;
+mod interpreter;
 
 // Allows the main function to be an async function
 #[actix_web::main]
