@@ -1,7 +1,7 @@
 export const blocksCategories = {
     text: {
         name: "texto",
-        colour: "#5ba58c"
+        colour: "#5ba58c",
     },
     math: {
         name: "matemática",
@@ -11,4 +11,8 @@ export const blocksCategories = {
         name: "comparação",
         colour: "#DF5800",
     },
+    control: {
+        name: "controle",
+        colour: "#f2a810",
+    }
 }
