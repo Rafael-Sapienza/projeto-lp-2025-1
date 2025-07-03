@@ -1,5 +1,9 @@
+use crate::environment::environment::Environment;
+use crate::interpreter::run;
 use crate::ir::ast::{Expression, FormalArgument, Function, Statement, Type};
 use crate::models::{Block, Blocks, Input, NextBlock, Workspace};
+use crate::parser::parse_chained_blocks;
+use crate::type_checker::check_stmt;
 use actix_web::{HttpResponse, Responder, post, web};
 use nom::{Err, Finish};
 use nom::{
@@ -16,10 +20,6 @@ use serde_json;
 use std::io::Write;
 use std::str::FromStr;
 use std::{fs::File, process::Output};
-use crate::environment::environment::Environment;
-use crate:: type_checker::check_stmt;
-use crate:: parser :: parse_chained_blocks;
-use crate::interpreter::run;
 
 pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
     let mut output: Vec<String> = Vec::new();
@@ -55,33 +55,28 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
         return HttpResponse::InternalServerError().body("Erro ao salvar JSON");
     }
 
-     
     for block in &payload.blocks.blocks {
-        match parse_chained_blocks(block){
+        match parse_chained_blocks(block) {
             Ok(statement) => {
                 println!("Parser succeeded! Statement: {:?}", statement);
-                let type_env:Environment<Type> = Environment::new();
-                match check_stmt(statement.clone(), &type_env)
-                {
-                    Ok(new_type_env) =>
-                    {
+                let type_env: Environment<Type> = Environment::new();
+                match check_stmt(statement.clone(), &type_env) {
+                    Ok(new_type_env) => {
                         println!("Type Env: {:?}", new_type_env);
-                        let exp_env:Environment<Expression> = Environment::new();
+                        let exp_env: Environment<Expression> = Environment::new();
                         match run(statement.clone(), &exp_env) {
-                            Ok(new_exp_env) =>
-                            {
+                            Ok(mut new_exp_env) => {
                                 println!("Exp Env: {:?}", new_exp_env);
                                 println!("Variables: {:?} ", new_exp_env.get_all_variables());
+                                output = new_exp_env.get_output();
                             }
-                            Err(e) => 
-                            {
+                            Err(e) => {
                                 println!("{:?}", e);
                             }
                         }
-                    } 
-                    Err(e) => 
-                    {
-                        println!("{:?}",e);
+                    }
+                    Err(e) => {
+                        println!("{:?}", e);
                     }
                 }
             }
@@ -94,13 +89,10 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
     HttpResponse::Ok().json(output)
 }
 
-
-
-
 //  fn parse_chained_blocks(block: &Block) -> Result<Statement, String> {
 //      let mut current_block = Some(block);
 //      let mut statements_vector: Vec<Statement> = Vec::new();
-//  
+//
 //      while let Some(block_iterator) = current_block {
 //          println!("Passou por parse_chained_blocks");
 //          print!("Bloco: {:?}", current_block);
@@ -113,7 +105,7 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //      }
 //      return Ok(Statement::Block(statements_vector));
 //  }
-//  
+//
 //  fn parse_single_block(block: &Block) -> Result<Statement, String> {
 //      match block.r#type.as_str() {
 //          /*
@@ -124,12 +116,12 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //                  }
 //              }
 //          }
-//  
+//
 //          "logic_boolean" => {
 //              // No execution here directly
 //          }
-//  
-//  
+//
+//
 //          "if_else_block" => {
 //              let condition = block.inputs.as_ref()
 //                  .and_then(|i| i.get("CONDITION"))
@@ -141,7 +133,7 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //                          false
 //                      }
 //                  });
-//  
+//
 //              if condition {
 //                  if let Some(input) = block.inputs.as_ref().and_then(|i| i.get("IF_BODY")) {
 //                      if let Some(body_block) = &input.block {
@@ -168,14 +160,14 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //                  if variable_name.is_empty() {
 //                      return Err("Variable name cannot be empty".to_string());
 //                  }
-//  
+//
 //                  let (rest, variable_string) =
 //                      delimited(multispace0, identifier, multispace0)(variable_name.as_str())
 //                          .map_err(|_e| format!("Parsing error on variable: {}", variable_name))?;
 //                  if !rest.is_empty() {
 //                      return Err(format!("Parsing error on variable: {}", variable_name));
 //                  }
-//  
+//
 //                  if let Some(expression_string) = block
 //                      .inputs
 //                      .as_ref()
@@ -187,7 +179,7 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //                      if expression_string.is_empty() {
 //                          return Err("Variable assignment requires non-empty expression".to_string());
 //                      }
-//  
+//
 //                      let (rest, assignment_exp) = parse_expression(expression_string.as_str())
 //                          .map_err(|_e| {
 //                              format!("Parsing error on expression: {}", expression_string)
@@ -198,7 +190,7 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //                              expression_string
 //                          ));
 //                      }
-//  
+//
 //                      // Retorna OK com o Statement usando variable_string e assignment_exp
 //                      return Ok(Statement::Assignment(
 //                          *variable_string,
@@ -211,7 +203,7 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //                  return Err("Variable name field missing".to_string());
 //              }
 //          }
-//  
+//
 //          "if_else_block" => {
 //              println!("passou pelo if_block");
 //              if let Some(condition) = block
@@ -237,7 +229,7 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //                      .and_then(|input| input.block.as_ref())
 //                  {
 //                      let then_block = parse_chained_blocks(if_body.as_ref())?;
-//  
+//
 //                      if let Some(else_body) = block
 //                          .inputs
 //                          .as_ref()
@@ -264,7 +256,7 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //                  return Err("If condition is empty".to_string());
 //              }
 //          }
-//  
+//
 //          "while_block" => {
 //              println!("passou pelo while_block");
 //              if let Some(condition) = block
@@ -308,37 +300,37 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //          }
 //      }
 //  }
-//  
+//
 //  pub fn identifier(input: &str) -> IResult<&str, Box<String>> {
 //      let (input, _) = multispace0(input)?;
-//  
+//
 //      let (input, first_char) = identifier_start(input)?;
 //      let (input, rest) = identifier_continue(input)?;
-//  
+//
 //      let ident = format!("{}{}", first_char, rest);
-//  
+//
 //      Ok((input, Box::from(ident.clone())))
 //  }
-//  
+//
 //  /// First character of an identifier: [a-zA-Z_]
 //  fn identifier_start(input: &str) -> IResult<&str, &str> {
 //      alt((alpha1, tag("_")))(input)
 //  }
-//  
+//
 //  /// Remaining characters: [a-zA-Z0-9_]*
 //  fn identifier_continue(input: &str) -> IResult<&str, &str> {
 //      recognize(many0(identifier_start_or_continue))(input)
 //  }
-//  
+//
 //  /// A single identifier character: alphanumeric or underscore
 //  fn identifier_start_or_continue(input: &str) -> IResult<&str, &str> {
 //      recognize(alt((alpha1, tag("_"), nom::character::complete::digit1)))(input)
 //  }
-//  
+//
 //  // Parse Expression
 //  /// Parses a reserved keyword (e.g., "if") surrounded by optional spaces
 //  /// Fails if followed by an identifier character
-//  
+//
 //  pub const KEYWORDS: &[&str] = &[
 //      "if",
 //      "in",
@@ -363,7 +355,7 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //      "True",
 //      "False",
 //  ];
-//  
+//
 //  // Type name constants
 //  pub const INT_TYPE: &str = "Int";
 //  pub const REAL_TYPE: &str = "Real";
@@ -371,15 +363,15 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //  pub const STRING_TYPE: &str = "String";
 //  pub const UNIT_TYPE: &str = "Unit";
 //  pub const ANY_TYPE: &str = "Any";
-//  
+//
 //  // Special type constructor constants
 //  pub const MAYBE_TYPE: &str = "Maybe";
 //  pub const RESULT_TYPE: &str = "Result";
-//  
+//
 //  // Keyword constants
 //  pub const DATA_KEYWORD: &str = "data";
 //  pub const END_KEYWORD: &str = "end";
-//  
+//
 //  // Statement keyword constants
 //  pub const IF_KEYWORD: &str = "if";
 //  pub const ELSE_KEYWORD: &str = "else";
@@ -388,44 +380,44 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //  pub const IN_KEYWORD: &str = "in";
 //  pub const ASSERT_KEYWORD: &str = "assert";
 //  pub const DEF_KEYWORD: &str = "def";
-//  
+//
 //  // Operator and symbol constants
 //  pub const FUNCTION_ARROW: &str = "->";
 //  pub const PIPE_SYMBOL: &str = "|";
 //  pub const COLON_SYMBOL: &str = ":";
 //  pub const COMMA_SYMBOL: &str = ",";
 //  pub const SEMICOLON_SYMBOL: &str = ";";
-//  
+//
 //  // Bracket and parentheses constants
 //  pub const LEFT_BRACKET: char = '[';
 //  pub const RIGHT_BRACKET: char = ']';
 //  pub const LEFT_PAREN: char = '(';
 //  pub const RIGHT_PAREN: char = ')';
-//  
+//
 //  // Other character constants
 //  pub const COMMA_CHAR: char = ',';
 //  pub const COLON_CHAR: char = ':';
 //  pub const PIPE_CHAR: char = '|';
 //  pub const SEMICOLON_CHAR: char = ';';
 //  pub const EQUALS_CHAR: char = '=';
-//  
+//
 //  /// Accepts any character except '"' and control characters (like \n, \t)
 //  pub fn is_string_char(c: char) -> bool {
 //      c != '"' && !c.is_control()
 //  }
-//  
+//
 //  pub fn keyword<'a>(kw: &'static str) -> impl FnMut(&'a str) -> IResult<&'a str, &'a str> {
 //      terminated(
 //          delimited(multispace0, tag(kw), multispace0),
 //          not(peek(identifier_start_or_continue)),
 //      )
 //  }
-//  
+//
 //  pub fn parse_expression(input: &str) -> IResult<&str, Expression> {
 //      delimited(multispace0, parse_or, multispace0)(input)
 //      //parse_or(input)
 //  }
-//  
+//
 //  fn parse_or(input: &str) -> IResult<&str, Expression> {
 //      let (input, init) = parse_and(input)?;
 //      fold_many0(
@@ -434,7 +426,7 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //          |acc, val| Expression::Or(Box::new(acc), Box::new(val)),
 //      )(input)
 //  }
-//  
+//
 //  fn parse_and(input: &str) -> IResult<&str, Expression> {
 //      let (input, init) = parse_not(input)?;
 //      fold_many0(
@@ -443,7 +435,7 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //          |acc, val| Expression::And(Box::new(acc), Box::new(val)),
 //      )(input)
 //  }
-//  
+//
 //  fn parse_not(input: &str) -> IResult<&str, Expression> {
 //      alt((
 //          map(preceded(keyword("not"), parse_not), |e| {
@@ -452,7 +444,7 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //          parse_relational,
 //      ))(input)
 //  }
-//  
+//
 //  fn parse_relational(input: &str) -> IResult<&str, Expression> {
 //      let (input, init) = parse_add_sub(input)?;
 //      fold_many0(
@@ -479,7 +471,7 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //          },
 //      )(input)
 //  }
-//  
+//
 //  fn parse_add_sub(input: &str) -> IResult<&str, Expression> {
 //      let (input, init) = parse_term(input)?;
 //      fold_many0(
@@ -492,7 +484,7 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //          },
 //      )(input)
 //  }
-//  
+//
 //  fn parse_term(input: &str) -> IResult<&str, Expression> {
 //      let (input, init) = parse_factor(input)?;
 //      fold_many0(
@@ -505,7 +497,7 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //          },
 //      )(input)
 //  }
-//  
+//
 //  fn parse_factor(input: &str) -> IResult<&str, Expression> {
 //      alt((
 //          parse_bool,
@@ -521,14 +513,14 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //          ),
 //      ))(input)
 //  }
-//  
+//
 //  fn parse_bool(input: &str) -> IResult<&str, Expression> {
 //      alt((
 //          value(Expression::CTrue, keyword("True")),
 //          value(Expression::CFalse, keyword("False")),
 //      ))(input)
 //  }
-//  
+//
 //  fn parse_number(input: &str) -> IResult<&str, Expression> {
 //      let float_parser = map_res(
 //          verify(
@@ -548,7 +540,7 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //              f64::from_str(&s)
 //          },
 //      );
-//  
+//
 //      let int_parser = map_res(
 //          tuple((opt(char::<&str, Error<&str>>('-')), digit1)),
 //          |(sign, digits)| {
@@ -559,13 +551,13 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //              i32::from_str(&s)
 //          },
 //      );
-//  
+//
 //      alt((
 //          map(float_parser, Expression::CReal),
 //          map(int_parser, Expression::CInt),
 //      ))(input)
 //  }
-//  
+//
 //  fn parse_string(input: &str) -> IResult<&str, Expression> {
 //      map(
 //          delimited(
@@ -580,17 +572,17 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //          |s| Expression::CString(s),
 //      )(input)
 //  }
-//  
+//
 //  fn parse_var(input: &str) -> IResult<&str, Expression> {
 //      map(identifier, |v| Expression::Var(*v))(input)
 //  }
-//  
+//
 //  fn parse_function_call(input: &str) -> IResult<&str, Expression> {
 //      let (input, name) = identifier(input)?;
 //      let (input, args) = parse_actual_arguments(input)?;
 //      Ok((input, Expression::FuncCall(name.to_string(), args)))
 //  }
-//  
+//
 //  pub fn parse_actual_arguments(input: &str) -> IResult<&str, Vec<Expression>> {
 //      map(
 //          tuple((
@@ -610,26 +602,26 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 //          |(_, _, args, _, _)| args,
 //      )(input)
 //  }
-//  
+//
 //  fn parse_list(input: &str) -> IResult<&str, Expression> {
 //      let (input, _) = multispace0(input)?;
 //      let (input, _) = char(LEFT_BRACKET)(input)?;
 //      let (input, _) = multispace0(input)?;
-//  
+//
 //      let (input, elements) = separated_list0(
 //          delimited(multispace0, char(COMMA_CHAR), multispace0),
 //          parse_expression,
 //      )(input)?;
-//  
+//
 //      let (input, _) = multispace0(input)?;
 //      let (input, _) = char(RIGHT_BRACKET)(input)?;
 //      let (input, _) = multispace0(input)?;
-//  
+//
 //      Ok((input, Expression::ListValue(elements)))
 //  }
-//  
+//
 //  /// Parses an operator.
 //  fn operator<'a>(op: &'static str) -> impl FnMut(&'a str) -> IResult<&'a str, &'a str> {
 //      delimited(multispace0, tag(op), multispace0)
 //  }
-//  
+//

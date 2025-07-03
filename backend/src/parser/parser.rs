@@ -22,61 +22,45 @@ pub fn parse_chained_blocks(block: &Block) -> Result<Statement, String> {
     let mut statements_vector: Vec<Statement> = Vec::new();
 
     while let Some(block_iterator) = current_block {
-        println!("Passou por parse_chained_blocks");
-        print!("Bloco: {:?}", current_block);
         let statement: Statement = parse_single_block(block_iterator)?;
         statements_vector.push(statement);
-        current_block = block_iterator
-                        .next
-                        .as_ref()
-                        .map(|next| next.block.as_ref());
+        current_block = block_iterator.next.as_ref().map(|next| next.block.as_ref());
     }
     return Ok(Statement::Block(statements_vector));
 }
 
 fn parse_single_block(block: &Block) -> Result<Statement, String> {
     match block.r#type.as_str() {
-        /*
         "print_block" => {
-            if let Some(fields) = &block.fields {
-                if let Some(text) = fields.get("TEXT") {
-                    output.push(text.clone());
+            if let Some(expression_string) = block
+                .inputs
+                .as_ref()
+                .and_then(|input| input.get("EXPRESSION"))
+                .and_then(|input| input.shadow.as_ref())
+                .and_then(|shadow_block| shadow_block.fields.as_ref())
+                .and_then(|fields| fields.get("TEXT"))
+            {
+                if expression_string.is_empty() {
+                    return Ok(Statement::Print(Box::new(Expression::CString(
+                        "".to_string(),
+                    ))));
                 }
-            }
-        }
-
-        "logic_boolean" => {
-            // No execution here directly
-        }
-
-
-        "if_else_block" => {
-            let condition = block.inputs.as_ref()
-                .and_then(|i| i.get("CONDITION"))
-                .and_then(|input| input.block.as_ref())
-                .map_or(false, |b| {
-                    if let Some(fields) = &b.fields {
-                        fields.get("BOOL").map(|v| v == "TRUE").unwrap_or(false)
-                    } else {
-                        false
-                    }
-                });
-
-            if condition {
-                if let Some(input) = block.inputs.as_ref().and_then(|i| i.get("IF_BODY")) {
-                    if let Some(body_block) = &input.block {
-                        execute_block(body_block, output);
-                    }
+                let (rest, assignment_exp) = parse_expression(expression_string.as_str())
+                    .map_err(|_e| format!("Parsing error on expression: {}", expression_string))?;
+                if !rest.is_empty() {
+                    return Err(format!(
+                        "Parsing error on print statement expression: {}",
+                        expression_string
+                    ));
                 }
+                // Retorna OK com o Statement usando variable_string e assignment_exp
+                return Ok(Statement::Print(Box::new(assignment_exp)));
             } else {
-                if let Some(input) = block.inputs.as_ref().and_then(|i| i.get("ELSE_BODY")) {
-                    if let Some(body_block) = &input.block {
-                        execute_block(body_block, output);
-                    }
-                }
+                return Ok(Statement::Print(Box::new(Expression::CString(
+                    "".to_string(),
+                ))));
             }
         }
-        */
 
         "declaration_block" => {
             println!("passou pelo declaration block");
@@ -97,11 +81,7 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
                     return Err(format!("Parsing error on variable: {}", variable_name));
                 }
 
-
-                if let Some(type_name) = block
-                .fields
-                .as_ref()
-                .and_then(|fields| fields.get("TYPE"))
+                if let Some(type_name) = block.fields.as_ref().and_then(|fields| fields.get("TYPE"))
                 {
                     let initial_expr = match type_name.as_str() {
                         "INT" => Expression::CInt(0),
@@ -109,18 +89,18 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
                         "STRING" => Expression::CString(String::new()),
                         "BOOL" => Expression::CTrue,
                         _ => return Err("non-valid type".to_string()),
-                };
-                return Ok(Statement::VarDeclaration(*variable_string, Box::new(initial_expr)));
-                }
-                else {
+                    };
+                    return Ok(Statement::VarDeclaration(
+                        *variable_string,
+                        Box::new(initial_expr),
+                    ));
+                } else {
                     return Err("Variable type field missing".to_string());
                 }
-
             } else {
                 return Err("Variable name field missing".to_string());
             }
         }
-        
 
         "assignment_block" => {
             println!("passou pelo assignement block");

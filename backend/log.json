@@ -1,24 +1,31 @@
 [
   {
-    "type": "declaration_block",
-    "fields": {
-      "TYPE": "INT",
-      "VARIABLE": "x"
+    "type": "print_block",
+    "fields": null,
+    "inputs": {
+      "EXPRESSION": {
+        "block": null,
+        "shadow": {
+          "type": "expression_block",
+          "fields": {
+            "TEXT": "1"
+          },
+          "inputs": null,
+          "next": null
+        }
+      }
     },
-    "inputs": null,
     "next": {
       "block": {
-        "type": "assignment_block",
-        "fields": {
-          "VARIABLE": "x"
-        },
+        "type": "print_block",
+        "fields": null,
         "inputs": {
           "EXPRESSION": {
             "block": null,
             "shadow": {
               "type": "expression_block",
               "fields": {
-                "TEXT": "3"
+                "TEXT": ""
               },
               "inputs": null,
               "next": null
@@ -27,42 +34,19 @@
         },
         "next": {
           "block": {
-            "type": "while_block",
+            "type": "print_block",
             "fields": null,
             "inputs": {
-              "CONDITION": {
+              "EXPRESSION": {
                 "block": null,
                 "shadow": {
                   "type": "expression_block",
                   "fields": {
-                    "TEXT": "x > 0"
+                    "TEXT": "2"
                   },
                   "inputs": null,
                   "next": null
                 }
-              },
-              "WHILE_BODY": {
-                "block": {
-                  "type": "assignment_block",
-                  "fields": {
-                    "VARIABLE": "x"
-                  },
-                  "inputs": {
-                    "EXPRESSION": {
-                      "block": null,
-                      "shadow": {
-                        "type": "expression_block",
-                        "fields": {
-                          "TEXT": "x - 1"
-                        },
-                        "inputs": null,
-                        "next": null
-                      }
-                    }
-                  },
-                  "next": null
-                },
-                "shadow": null
               }
             },
             "next": null

@@ -1,3 +1,5 @@
+use tokio::sync::watch::error;
+
 use crate::environment::environment::Environment;
 use crate::ir::ast::{Expression, Function, Name, Statement, Type, ValueConstructor};
 use crate::type_checker::expression_type_checker::check_expr;
@@ -22,6 +24,7 @@ pub fn check_stmt(
         Statement::TypeDeclaration(name, cons) => check_adt_declarations_stmt(name, cons, env),
         Statement::Return(exp) => check_return_stmt(exp, env),
         Statement::Block(statements_vector) => check_block_statement(statements_vector, env),
+        Statement::Print(exp) => check_print_statement(exp, env),
         _ => Err("Not implemented yet".to_string()),
     }
 }
@@ -35,14 +38,27 @@ fn check_squence_stmt(
     check_stmt(*stmt2, &new_env)
 }
 
-fn check_block_statement(statements_vector: Vec<Statement>, env: &Environment<Type>) -> Result<Environment<Type>,ErrorMessage>
-{
+fn check_block_statement(
+    statements_vector: Vec<Statement>,
+    env: &Environment<Type>,
+) -> Result<Environment<Type>, ErrorMessage> {
     let mut new_env = env.clone();
-    for statement in &statements_vector
-    {
+    for statement in &statements_vector {
         new_env = check_stmt(statement.clone(), &new_env)?;
     }
     return Ok(new_env);
+}
+
+fn check_print_statement(
+    exp: Box<Expression>,
+    env: &Environment<Type>,
+) -> Result<Environment<Type>, ErrorMessage> {
+    let new_env = env.clone();
+    let exp_type = check_expr(*exp, &new_env)?;
+    match exp_type {
+        Type::TString | Type::TInteger | Type::TReal | Type::TBool => Ok(new_env),
+        _ => Err("Print statement does not support values of this type".into()),
+    }
 }
 
 fn check_assignment_stmt(
@@ -56,7 +72,10 @@ fn check_assignment_stmt(
     match new_env.lookup(&name) {
         Some((mutable, var_type)) => {
             if !mutable {
-                Err(format!("[Type Error] cannot reassign '{:?}' variable, since it was declared as a constant value.", name))
+                Err(format!(
+                    "[Type Error] cannot reassign '{:?}' variable, since it was declared as a constant value.",
+                    name
+                ))
             } else if var_type == Type::TAny {
                 new_env.map_variable(name.clone(), true, exp_type);
                 Ok(new_env)
@@ -183,7 +202,7 @@ fn check_for_stmt(
             return Err(format!(
                 "[TypeError] Expecting a List type, but found a {:?}",
                 expr_type
-            ))
+            ));
         }
     }
 }

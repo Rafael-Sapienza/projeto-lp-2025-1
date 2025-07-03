@@ -67,8 +67,8 @@ Blockly.defineBlocksWithJsonArray([{
   "message0": "print %1",
   "args0": [
     {
-      "type": "field_input",
-      "name": "TEXT"
+      "type": "input_value", // antes era field_input
+      "name": "EXPRESSION"
     }
   ],
   "previousStatement": null,
@@ -164,7 +164,10 @@ const workspace = Blockly.inject('blocklyDiv', {
         name: "Custom Blocks",
         colour: "#5CA699",
         contents: [
-          { kind: "block", type: "print_block" },
+          { kind: "block", 
+            type: "print_block",
+            inputs: {"EXPRESSION": {shadow:{type:"expression_block"}} }
+          },
           { kind: "block", type: "declaration_block"},
           { kind: "block", 
             type: "if_else_block",

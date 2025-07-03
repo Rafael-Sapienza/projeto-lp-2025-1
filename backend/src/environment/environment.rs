@@ -52,6 +52,7 @@ impl<A: Clone> Scope<A> {
 
 #[derive(Clone, Debug)]
 pub struct Environment<A> {
+    pub output: Vec<String>,
     pub globals: Scope<A>,
     pub stack: LinkedList<Scope<A>>,
 }
@@ -59,9 +60,18 @@ pub struct Environment<A> {
 impl<A: Clone> Environment<A> {
     pub fn new() -> Environment<A> {
         Environment {
+            output: Vec::new(),
             globals: Scope::new(),
             stack: LinkedList::new(),
         }
+    }
+
+    pub fn insert_output_line(&mut self, line: &str) {
+        self.output.push(line.to_string());
+    }
+
+    pub fn get_output(&mut self) -> Vec<String> {
+        return self.output.clone();
     }
 
     pub fn map_variable(&mut self, var: Name, mutable: bool, value: A) -> () {

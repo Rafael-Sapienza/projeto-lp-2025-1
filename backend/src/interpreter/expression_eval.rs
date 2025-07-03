@@ -404,7 +404,7 @@ pub fn eval_function_call(
                 let value = match eval(actual.clone(), env)? {
                     ExpressionResult::Value(expr) => expr,
                     ExpressionResult::Propagate(expr) => {
-                        return Ok(ExpressionResult::Propagate(expr))
+                        return Ok(ExpressionResult::Propagate(expr));
                     }
                 };
                 new_env.map_variable(formal.argument_name.clone(), false, value);

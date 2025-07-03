@@ -1,14 +1,14 @@
 use actix_files::Files;
 use actix_web::{App, HttpServer};
 
+mod environment;
 mod handlers;
+mod interpreter;
 mod ir;
 mod models;
-mod routes;
 mod parser;
-mod environment;
+mod routes;
 mod type_checker;
-mod interpreter;
 
 // Allows the main function to be an async function
 #[actix_web::main]

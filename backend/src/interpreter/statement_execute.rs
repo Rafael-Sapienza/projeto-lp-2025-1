@@ -1,4 +1,4 @@
-use super::expression_eval::{eval, ExpressionResult};
+use super::expression_eval::{ExpressionResult, eval};
 use crate::environment::environment::Environment;
 use crate::ir::ast::{Expression, Statement};
 
@@ -40,7 +40,7 @@ pub fn execute(stmt: Statement, env: &Environment<Expression>) -> Result<Computa
             let value = match eval(*exp, &new_env)? {
                 ExpressionResult::Value(expr) => expr,
                 ExpressionResult::Propagate(expr) => {
-                    return Ok(Computation::PropagateError(expr, new_env))
+                    return Ok(Computation::PropagateError(expr, new_env));
                 }
             };
             new_env.map_variable(name, true, value);
@@ -51,7 +51,7 @@ pub fn execute(stmt: Statement, env: &Environment<Expression>) -> Result<Computa
             let value = match eval(*exp, &new_env)? {
                 ExpressionResult::Value(expr) => expr,
                 ExpressionResult::Propagate(expr) => {
-                    return Ok(Computation::PropagateError(expr, new_env))
+                    return Ok(Computation::PropagateError(expr, new_env));
                 }
             };
             new_env.map_variable(name, false, value);
@@ -62,7 +62,7 @@ pub fn execute(stmt: Statement, env: &Environment<Expression>) -> Result<Computa
             let value = match eval(*exp, &new_env)? {
                 ExpressionResult::Value(expr) => expr,
                 ExpressionResult::Propagate(expr) => {
-                    return Ok(Computation::PropagateError(expr, new_env))
+                    return Ok(Computation::PropagateError(expr, new_env));
                 }
             };
             new_env.map_variable(name, true, value);
@@ -73,7 +73,7 @@ pub fn execute(stmt: Statement, env: &Environment<Expression>) -> Result<Computa
             let value = match eval(*cond, &new_env)? {
                 ExpressionResult::Value(expr) => expr,
                 ExpressionResult::Propagate(expr) => {
-                    return Ok(Computation::PropagateError(expr, new_env))
+                    return Ok(Computation::PropagateError(expr, new_env));
                 }
             };
 
@@ -104,7 +104,7 @@ pub fn execute(stmt: Statement, env: &Environment<Expression>) -> Result<Computa
             let mut value = match eval(*cond.clone(), &new_env)? {
                 ExpressionResult::Value(expr) => expr,
                 ExpressionResult::Propagate(expr) => {
-                    return Ok(Computation::PropagateError(expr, new_env))
+                    return Ok(Computation::PropagateError(expr, new_env));
                 }
             };
 
@@ -114,16 +114,16 @@ pub fn execute(stmt: Statement, env: &Environment<Expression>) -> Result<Computa
                         match execute(*stmt.clone(), &new_env)? {
                             Computation::Continue(env) => new_env = env,
                             Computation::Return(expr, env) => {
-                                return Ok(Computation::Return(expr, env))
+                                return Ok(Computation::Return(expr, env));
                             }
                             Computation::PropagateError(expr, env) => {
-                                return Ok(Computation::PropagateError(expr, env))
+                                return Ok(Computation::PropagateError(expr, env));
                             }
                         }
                         value = match eval(*cond.clone(), &new_env)? {
                             ExpressionResult::Value(expr) => expr,
                             ExpressionResult::Propagate(expr) => {
-                                return Ok(Computation::PropagateError(expr, new_env))
+                                return Ok(Computation::PropagateError(expr, new_env));
                             }
                         };
                     }
@@ -137,7 +137,7 @@ pub fn execute(stmt: Statement, env: &Environment<Expression>) -> Result<Computa
             let values = match eval(*list.clone(), &new_env)? {
                 ExpressionResult::Value(expr) => expr,
                 ExpressionResult::Propagate(expr) => {
-                    return Ok(Computation::PropagateError(expr, new_env))
+                    return Ok(Computation::PropagateError(expr, new_env));
                 }
             };
 
@@ -148,10 +148,10 @@ pub fn execute(stmt: Statement, env: &Environment<Expression>) -> Result<Computa
                         match execute(*stmt.clone(), &new_env)? {
                             Computation::Continue(env) => new_env = env,
                             Computation::Return(expr, env) => {
-                                return Ok(Computation::Return(expr, env))
+                                return Ok(Computation::Return(expr, env));
                             }
                             Computation::PropagateError(expr, env) => {
-                                return Ok(Computation::PropagateError(expr, env))
+                                return Ok(Computation::PropagateError(expr, env));
                             }
                         }
                     }
@@ -166,7 +166,7 @@ pub fn execute(stmt: Statement, env: &Environment<Expression>) -> Result<Computa
                 Computation::Continue(env) => new_env = env,
                 Computation::Return(expr, env) => return Ok(Computation::Return(expr, env)),
                 Computation::PropagateError(expr, env) => {
-                    return Ok(Computation::PropagateError(expr, env))
+                    return Ok(Computation::PropagateError(expr, env));
                 }
             }
             execute(*s2, &new_env)
@@ -181,7 +181,7 @@ pub fn execute(stmt: Statement, env: &Environment<Expression>) -> Result<Computa
             let exp_value = match eval(*exp, &new_env)? {
                 ExpressionResult::Value(expr) => expr,
                 ExpressionResult::Propagate(expr) => {
-                    return Ok(Computation::PropagateError(expr, new_env))
+                    return Ok(Computation::PropagateError(expr, new_env));
                 }
             };
             Ok(Computation::Return(exp_value, new_env))
@@ -190,6 +190,36 @@ pub fn execute(stmt: Statement, env: &Environment<Expression>) -> Result<Computa
         Statement::TypeDeclaration(name, constructors) => {
             new_env.map_adt(name, constructors);
             Ok(Computation::Continue(new_env))
+        }
+
+        Statement::Print(exp) => {
+            let value = match eval(*exp.clone(), &new_env)? {
+                ExpressionResult::Value(expr) => expr,
+                ExpressionResult::Propagate(expr) => {
+                    return Ok(Computation::PropagateError(expr, new_env));
+                }
+            };
+            match value {
+                Expression::CString(string) => new_env.insert_output_line(&string),
+                Expression::CInt(integer) => {
+                    let string = integer.to_string();
+                    new_env.insert_output_line(&string);
+                }
+                Expression::CReal(real) => {
+                    let string = real.to_string();
+                    new_env.insert_output_line(&string);
+                }
+                Expression::CTrue => {
+                    new_env.insert_output_line("True");
+                }
+                Expression::CFalse => {
+                    new_env.insert_output_line("False");
+                }
+                _ => {
+                    return Err("Type not supported by print statement".to_string());
+                }
+            }
+            return Ok(Computation::Continue(new_env));
         }
 
         _ => Err(String::from("not implemented yet")),
@@ -207,7 +237,7 @@ pub fn execute_block(
             Computation::Continue(new_env) => current_env = new_env,
             Computation::Return(expr, env) => return Ok(Computation::Return(expr, env)),
             Computation::PropagateError(expr, env) => {
-                return Ok(Computation::PropagateError(expr, env))
+                return Ok(Computation::PropagateError(expr, env));
             }
         }
     }
