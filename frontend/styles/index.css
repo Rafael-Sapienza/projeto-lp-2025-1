@@ -31,7 +31,7 @@ body {
 .blocklyToolboxCategoryLabel {
     font-family: 'Chau Philomene One';
     color: rgb(113, 43, 17);
-    font-size: 20px;
+    font-size: 25px;
 }
 
 
@@ -53,7 +53,7 @@ body {
 
 
 .blocklyToolboxCategoryContainer {
-    margin: 0px 0px 5px 5px;
+    margin: 0px 0px 7px 7px;
     border-bottom: #7a4323 solid 2px;
 }
 
