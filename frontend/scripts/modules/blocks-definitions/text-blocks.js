@@ -89,3 +89,4 @@ const length = {
     }
 };
 textBlocks.length = length;
+
