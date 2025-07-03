@@ -11,4 +11,8 @@ export const blocksCategories = {
         name: "comparação",
         colour: "#DF5800",
     },
+    control: {
+        name: "controle",
+        colour: "#f2a810",
+    }
 }

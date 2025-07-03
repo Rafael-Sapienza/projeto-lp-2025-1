@@ -4,27 +4,31 @@ use crate::models::{ Value, Workspace, Block, Input };
 
 
 pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
-    let mut output = Vec::new();
+    let mut output = Vec::<String>::new();
 
     for block in &payload.blocks.blocks {
-        // In this assignment, only the top blocks will be assigned
-        let mut current_block = Some(block);
-
-        while let Some(sub_block) = current_block {
-            if let Some(Value::String(s)) = execute_block(sub_block) {
-                if !s.is_empty() {
-                    output.push(s);
-                }
-            }
-
-            current_block = match sub_block.next.as_ref() {
-                Some(b) => Some(&*b.block),
-                None => None
-            }
-        }
+        execute_sequence(block, &mut output);
     }
 
     HttpResponse::Ok().json(output)
+}
+
+// TODO: Maybe here is the place to return Possible errors
+fn execute_sequence(top_block: &Block, output: &mut Vec<String>) {
+    let mut current_block = Some(top_block);
+
+    while let Some(sub_block) = current_block {
+        if let Some(Value::String(s)) = execute_block(sub_block) {
+            if !s.is_empty() {
+                output.push(s);
+            }
+        }
+
+        current_block = match sub_block.next.as_ref() {
+            Some(b) => Some(&*b.block),
+            None => None
+        }
+    }
 }
 
 
@@ -174,6 +178,51 @@ fn execute_block(block: &Block,) -> Option<Value> {
             }
 
             Some(Value::Number(num1 / num2))
+        }
+        "bigger" => {
+            let mut num1: f64 = 0.0;
+            let mut num2: f64 = 0.0;
+
+            if let Some(inputs) = &block.inputs {
+                if let Some(input) = inputs.get("NUM1") {
+                    num1 = get_number_input(input).unwrap_or(0.0);
+                }
+                if let Some(input) = inputs.get("NUM2") {
+                    num2 = get_number_input(input).unwrap_or(0.0);
+                }
+            }
+
+            Some(Value::Boolean(num1 > num2))
+        }
+        "smaller" => {
+            let mut num1: f64 = 0.0;
+            let mut num2: f64 = 0.0;
+
+            if let Some(inputs) = &block.inputs {
+                if let Some(input) = inputs.get("NUM1") {
+                    num1 = get_number_input(input).unwrap_or(0.0);
+                }
+                if let Some(input) = inputs.get("NUM2") {
+                    num2 = get_number_input(input).unwrap_or(0.0);
+                }
+            }
+
+            Some(Value::Boolean(num1 < num2))
+        }
+        "equal" => {
+            let mut num1: f64 = 0.0;
+            let mut num2: f64 = 0.0;
+
+            if let Some(inputs) = &block.inputs {
+                if let Some(input) = inputs.get("NUM1") {
+                    num1 = get_number_input(input).unwrap_or(0.0);
+                }
+                if let Some(input) = inputs.get("NUM2") {
+                    num2 = get_number_input(input).unwrap_or(0.0);
+                }
+            }
+
+            Some(Value::Boolean((num1 - num2).abs() < std::f64::EPSILON))
         }
         "textTemplate" => {
             if let Some(s) = get_text_template(block) {

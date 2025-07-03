@@ -96,3 +96,20 @@ async function execute() {
         document.getElementById('output').textContent = `Error: ${error}`;
     } 
 }
+
+
+/***** MAIN BLOCK *****/
+const main = {
+    type: "main", 
+    message0: "Iniciar",
+    nextStatement: null,
+    tooltip: "Inicia o código",
+}
+Blockly.defineBlocksWithJsonArray([main]);
+const mainBlock = workspace.newBlock("main");
+mainBlock.initSvg();
+mainBlock.render();
+// You can optionally move it to (x,y) coordinates
+mainBlock.moveBy(50, 50);
+mainBlock.setDeletable(false);
+mainBlock.setMovable(false);
