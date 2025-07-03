@@ -1,7 +1,7 @@
 export const blocksCategories = {
     text: {
         name: "texto",
-        colour: "#5ba58c"
+        colour: "#5ba58c",
     },
     math: {
         name: "matemática",
