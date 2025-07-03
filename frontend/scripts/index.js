@@ -67,7 +67,7 @@ workspace.addChangeListener(function(event) {
 });
 
 
-document.querySelector("button").addEventListener("click", execute);
+//document.querySelector("button").addEventListener("click", execute);
 
 async function execute() {
     const workspaceJson = Blockly.serialization.workspaces.save(workspace);
@@ -123,3 +123,21 @@ mainBlock.render();
 mainBlock.moveBy(50, 50);
 mainBlock.setDeletable(false);
 mainBlock.setMovable(false);
+
+let lastSelectedBlockId = null;
+
+workspace.addChangeListener(function(event) {
+    if (
+      event.type === Blockly.Events.SELECTED
+    ) {
+        const newId = event.newElementId;
+        if (newId && newId !== lastSelectedBlockId) {
+            const block = workspace.getBlockById(newId);
+            if (block && block.type === "main") {
+              console.log("Main block clicked!");
+              execute();
+            }
+        }
+        lastSelectedBlockId = newId;
+    }
+});
