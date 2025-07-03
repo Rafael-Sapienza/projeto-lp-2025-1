@@ -89,11 +89,6 @@ body {
   rx: 8; /* arredonda os cantos */
 }
 
-/*.blocklyToolboxFlyout {
-  transform: translateX(149px) !important; ajuste esse valor até alinhar bem 
-}
-*/
-
 /* Container do output */
 .output-container {
     width: 100%;
