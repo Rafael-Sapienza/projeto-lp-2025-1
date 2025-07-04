@@ -32,7 +32,7 @@ Blockly.defineBlocksWithJsonArray([{
   "tooltip": "A string of text.",
 }]);
 
-
+/***** VARIABLE DECLARATION BLOCK *****/
 Blockly.defineBlocksWithJsonArray([{
   "type": "declaration_block",
   "message0": "tipo %1 %2",
@@ -60,6 +60,76 @@ Blockly.defineBlocksWithJsonArray([{
   "helpUrl": ""
 }]);
 
+/***** FUNCTION DECLARATION BLOCK*****/
+Blockly.defineBlocksWithJsonArray([{
+  "type": "function_declaration_block",
+  "message0": "def %1 %2 (%3) %4 return %5",
+  "args0": [
+    {
+      "type": "field_dropdown",
+      "name": "RETURN_TYPE",
+      "options": [
+        ["void","VOID"],
+        ["int", "INT"],
+        ["float", "FLOAT"],
+        ["string", "STRING"],
+        ["bool", "BOOL"]
+      ]
+    },
+    {
+      "type": "field_input",
+      "name": "FUNCTION_NAME",
+    },
+    {
+      "type": "input_value",
+      "name": "FORMAL_ARGUMENTS",
+      "check": "FormalArgumentList"
+    },
+    {
+      "type": "input_statement",
+      "name": "FUNCTION_BODY"
+    },
+    {
+      "type": "input_value",
+      "name": "RETURN_EXPRESSION"
+    }
+  ],
+  "colour": 210,
+  "tooltip": "If-Else conditional",
+  "helpUrl": ""
+}]);
+
+/***** FORMAL ARGUMENTS BLOCK*****/
+Blockly.defineBlocksWithJsonArray([{
+  "type": "formal_argument_block",
+  "message0": "%1 %2 , %3",
+  "args0": [
+    {
+      "type": "field_dropdown",
+      "name": "RETURN_TYPE",
+      "options": [
+        ["int", "INT"],
+        ["float", "FLOAT"],
+        ["string", "STRING"],
+        ["bool", "BOOL"]
+      ]
+    },
+    {
+      "type": "field_input",
+      "name": "FORMAL_ARGUMENT",
+    },
+    {
+      "type": "input_value",
+      "name": "NEXT_ARGUMENT",
+      "check": "FormalArgumentList"
+    }
+  ],
+  "output": "FormalArgumentList",
+  "outputShape": Blockly.OUTPUT_SHAPE_ROUND,
+  "colour": 210,
+  "tooltip": "Function definition",
+  "helpUrl": ""
+}]);
 
 /***** PRINT BLOCK *****/
 Blockly.defineBlocksWithJsonArray([{
@@ -180,7 +250,12 @@ const workspace = Blockly.inject('blocklyDiv', {
           { kind: "block",
             type: "assignment_block",
             inputs: {"EXPRESSION": {shadow:{type:"expression_block"}}},
-          }
+          },
+          { kind: "block", 
+            type: "function_declaration_block",
+            inputs: {"RETURN_EXPRESSION": {shadow:{type:"expression_block"}} }
+          },
+          {kind: "block",type:"formal_argument_block"},
         ]
       },
       {

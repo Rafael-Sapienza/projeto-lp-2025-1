@@ -243,6 +243,7 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
                 return Err("While condition is empty".to_string());
             }
         }
+        
         _ => {
             //output.push(format!("Unknown block type: {}", block.r#type));
             return Err("Non-existent block".to_string());
