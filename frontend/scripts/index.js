@@ -1,16 +1,23 @@
 import { buildToolbox, injectWorkspace } from "./modules/blockly-setup.js";
-import { customBlocks } from "./modules/blocks-definitions/blocks-state.js";
-import { numberTemplate, textTemplate } from "./modules/blocks-definitions/blocks-templates.js";
+import { customBlocks, templateBlocks } from "./modules/blocks-definitions/blocks-state.js";
+import { variablesCategory, setupVariablesToolbox } from "./modules/variables-setup.js";
 
 console.log(customBlocks);
+console.log(templateBlocks);
 let allBlocks = [];
 for (const category in customBlocks) {
     allBlocks = [...allBlocks, ...Object.values(customBlocks[category])];
 };
 
+let otherBlocks = [];
+for (const category in templateBlocks) {
+    otherBlocks = [...otherBlocks, ...Object.values(templateBlocks[category])];
+};
 
-Blockly.defineBlocksWithJsonArray([numberTemplate, textTemplate]);
+
+console.log(otherBlocks);
 Blockly.defineBlocksWithJsonArray(allBlocks);
+Blockly.defineBlocksWithJsonArray(otherBlocks);
 
 const myTheme = Blockly.Theme.defineTheme( 
     'myTheme', 
@@ -39,11 +46,31 @@ const myTheme = Blockly.Theme.defineTheme(
 );
 
 const toolbox = buildToolbox(allBlocks, "categoryToolbox");
+toolbox.contents.push(variablesCategory);
 const workspace = injectWorkspace("blocklyDiv", toolbox, myTheme);
+setupVariablesToolbox(workspace);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ADD THE NEW CODE BEFORE THIS LINE!!!!!!!!!
+
+/*********************************************************************************/
+/*********************************************************************************/
+/*********************************************************************************/
 
 Blockly.common.setParentContainer(document.body);
-
-
 function corrigirEspacoEntreToolboxEFlyout() {
   const flyout = workspace.getFlyout();
   const toolboxWidth = workspace.toolbox_.getWidth();
@@ -141,3 +168,4 @@ workspace.addChangeListener(function(event) {
         lastSelectedBlockId = newId;
     }
 });
+

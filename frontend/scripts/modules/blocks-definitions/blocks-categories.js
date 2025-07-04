@@ -14,5 +14,9 @@ export const blocksCategories = {
     control: {
         name: "controle",
         colour: "#f2a810",
+    },
+    variable: {
+        name: null,
+        colour: "#5832a8"
     }
 }

@@ -1,4 +1,6 @@
-export const numberTemplate = {
+export const shadowBlocks = {};
+
+const numberShadow = {
     type: "numberTemplate",
     message0: "%1",
     args0: [
@@ -10,8 +12,9 @@ export const numberTemplate = {
     output: "Number",
     colour: "#52689c",
 };
+shadowBlocks.numberTemplate = numberShadow;
 
-export const textTemplate = {
+const textShadow = {
     type: "textTemplate",
     message0: "%1",
     args0: [
@@ -23,3 +26,4 @@ export const textTemplate = {
     output: "String",
     colour: "#52689c",
 };
+shadowBlocks.textTemplate = textShadow;
