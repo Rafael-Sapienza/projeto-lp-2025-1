@@ -11,9 +11,9 @@ pub fn check_expr(exp: Expression, env: &Environment<Type>) -> Result<Type, Erro
         Expression::CInt(_) => Ok(Type::TInteger),
         Expression::CReal(_) => Ok(Type::TReal),
         Expression::CString(_) => Ok(Type::TString),
-        Expression::Add(l, r) => check_bin_arithmetic_expression(*l, *r, env),
+        Expression::Add(l, r) => check_add_arithmetic_expression(*l, *r, env),
         Expression::Sub(l, r) => check_bin_arithmetic_expression(*l, *r, env),
-        Expression::Mul(l, r) => check_bin_arithmetic_expression(*l, *r, env),
+        Expression::Mul(l, r) => check_mul_arithmetic_expression(*l, *r, env),
         Expression::Div(l, r) => check_bin_arithmetic_expression(*l, *r, env),
         Expression::And(l, r) => check_bin_boolean_expression(*l, *r, env),
         Expression::Or(l, r) => check_bin_boolean_expression(*l, *r, env),
@@ -62,6 +62,44 @@ fn check_bin_arithmetic_expression(
         _ => Err(String::from("[Type Error] expecting numeric type values.")),
     }
 }
+
+fn check_add_arithmetic_expression(
+    left: Expression,
+    right: Expression,
+    env: &Environment<Type>,
+) -> Result<Type, ErrorMessage> {
+    let left_type = check_expr(left, env)?;
+    let right_type = check_expr(right, env)?;
+
+    match (left_type, right_type) {
+        (Type::TInteger, Type::TInteger) => Ok(Type::TInteger),
+        (Type::TInteger, Type::TReal) => Ok(Type::TReal),
+        (Type::TReal, Type::TInteger) => Ok(Type::TReal),
+        (Type::TReal, Type::TReal) => Ok(Type::TReal),
+        (Type::TString,Type::TString) => Ok(Type::TString),
+        _ => Err(String::from("[Type Error] expecting numeric type values.")),
+    }
+}
+
+fn check_mul_arithmetic_expression(
+    left: Expression,
+    right: Expression,
+    env: &Environment<Type>,
+) -> Result<Type, ErrorMessage> {
+    let left_type = check_expr(left, env)?;
+    let right_type = check_expr(right, env)?;
+
+    match (left_type, right_type) {
+        (Type::TInteger, Type::TInteger) => Ok(Type::TInteger),
+        (Type::TInteger, Type::TReal) => Ok(Type::TReal),
+        (Type::TReal, Type::TInteger) => Ok(Type::TReal),
+        (Type::TReal, Type::TReal) => Ok(Type::TReal),
+        (Type::TInteger,Type::TString) => Ok(Type::TString),
+        (Type::TString,Type::TInteger) => Ok(Type::TString),
+        _ => Err(String::from("[Type Error] expecting numeric type values.")),
+    }
+}
+
 
 fn check_bin_boolean_expression(
     left: Expression,

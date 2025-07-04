@@ -63,7 +63,6 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
         }
 
         "declaration_block" => {
-            println!("passou pelo declaration block");
             if let Some(variable_name) = block
                 .fields
                 .as_ref()
@@ -103,7 +102,6 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
         }
 
         "assignment_block" => {
-            println!("passou pelo assignement block");
             if let Some(variable_name) = block
                 .fields
                 .as_ref()
@@ -158,7 +156,6 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
         }
 
         "if_else_block" => {
-            println!("passou pelo if_block");
             if let Some(condition) = block
                 .inputs
                 .as_ref()
@@ -211,7 +208,6 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
         }
 
         "while_block" => {
-            println!("passou pelo while_block");
             if let Some(condition) = block
                 .inputs
                 .as_ref()

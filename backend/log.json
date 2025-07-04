@@ -1,31 +1,24 @@
 [
   {
-    "type": "print_block",
-    "fields": null,
-    "inputs": {
-      "EXPRESSION": {
-        "block": null,
-        "shadow": {
-          "type": "expression_block",
-          "fields": {
-            "TEXT": "1"
-          },
-          "inputs": null,
-          "next": null
-        }
-      }
+    "type": "declaration_block",
+    "fields": {
+      "TYPE": "INT",
+      "VARIABLE": "a"
     },
+    "inputs": null,
     "next": {
       "block": {
-        "type": "print_block",
-        "fields": null,
+        "type": "assignment_block",
+        "fields": {
+          "VARIABLE": "a"
+        },
         "inputs": {
           "EXPRESSION": {
             "block": null,
             "shadow": {
               "type": "expression_block",
               "fields": {
-                "TEXT": ""
+                "TEXT": "5"
               },
               "inputs": null,
               "next": null
@@ -34,22 +27,157 @@
         },
         "next": {
           "block": {
-            "type": "print_block",
-            "fields": null,
-            "inputs": {
-              "EXPRESSION": {
-                "block": null,
-                "shadow": {
-                  "type": "expression_block",
-                  "fields": {
-                    "TEXT": "2"
-                  },
-                  "inputs": null,
-                  "next": null
+            "type": "declaration_block",
+            "fields": {
+              "VARIABLE": "x",
+              "TYPE": "STRING"
+            },
+            "inputs": null,
+            "next": {
+              "block": {
+                "type": "declaration_block",
+                "fields": {
+                  "VARIABLE": "y",
+                  "TYPE": "STRING"
+                },
+                "inputs": null,
+                "next": {
+                  "block": {
+                    "type": "declaration_block",
+                    "fields": {
+                      "VARIABLE": "z",
+                      "TYPE": "STRING"
+                    },
+                    "inputs": null,
+                    "next": {
+                      "block": {
+                        "type": "while_block",
+                        "fields": null,
+                        "inputs": {
+                          "WHILE_BODY": {
+                            "block": {
+                              "type": "assignment_block",
+                              "fields": {
+                                "VARIABLE": "a"
+                              },
+                              "inputs": {
+                                "EXPRESSION": {
+                                  "block": null,
+                                  "shadow": {
+                                    "type": "expression_block",
+                                    "fields": {
+                                      "TEXT": "a - 1"
+                                    },
+                                    "inputs": null,
+                                    "next": null
+                                  }
+                                }
+                              },
+                              "next": {
+                                "block": {
+                                  "type": "assignment_block",
+                                  "fields": {
+                                    "VARIABLE": "x"
+                                  },
+                                  "inputs": {
+                                    "EXPRESSION": {
+                                      "block": null,
+                                      "shadow": {
+                                        "type": "expression_block",
+                                        "fields": {
+                                          "TEXT": "2*\"a\" + 2*\"b\""
+                                        },
+                                        "inputs": null,
+                                        "next": null
+                                      }
+                                    }
+                                  },
+                                  "next": {
+                                    "block": {
+                                      "type": "assignment_block",
+                                      "fields": {
+                                        "VARIABLE": "y"
+                                      },
+                                      "inputs": {
+                                        "EXPRESSION": {
+                                          "block": null,
+                                          "shadow": {
+                                            "type": "expression_block",
+                                            "fields": {
+                                              "TEXT": "2*(\"a + b\")"
+                                            },
+                                            "inputs": null,
+                                            "next": null
+                                          }
+                                        }
+                                      },
+                                      "next": {
+                                        "block": {
+                                          "type": "assignment_block",
+                                          "fields": {
+                                            "VARIABLE": "z"
+                                          },
+                                          "inputs": {
+                                            "EXPRESSION": {
+                                              "block": null,
+                                              "shadow": {
+                                                "type": "expression_block",
+                                                "fields": {
+                                                  "TEXT": "z + x + y"
+                                                },
+                                                "inputs": null,
+                                                "next": null
+                                              }
+                                            }
+                                          },
+                                          "next": {
+                                            "block": {
+                                              "type": "print_block",
+                                              "fields": null,
+                                              "inputs": {
+                                                "EXPRESSION": {
+                                                  "block": null,
+                                                  "shadow": {
+                                                    "type": "expression_block",
+                                                    "fields": {
+                                                      "TEXT": "z"
+                                                    },
+                                                    "inputs": null,
+                                                    "next": null
+                                                  }
+                                                }
+                                              },
+                                              "next": null
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "shadow": null
+                          },
+                          "CONDITION": {
+                            "block": null,
+                            "shadow": {
+                              "type": "expression_block",
+                              "fields": {
+                                "TEXT": "a > 0"
+                              },
+                              "inputs": null,
+                              "next": null
+                            }
+                          }
+                        },
+                        "next": null
+                      }
+                    }
+                  }
                 }
               }
-            },
-            "next": null
+            }
           }
         }
       }

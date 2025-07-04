@@ -1,3 +1,5 @@
+use core::prelude::v1;
+
 use super::statement_execute::Computation;
 use crate::environment::environment::Environment;
 use crate::ir::ast::{Expression, Name};
@@ -145,13 +147,33 @@ fn eval_add(
     rhs: Expression,
     env: &Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
-    eval_binary_arith_op(
-        lhs,
-        rhs,
-        env,
-        |a, b| a + b,
-        "addition '(+)' is only defined for numbers (integers and real).",
-    )
+let v1 = match eval(lhs, env)? {
+        ExpressionResult::Value(expr) => expr,
+        ExpressionResult::Propagate(expr) => return Ok(ExpressionResult::Propagate(expr)),
+    };
+    let v2 = match eval(rhs, env)? {
+        ExpressionResult::Value(expr) => expr,
+        ExpressionResult::Propagate(expr) => return Ok(ExpressionResult::Propagate(expr)),
+    };
+
+    match (v1, v2) {
+        (Expression::CInt(v1), Expression::CInt(v2)) => Ok(ExpressionResult::Value(
+            Expression::CInt(v1 + v2),
+        )),
+        (Expression::CInt(v1), Expression::CReal(v2)) => Ok(ExpressionResult::Value(
+            Expression::CReal(v1 as f64 + v2),
+        )),
+        (Expression::CReal(v1), Expression::CInt(v2)) => Ok(ExpressionResult::Value(
+            Expression::CReal(v1 + v2 as f64),
+        )),
+        (Expression::CReal(v1), Expression::CReal(v2)) => {
+            Ok(ExpressionResult::Value(Expression::CReal(v1 + v2)))
+        }
+        (Expression::CString(v1), Expression::CString(v2)) => {
+            Ok(ExpressionResult::Value(Expression::CString(format!("{}{}", v1, v2))))
+        }
+        _ => Err("sum: operands must both be numbers or both be strings".to_string()),
+    }
 }
 
 fn eval_sub(
@@ -173,13 +195,37 @@ fn eval_mul(
     rhs: Expression,
     env: &Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
-    eval_binary_arith_op(
-        lhs,
-        rhs,
-        env,
-        |a, b| a * b,
-        "multiplication '(*)' is only defined for numbers (integers and real).",
-    )
+    let v1 = match eval(lhs, env)? {
+        ExpressionResult::Value(expr) => expr,
+        ExpressionResult::Propagate(expr) => return Ok(ExpressionResult::Propagate(expr)),
+    };
+    let v2 = match eval(rhs, env)? {
+        ExpressionResult::Value(expr) => expr,
+        ExpressionResult::Propagate(expr) => return Ok(ExpressionResult::Propagate(expr)),
+    };
+
+    match (v1, v2) {
+        (Expression::CInt(v1), Expression::CInt(v2)) => Ok(ExpressionResult::Value(
+            Expression::CInt(v1 * v2),
+        )),
+        (Expression::CInt(v1), Expression::CReal(v2)) => Ok(ExpressionResult::Value(
+            Expression::CReal(v1 as f64 * v2),
+        )),
+        (Expression::CReal(v1), Expression::CInt(v2)) => Ok(ExpressionResult::Value(
+            Expression::CReal(v1 * v2 as f64),
+        )),
+        (Expression::CReal(v1), Expression::CReal(v2)) => {
+            Ok(ExpressionResult::Value(Expression::CReal(v1 * v2)))
+        }
+        (Expression::CInt(v1), Expression::CString(v2)) | (Expression::CString(v2), Expression::CInt(v1))=> {
+            if v1 < 0
+            {
+                return Err("Cannot repeat a string a negative number of times".to_string());
+            }
+            Ok(ExpressionResult::Value(Expression::CString(v2.repeat(v1 as usize))))
+        }
+        _ => Err("sum only accepts number + number and string + string".to_string()),
+    }
 }
 
 fn eval_div(
