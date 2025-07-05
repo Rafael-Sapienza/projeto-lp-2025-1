@@ -1,7 +1,7 @@
 export const shadowBlocks = {};
 
 const numberShadow = {
-    type: "numberTemplate",
+    type: "number_shadow",
     message0: "%1",
     args0: [
         {
@@ -15,7 +15,7 @@ const numberShadow = {
 shadowBlocks.numberTemplate = numberShadow;
 
 const textShadow = {
-    type: "textTemplate",
+    type: "text_shadow",
     message0: "%1",
     args0: [
         {

@@ -249,16 +249,16 @@ fn execute_block(block: &Block, output: &mut Vec<String>) -> Option<Value> {
 
             Some(Value::String("".to_string())) // Here just for error handling, for now
         }
-        "textTemplate" => {
-            if let Some(s) = get_text_template(block) {
+        "text_shadow" => {
+            if let Some(s) = get_text_shadow(block) {
                 Some(Value::String(s))
             }
             else {
                 Some(Value::String("".to_string()))
             }
         }
-        "numberTemplate" => {
-            if let Some(n) = get_number_template(block) {
+        "number_shadow" => {
+            if let Some(n) = get_number_shadow(block) {
                 Some(Value::Number(n))
             }
             else {
@@ -323,7 +323,7 @@ fn get_boolean_input(input: &Input, output: &mut Vec<String>) -> Option<bool> {
 
 }
 
-fn get_number_template(block: &Block) -> Option<f64> {
+fn get_number_shadow(block: &Block) -> Option<f64> {
     if let Some(fields) = &block.fields {
         if let Some(value) = fields.get("NUM") {
             return match value {
@@ -337,7 +337,7 @@ fn get_number_template(block: &Block) -> Option<f64> {
 }
 
 
-fn get_text_template(block: &Block) -> Option<String> {
+fn get_text_shadow(block: &Block) -> Option<String> {
     if let Some(fields) = &block.fields {
         if let Some(value) = fields.get("TEXT") {
             if let JsonValue::String(s) = value {

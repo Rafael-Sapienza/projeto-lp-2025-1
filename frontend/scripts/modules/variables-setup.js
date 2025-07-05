@@ -33,7 +33,7 @@ export function createVariablesFlyout(workspace) {
         valueElem.setAttribute("name", "TEXT");
 
         const shadowBlock = Blockly.utils.xml.createElement("shadow");
-        shadowBlock.setAttribute("type", "textTemplate"); // or "math_number" for numbers
+        shadowBlock.setAttribute("type", "text_shadow"); // or "math_number" for numbers
 
         // Optionally, pre-fill the shadow block with a default value:
         const field = Blockly.utils.xml.createElement("field");

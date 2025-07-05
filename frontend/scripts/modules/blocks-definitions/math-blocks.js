@@ -27,12 +27,12 @@ const sum = {
     shadow: {
         NUM1: {
             shadow: {
-                type: "numberTemplate",
+                type: "number_shadow",
             },
         },
         NUM2: {
             shadow: {
-                type: "numberTemplate",
+                type: "number_shadow",
             },
         },
     },
@@ -62,12 +62,12 @@ const sub = {
     shadow: {
         NUM1: {
             shadow: {
-                type: "numberTemplate",
+                type: "number_shadow",
             },
         },
         NUM2: {
             shadow: {
-                type: "numberTemplate",
+                type: "number_shadow",
             },
         },
     },
@@ -97,12 +97,12 @@ const mult = {
     shadow: {
         NUM1: {
             shadow: {
-                type: "numberTemplate",
+                type: "number_shadow",
             },
         },
         NUM2: {
             shadow: {
-                type: "numberTemplate",
+                type: "number_shadow",
             },
         },
     },
@@ -132,12 +132,12 @@ const divi = {
     shadow: {
         NUM1: {
             shadow: {
-                type: "numberTemplate",
+                type: "number_shadow",
             },
         },
         NUM2: {
             shadow: {
-                type: "numberTemplate",
+                type: "number_shadow",
             },
         },
     },

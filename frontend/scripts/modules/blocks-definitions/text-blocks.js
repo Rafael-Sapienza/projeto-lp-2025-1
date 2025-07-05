@@ -22,7 +22,7 @@ const print = {
     shadow: {
         TEXT: {
             shadow: {
-                type: "textTemplate",
+                type: "text_shadow",
             }
         }
     }
@@ -53,12 +53,12 @@ const join = {
     shadow: {
         TEXT1: {
             shadow: {
-                type: "textTemplate",
+                type: "text_shadow",
             },
         },
         TEXT2: {
             shadow: {
-                type: "textTemplate",
+                type: "text_shadow",
             },
         },
     },
@@ -83,7 +83,7 @@ const length = {
     shadow: {
         TEXT: {
             shadow: {
-                type: "textTemplate",
+                type: "text_shadow",
             }
         }
     }
