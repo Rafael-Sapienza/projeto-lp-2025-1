@@ -1,6 +1,6 @@
-import { buildToolbox, injectWorkspace } from "./modules/blockly-setup.js";
-import { customBlocks, templateBlocks } from "./modules/blocks-definitions/blocks-state.js";
-import { variablesCategory, setupVariablesToolbox } from "./modules/variables-setup.js";
+import { buildToolbox, injectWorkspace } from "./modules/setup/blockly-setup.js";
+import { customBlocks, templateBlocks } from "./modules/blocks-definitions/blocks-library.js";
+import { variablesCategory, setupVariablesToolbox } from "./modules/setup/variables-setup.js";
 
 console.log(customBlocks);
 console.log(templateBlocks);
