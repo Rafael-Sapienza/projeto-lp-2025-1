@@ -106,7 +106,7 @@ Blockly.defineBlocksWithJsonArray([{
   "args0": [
     {
       "type": "field_dropdown",
-      "name": "RETURN_TYPE",
+      "name": "ARGUMENT_TYPE",
       "options": [
         ["int", "INT"],
         ["float", "FLOAT"],

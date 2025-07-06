@@ -289,6 +289,7 @@ dependencies = [
  "actix-files",
  "actix-rt",
  "actix-web",
+ "lazy_static",
  "nom",
  "serde",
  "serde_json",

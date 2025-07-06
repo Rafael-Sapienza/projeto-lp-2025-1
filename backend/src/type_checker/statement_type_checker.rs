@@ -77,7 +77,7 @@ fn check_assignment_stmt(
                     name
                 ))
             } else if var_type == Type::TAny {
-                new_env.map_variable(name.clone(), true, exp_type);
+                new_env.change_variable_value(name.clone(), exp_type)?;
                 Ok(new_env)
             } else if var_type == exp_type {
                 Ok(new_env)
@@ -102,7 +102,7 @@ fn check_var_declaration_stmt(
     let exp_type = check_expr(*exp, &new_env)?;
 
     if var_type.is_none() {
-        new_env.map_variable(name.clone(), true, exp_type);
+        new_env.create_variable(name.clone(), true, exp_type)?;
         Ok(new_env)
     } else {
         Err(format!(
@@ -122,7 +122,7 @@ fn check_val_declaration_stmt(
     let exp_type = check_expr(*exp, &new_env)?;
 
     if var_type.is_none() {
-        new_env.map_variable(name.clone(), false, exp_type);
+        new_env.create_variable(name.clone(), false, exp_type)?;
         Ok(new_env)
     } else {
         Err(format!(
@@ -193,7 +193,7 @@ fn check_for_stmt(
                     ));
                 }
             } else {
-                new_env.map_variable(var.clone(), false, *base_type);
+                new_env.create_variable(var.clone(), false, *base_type)?;
                 new_env = check_stmt(*stmt, &new_env)?;
                 return Ok(new_env);
             }
@@ -214,12 +214,15 @@ fn check_func_def_stmt(
     let mut new_env = env.clone();
     new_env.push();
 
+    new_env.map_function(function.clone());
+    new_env.insert_current_function(&function.name);
+
     for formal_arg in function.params.iter() {
-        new_env.map_variable(
+        new_env.create_variable(
             formal_arg.argument_name.clone(),
             false,
             formal_arg.argument_type.clone(),
-        );
+        )?;
     }
 
     if let Some(body) = function.body.clone() {
@@ -251,10 +254,28 @@ fn check_return_stmt(
 
     let ret_type = check_expr(*exp, &new_env)?;
 
+    let current_func = env.lookup_function(&env.current_func);
+
+    if current_func.is_none() {
+        return Err(format!("Type checker: No function to return from"));
+    }
+
+    let current_func = current_func.unwrap();
+
+    if ret_type != current_func.kind {
+        return Err(format!(
+            "Error in function {}:
+        Actual return type cannot be different from formal return type \n 
+        Actual return type: {:?} \n
+        Formal return type: {:?}",
+            env.current_func, ret_type, current_func.kind
+        ));
+    }
+
     match new_env.lookup(&"return".to_string()) {
         Some(_) => Ok(new_env),
         None => {
-            new_env.map_variable("return".to_string(), false, ret_type);
+            new_env.create_variable("return".to_string(), false, ret_type)?;
             Ok(new_env)
         }
     }

@@ -1,6 +1,9 @@
+use std::fmt::format;
+
 use super::expression_eval::{ExpressionResult, eval};
 use crate::environment::environment::Environment;
 use crate::ir::ast::{Expression, Statement};
+use crate::{show, show_counter};
 
 pub enum Computation {
     Continue(Environment<Expression>),
@@ -35,41 +38,61 @@ pub fn run(
 pub fn execute(stmt: Statement, env: &Environment<Expression>) -> Result<Computation, String> {
     let mut new_env = env.clone();
 
-    match stmt {
+    match stmt.clone() {
         Statement::VarDeclaration(name, exp) => {
+            show_counter_statement_exec();
+            show_statement_exec(format!("Exec VarDeclaration:"));
+            show_statement_exec(format!("Statement: {:?}", stmt));
+            show_statement_exec(format!("Env: {:?}", new_env));
             let value = match eval(*exp, &new_env)? {
                 ExpressionResult::Value(expr) => expr,
                 ExpressionResult::Propagate(expr) => {
                     return Ok(Computation::PropagateError(expr, new_env));
                 }
             };
-            new_env.map_variable(name, true, value);
+            new_env.create_variable(name, true, value)?;
             Ok(Computation::Continue(new_env))
         }
 
         Statement::ValDeclaration(name, exp) => {
+            show_counter_statement_exec();
+            show_statement_exec(format!("Exec ValDeclaration:"));
+            show_statement_exec(format!("Statement: {:?}", stmt));
+            show_statement_exec(format!("Env: {:?}", new_env));
             let value = match eval(*exp, &new_env)? {
                 ExpressionResult::Value(expr) => expr,
                 ExpressionResult::Propagate(expr) => {
                     return Ok(Computation::PropagateError(expr, new_env));
                 }
             };
-            new_env.map_variable(name, false, value);
+            new_env.create_variable(name, false, value)?;
             Ok(Computation::Continue(new_env))
         }
 
         Statement::Assignment(name, exp) => {
+            show_counter_statement_exec();
+            show_statement_exec(format!("Exec Assignement:"));
+            show_statement_exec(format!("Statement: {:?}", stmt));
+            show_statement_exec(format!("Env: {:?}", new_env));
             let value = match eval(*exp, &new_env)? {
                 ExpressionResult::Value(expr) => expr,
                 ExpressionResult::Propagate(expr) => {
                     return Ok(Computation::PropagateError(expr, new_env));
                 }
             };
-            new_env.map_variable(name, true, value);
+            show_counter_statement_exec();
+            show_statement_exec(format!("Finishing Exec Assignement:"));
+            show_statement_exec(format!("Statement: {:?}", stmt));
+            show_statement_exec(format!("Env: {:?}", new_env));
+            new_env.change_variable_value(name, value)?;
             Ok(Computation::Continue(new_env))
         }
 
         Statement::IfThenElse(cond, stmt_then, stmt_else) => {
+            show_counter_statement_exec();
+            show_statement_exec(format!("Exec IfThenElse:"));
+            show_statement_exec(format!("Statement: {:?}", stmt));
+            show_statement_exec(format!("Env: {:?}", new_env));
             let value = match eval(*cond, &new_env)? {
                 ExpressionResult::Value(expr) => expr,
                 ExpressionResult::Propagate(expr) => {
@@ -94,13 +117,21 @@ pub fn execute(stmt: Statement, env: &Environment<Expression>) -> Result<Computa
         }
 
         Statement::Block(stmts) => {
-            new_env.push();
+            show_counter_statement_exec();
+            show_statement_exec(format!("Exec Block:"));
+            show_statement_exec(format!("Statement: {:?}", stmt));
+            show_statement_exec(format!("Env: {:?}", new_env));
+            //new_env.push();
             let result = execute_block(stmts, &new_env);
-            new_env.pop();
+            //new_env.pop();
             result
         }
 
         Statement::While(cond, stmt) => {
+            show_counter_statement_exec();
+            show_statement_exec(format!("Exec While:"));
+            show_statement_exec(format!("Statement: {:?}", stmt));
+            show_statement_exec(format!("Env: {:?}", new_env));
             let mut value = match eval(*cond.clone(), &new_env)? {
                 ExpressionResult::Value(expr) => expr,
                 ExpressionResult::Propagate(expr) => {
@@ -134,6 +165,10 @@ pub fn execute(stmt: Statement, env: &Environment<Expression>) -> Result<Computa
         }
 
         Statement::For(var, list, stmt) => {
+            show_counter_statement_exec();
+            show_statement_exec(format!("Exec For:"));
+            show_statement_exec(format!("Statement: {:?}", stmt));
+            show_statement_exec(format!("Env: {:?}", new_env));
             let values = match eval(*list.clone(), &new_env)? {
                 ExpressionResult::Value(expr) => expr,
                 ExpressionResult::Propagate(expr) => {
@@ -144,7 +179,7 @@ pub fn execute(stmt: Statement, env: &Environment<Expression>) -> Result<Computa
             match values {
                 Expression::ListValue(expressions) => {
                     for exp in expressions {
-                        new_env.map_variable(var.clone(), false, exp);
+                        new_env.create_variable(var.clone(), false, exp)?;
                         match execute(*stmt.clone(), &new_env)? {
                             Computation::Continue(env) => new_env = env,
                             Computation::Return(expr, env) => {
@@ -162,6 +197,10 @@ pub fn execute(stmt: Statement, env: &Environment<Expression>) -> Result<Computa
         }
 
         Statement::Sequence(s1, s2) => {
+            show_counter_statement_exec();
+            show_statement_exec(format!("Exec Sequence:"));
+            show_statement_exec(format!("Statement: {:?}", stmt));
+            show_statement_exec(format!("Env: {:?}", new_env));
             match execute(*s1, &new_env)? {
                 Computation::Continue(env) => new_env = env,
                 Computation::Return(expr, env) => return Ok(Computation::Return(expr, env)),
@@ -173,26 +212,51 @@ pub fn execute(stmt: Statement, env: &Environment<Expression>) -> Result<Computa
         }
 
         Statement::FuncDef(func) => {
+            show_counter_statement_exec();
+            show_statement_exec(format!("Exec FuncDef:"));
+            show_statement_exec(format!("Statement: {:?}", stmt));
+            show_statement_exec(format!("Env: {:?}", new_env));
             new_env.map_function(func.clone());
             Ok(Computation::Continue(new_env))
         }
 
         Statement::Return(exp) => {
+            show_counter_statement_exec();
+            show_statement_exec(format!(
+                "Exec Return from function: {}",
+                new_env.current_func
+            ));
+            show_statement_exec(format!("Statement: {:?}", stmt));
+            show_statement_exec(format!("Env: {:?}", new_env));
             let exp_value = match eval(*exp, &new_env)? {
                 ExpressionResult::Value(expr) => expr,
                 ExpressionResult::Propagate(expr) => {
                     return Ok(Computation::PropagateError(expr, new_env));
                 }
             };
+            show_counter_statement_exec();
+            show_statement_exec(format!(
+                "Finishing Return from function: {}",
+                new_env.current_func
+            ));
+            show_statement_exec(format!("Return result: {:?}", exp_value));
             Ok(Computation::Return(exp_value, new_env))
         }
 
         Statement::TypeDeclaration(name, constructors) => {
+            show_counter_statement_exec();
+            show_statement_exec(format!("Exec TypeDeclaration:"));
+            show_statement_exec(format!("Statement: {:?}", stmt));
+            show_statement_exec(format!("Env: {:?}", new_env));
             new_env.map_adt(name, constructors);
             Ok(Computation::Continue(new_env))
         }
 
         Statement::Print(exp) => {
+            show_counter_statement_exec();
+            show_statement_exec(format!("Exec Print:"));
+            show_statement_exec(format!("Statement: {:?}", stmt));
+            show_statement_exec(format!("Env: {:?}", new_env));
             let value = match eval(*exp.clone(), &new_env)? {
                 ExpressionResult::Value(expr) => expr,
                 ExpressionResult::Propagate(expr) => {
@@ -226,24 +290,63 @@ pub fn execute(stmt: Statement, env: &Environment<Expression>) -> Result<Computa
     }
 }
 
+//Alterei radicalmente execute_block
 pub fn execute_block(
     stmts: Vec<Statement>,
     env: &Environment<Expression>,
 ) -> Result<Computation, String> {
     let mut current_env = env.clone();
 
-    for stmt in stmts {
+    show_counter_statement_exec();
+    show_statement_exec(format!("In function execute_block:"));
+    show_statement_exec(format!("All statements: {:?}", stmts));
+    show_statement_exec(format!("Env: {:?}", current_env));
+
+    current_env.push();
+
+    for stmt in stmts.clone() {
+        show_counter_statement_exec();
+        show_statement_exec(format!("In function execute_block:"));
+        show_statement_exec(format!("Single Statement: {:?}", stmt));
+        show_statement_exec(format!("Env: {:?}", current_env));
         match execute(stmt, &current_env)? {
             Computation::Continue(new_env) => current_env = new_env,
-            Computation::Return(expr, env) => return Ok(Computation::Return(expr, env)),
+            Computation::Return(expr, env) => {
+                show_counter_statement_exec();
+                show_statement_exec(format!("In function execute_block:"));
+                show_statement_exec(format!(
+                    "Returning from function {} ...",
+                    current_env.current_func
+                ));
+                show_statement_exec(format!("Return result: {:?}", expr));
+                show_statement_exec(format!("All statements: {:?}", stmts));
+                show_statement_exec(format!("Env is about to be popped"));
+                current_env.pop();
+                return Ok(Computation::Return(expr, current_env));
+            }
             Computation::PropagateError(expr, env) => {
-                return Ok(Computation::PropagateError(expr, env));
+                return Ok(Computation::PropagateError(expr, current_env));
             }
         }
     }
+    show_counter_statement_exec();
+    show_statement_exec(format!("Exiting function execute_block:"));
+    show_statement_exec(format!("All statements: {:?}", stmts));
+    show_statement_exec(format!("Env: {:?}", current_env));
+    show_statement_exec(format!("Env is about to be popped"));
+    current_env.pop();
     Ok(Computation::Continue(current_env))
 }
 
+fn show_statement_exec(texto: String) {
+    show(texto, "statement_exec.txt");
+}
+
+fn show_counter_statement_exec() {
+    show_counter("statement_exec.txt");
+}
+
+/*
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -807,3 +910,4 @@ mod tests {
         }
     }
 }
+*/

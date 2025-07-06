@@ -1,6 +1,16 @@
 use actix_files::Files;
 use actix_web::{App, HttpServer};
 
+use crate::handlers::execute::{execute_with_json, reset_txt_files, show, show_counter};
+use std::fs::File;
+use std::io::Write;
+use std::sync::Mutex;
+
+// Declare a variável global static mutável com Mutex para sincronização
+lazy_static::lazy_static! {
+    pub static ref COUNTER: Mutex<u64> = Mutex::new(0);
+}
+
 mod environment;
 mod handlers;
 mod interpreter;
@@ -13,7 +23,10 @@ mod type_checker;
 // Allows the main function to be an async function
 #[actix_web::main]
 // The function return a Result. Which Result depends on the the setting / execution of the server
+
+
 async fn main() -> std::io::Result<()> {
+    reset_txt_files();
     const ADDRESS: &str = "127.0.0.1";
     const PORT: u16 = 8080;
 
@@ -43,3 +56,13 @@ async fn main() -> std::io::Result<()> {
     // Starts the event loop, accepts connections, and runs the server.
     server.await
 }
+
+
+/* 
+fn main() {
+    // Tenta criar um arquivo chamado "debug.txt"
+    reset_txt_files();
+
+    execute_with_json();
+}
+*/

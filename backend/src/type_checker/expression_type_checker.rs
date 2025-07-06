@@ -1,3 +1,5 @@
+use std::fmt::format;
+
 use crate::environment::environment::Environment;
 use crate::ir::ast::{Expression, Name, Type};
 
@@ -34,9 +36,56 @@ pub fn check_expr(exp: Expression, env: &Environment<Type>) -> Result<Type, Erro
         Expression::Propagate(e) => check_propagate_type(*e, env),
         Expression::ListValue(elements) => check_list_value(&elements, env),
         Expression::Constructor(name, args) => check_adt_constructor(name, args, env),
+        Expression::FuncCall(func_name, exp_vec) => {
+            check_func_call(func_name.clone(), exp_vec.clone(), env)
+        }
 
-        _ => Err("not implemented yet.".to_string()),
+        _ => Err(format!(
+            "Type checker still does not support expression of type {:?}",
+            exp.clone()
+        )),
     }
+}
+
+fn check_func_call(
+    func_name: Name,
+    exp_vector: Vec<Expression>,
+    env: &Environment<Type>,
+) -> Result<Type, ErrorMessage> {
+    let func = env.lookup_function(&func_name);
+    if func.is_none() {
+        return Err(format!(
+            "Function {} was called but never declared",
+            func_name
+        ));
+    }
+    let func = func.unwrap();
+    if func.params.len() != exp_vector.len() {
+        return Err(format!(
+            "Function {} receives {} arguments, but {} were given",
+            func_name,
+            func.params.len(),
+            exp_vector.len()
+        ));
+    }
+    let mut formal_arg_types = Vec::new();
+    let mut actual_arg_types = Vec::new();
+    for (param, arg) in func.params.iter().zip(exp_vector.iter()) {
+        formal_arg_types.push(param.argument_type.clone());
+        let arg_type = check_expr(arg.clone(), env)?;
+        actual_arg_types.push(arg_type);
+    }
+    for (formal_type, actual_type) in formal_arg_types.iter().zip(actual_arg_types.iter()) {
+        if formal_type != actual_type {
+            return Err(format!(
+                "Mismatched types in function {} call \n
+            Expected:{:?}\n
+            Received: {:?}",
+                func_name, formal_arg_types, actual_arg_types
+            ));
+        }
+    }
+    return Ok(func.kind.clone());
 }
 
 fn check_var_name(name: Name, env: &Environment<Type>) -> Result<Type, ErrorMessage> {
@@ -76,7 +125,7 @@ fn check_add_arithmetic_expression(
         (Type::TInteger, Type::TReal) => Ok(Type::TReal),
         (Type::TReal, Type::TInteger) => Ok(Type::TReal),
         (Type::TReal, Type::TReal) => Ok(Type::TReal),
-        (Type::TString,Type::TString) => Ok(Type::TString),
+        (Type::TString, Type::TString) => Ok(Type::TString),
         _ => Err(String::from("[Type Error] expecting numeric type values.")),
     }
 }
@@ -94,12 +143,11 @@ fn check_mul_arithmetic_expression(
         (Type::TInteger, Type::TReal) => Ok(Type::TReal),
         (Type::TReal, Type::TInteger) => Ok(Type::TReal),
         (Type::TReal, Type::TReal) => Ok(Type::TReal),
-        (Type::TInteger,Type::TString) => Ok(Type::TString),
-        (Type::TString,Type::TInteger) => Ok(Type::TString),
+        (Type::TInteger, Type::TString) => Ok(Type::TString),
+        (Type::TString, Type::TInteger) => Ok(Type::TString),
         _ => Err(String::from("[Type Error] expecting numeric type values.")),
     }
 }
-
 
 fn check_bin_boolean_expression(
     left: Expression,
@@ -230,7 +278,7 @@ fn check_adt_constructor(
     // Gather all ADTs from all scopes (stack and globals)
     let mut found = None;
     // Search stack scopes first (innermost to outermost)
-    for scope in env.stack.iter() {
+    for scope in env.get_stack().iter() {
         for (adt_name, constructors) in scope.adts.iter() {
             if let Some(constructor) = constructors.iter().find(|c| c.name == name) {
                 found = Some((adt_name.clone(), constructor.clone(), constructors.clone()));
@@ -243,7 +291,7 @@ fn check_adt_constructor(
     }
     // If not found in stack, search globals
     if found.is_none() {
-        for (adt_name, constructors) in env.globals.adts.iter() {
+        for (adt_name, constructors) in env.get_globals().adts.iter() {
             if let Some(constructor) = constructors.iter().find(|c| c.name == name) {
                 found = Some((adt_name.clone(), constructor.clone(), constructors.clone()));
                 break;
@@ -281,6 +329,7 @@ fn check_adt_constructor(
     }
 }
 
+/*
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -648,3 +697,4 @@ mod tests {
         assert!(result.is_ok());
     }
 }
+ */

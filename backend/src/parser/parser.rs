@@ -1,4 +1,4 @@
-use crate::ir::ast::{Expression, FormalArgument, Function, Statement};
+use crate::ir::ast::{Expression, FormalArgument, Function, Statement, Type};
 use crate::models::{Block, Blocks, Input, NextBlock, Workspace};
 use actix_web::{HttpResponse, Responder, post, web};
 use nom::{Err, Finish};
@@ -13,6 +13,7 @@ use nom::{
     sequence::{delimited, pair, preceded, terminated, tuple},
 };
 use serde_json;
+use std::fmt::format;
 use std::io::Write;
 use std::str::FromStr;
 use std::{fs::File, process::Output};
@@ -68,7 +69,6 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
                 .as_ref()
                 .and_then(|fields| fields.get("VARIABLE"))
             {
-                println!("Variável: {}", variable_name);
                 if variable_name.is_empty() {
                     return Err("Variable name cannot be empty".to_string());
                 }
@@ -107,7 +107,6 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
                 .as_ref()
                 .and_then(|fields| fields.get("VARIABLE"))
             {
-                println!("Variável: {}", variable_name);
                 if variable_name.is_empty() {
                     return Err("Variable name cannot be empty".to_string());
                 }
@@ -230,7 +229,6 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
                     .and_then(|i| i.get("WHILE_BODY"))
                     .and_then(|input| input.block.as_ref())
                 {
-                    println!("while_body: {:?}", *while_body);
                     let while_block = parse_chained_blocks(&*while_body)?;
                     return Ok(Statement::While(
                         Box::new(condition_exp),
@@ -243,7 +241,135 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
                 return Err("While condition is empty".to_string());
             }
         }
-        
+        "function_declaration_block" => {
+            let mut func: Function = Function::new();
+            let mut func_body: Option<Statement> = None;
+            let mut final_return_statement = Statement::Return(Box::new(Expression::CVoid));
+            if let Some(return_type) = block
+                .fields
+                .as_ref()
+                .and_then(|fields| fields.get("RETURN_TYPE"))
+            {
+                func.kind = match return_type.as_str() {
+                    "VOID" => Type::TVoid,
+                    "INT" => Type::TInteger,
+                    "FLOAT" => Type::TReal,
+                    "STRING" => Type::TString,
+                    "BOOL" => Type::TBool,
+                    _ => return Err(format!("Unknown return type: {}", return_type)),
+                }
+            } else {
+                return Err("Function return type cannot be empty".to_string());
+            }
+            if let Some(func_name) = block
+                .fields
+                .as_ref()
+                .and_then(|fields| fields.get("FUNCTION_NAME"))
+            {
+                if func_name.is_empty() {
+                    return Err("Function was not named".to_string());
+                }
+                let (rest, func_string) =
+                    delimited(multispace0, identifier, multispace0)(&func_name.as_str())
+                        .map_err(|_e| format!("Parsing error on function: {}", func_name))?;
+                if !rest.is_empty() {
+                    return Err(format!("Parsing error on function: {}", func_name));
+                }
+                func.name = *func_string;
+            } else {
+                return Err("Function was not named".to_string());
+            }
+            if let Some(formal_argument_block) = block
+                .inputs
+                .as_ref()
+                .and_then(|input| input.get("FORMAL_ARGUMENTS"))
+                .and_then(|input| input.block.as_ref())
+            {
+                let mut current_block = formal_argument_block.as_ref();
+                loop {
+                    if let Some((arg_name, arg_type_str)) =
+                        current_block.fields.as_ref().and_then(|fields| {
+                            fields
+                                .get("FORMAL_ARGUMENT")
+                                .zip(fields.get("ARGUMENT_TYPE"))
+                        })
+                    {
+                        let arg_type = match arg_type_str.as_str() {
+                            "INT" => Type::TInteger,
+                            "FLOAT" => Type::TReal,
+                            "STRING" => Type::TString,
+                            "BOOL" => Type::TBool,
+                            _ => return Err(format!("Unknown argument type: {}", arg_type_str)),
+                        };
+                        let formal_argument = FormalArgument {
+                            argument_name: arg_name.to_string(),
+                            argument_type: arg_type,
+                        };
+                        func.params.push(formal_argument);
+                        let next_block = current_block
+                            .inputs
+                            .as_ref()
+                            .and_then(|inputs| inputs.get("NEXT_ARGUMENT"))
+                            .and_then(|input| input.block.as_ref());
+                        match next_block {
+                            Some(next_block) => current_block = next_block.as_ref(),
+                            None => break,
+                        }
+                    }
+                }
+            } else {
+            }
+            if let Some(func_block) = block
+                .inputs
+                .as_ref()
+                .and_then(|input| input.get("FUNCTION_BODY"))
+                .and_then(|input| input.block.as_ref())
+            {
+                let func_block = func_block.as_ref();
+                func_body = Some(parse_chained_blocks(func_block)?); //func_block agora é do tipo Some(Statement::Block())
+            } else {
+            }
+            if let Some(return_str) = block
+                .inputs
+                .as_ref()
+                .and_then(|inputs| inputs.get("RETURN_EXPRESSION"))
+                .and_then(|input| input.shadow.as_ref())
+                .and_then(|shadow_block| shadow_block.fields.as_ref())
+                .and_then(|fields| fields.get("TEXT"))
+            {
+                if !return_str.is_empty() {
+                    let (rest, return_exp) =
+                        parse_expression(return_str.as_str()).map_err(|error| {
+                            format!(
+                                "Parsing error on return statement {}: {:?}",
+                                return_str, error
+                            )
+                        })?;
+                    if !rest.is_empty() {
+                        return Err(format!("Parsing error on return_str: {}", return_str));
+                    }
+                    final_return_statement = Statement::Return(Box::new(return_exp));
+                } else {
+                }
+            } else {
+            }
+            func.body = match func_body {
+                Some(Statement::Block(mut statement_vec)) => {
+                    statement_vec.push(final_return_statement);
+                    Some(Box::new(Statement::Block(statement_vec)))
+                }
+                None => Some(Box::new(Statement::Block(vec![final_return_statement]))),
+                Some(_) => None,
+            };
+            if func.body.is_none() {
+                return Err(format!(
+                    "Parse Error on function {}: function body needs to be a Statement::Block",
+                    func.name
+                ));
+            }
+            return Ok(Statement::FuncDef(func));
+        }
+
         _ => {
             //output.push(format!("Unknown block type: {}", block.r#type));
             return Err("Non-existent block".to_string());

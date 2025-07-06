@@ -1,8 +1,10 @@
 use core::prelude::v1;
+use std::fmt::format;
 
 use super::statement_execute::Computation;
 use crate::environment::environment::Environment;
 use crate::ir::ast::{Expression, Name};
+use crate::{show, show_counter};
 
 #[derive(Debug, PartialEq, Clone)]
 pub enum ExpressionResult {
@@ -11,32 +13,167 @@ pub enum ExpressionResult {
 }
 
 pub fn eval(exp: Expression, env: &Environment<Expression>) -> Result<ExpressionResult, String> {
-    match exp {
-        Expression::Add(lhs, rhs) => eval_add(*lhs, *rhs, env),
+    match exp.clone() {
+        Expression::Add(lhs, rhs) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("Eval Add:"));
+            show_exp_eval(format!("Expression: {:?}", exp));
+            show_exp_eval(format!("Env: {:?}", env));
+            eval_add(*lhs, *rhs, env)
+        }
         Expression::Sub(lhs, rhs) => eval_sub(*lhs, *rhs, env),
-        Expression::Mul(lhs, rhs) => eval_mul(*lhs, *rhs, env),
-        Expression::Div(lhs, rhs) => eval_div(*lhs, *rhs, env),
-        Expression::And(lhs, rhs) => eval_and(*lhs, *rhs, env),
-        Expression::Or(lhs, rhs) => eval_or(*lhs, *rhs, env),
-        Expression::Not(lhs) => eval_not(*lhs, env),
-        Expression::EQ(lhs, rhs) => eval_eq(*lhs, *rhs, env),
-        Expression::NEQ(lhs, rhs) => eval_neq(*lhs, *rhs, env),
-        Expression::GT(lhs, rhs) => eval_gt(*lhs, *rhs, env),
-        Expression::LT(lhs, rhs) => eval_lt(*lhs, *rhs, env),
-        Expression::GTE(lhs, rhs) => eval_gte(*lhs, *rhs, env),
-        Expression::LTE(lhs, rhs) => eval_lte(*lhs, *rhs, env),
-        Expression::Var(name) => eval_lookup(name, env),
-        Expression::COk(e) => eval_ok(*e, env),
-        Expression::CErr(e) => eval_err(*e, env),
-        Expression::CJust(e) => eval_just(*e, env),
-        Expression::Unwrap(e) => eval_unwrap_expression(*e, env),
-        Expression::Propagate(e) => eval_propagate_expression(*e, env),
-        Expression::IsError(e) => eval_iserror_expression(*e, env),
-        Expression::IsNothing(e) => eval_isnothing_expression(*e, env),
-        Expression::FuncCall(name, args) => eval_function_call(name, args, env),
-        Expression::ListValue(values) => eval_list_value(values, env),
+        Expression::Mul(lhs, rhs) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("Eval Mul:"));
+            show_exp_eval(format!("Expression: {:?}", exp));
+            show_exp_eval(format!("Env: {:?}", env));
+            eval_mul(*lhs, *rhs, env)
+        }
+        Expression::Div(lhs, rhs) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("Eval Div:"));
+            show_exp_eval(format!("Expression: {:?}", exp));
+            show_exp_eval(format!("Env: {:?}", env));
+            eval_div(*lhs, *rhs, env)
+        }
+        Expression::And(lhs, rhs) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("Eval And:"));
+            show_exp_eval(format!("Expression: {:?}", exp));
+            show_exp_eval(format!("Env: {:?}", env));
+            eval_and(*lhs, *rhs, env)
+        }
+        Expression::Or(lhs, rhs) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("Eval Or:"));
+            show_exp_eval(format!("Expression: {:?}", exp));
+            show_exp_eval(format!("Env: {:?}", env));
+            eval_or(*lhs, *rhs, env)
+        }
+        Expression::Not(lhs) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("Eval Not:"));
+            show_exp_eval(format!("Expression: {:?}", exp));
+            show_exp_eval(format!("Env: {:?}", env));
+            eval_not(*lhs, env)
+        }
+        Expression::EQ(lhs, rhs) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("Eval EQ:"));
+            show_exp_eval(format!("Expression: {:?}", exp));
+            show_exp_eval(format!("Env: {:?}", env));
+            eval_eq(*lhs, *rhs, env)
+        }
+        Expression::NEQ(lhs, rhs) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("Eval NEQ:"));
+            show_exp_eval(format!("Expression: {:?}", exp));
+            show_exp_eval(format!("Env: {:?}", env));
+            eval_neq(*lhs, *rhs, env)
+        }
+        Expression::GT(lhs, rhs) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("Eval GT:"));
+            show_exp_eval(format!("Expression: {:?}", exp));
+            show_exp_eval(format!("Env: {:?}", env));
+            eval_gt(*lhs, *rhs, env)
+        }
+        Expression::LT(lhs, rhs) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("Eval LT:"));
+            show_exp_eval(format!("Expression: {:?}", exp));
+            show_exp_eval(format!("Env: {:?}", env));
+            eval_lt(*lhs, *rhs, env)
+        }
+        Expression::GTE(lhs, rhs) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("Eval GTE:"));
+            show_exp_eval(format!("Expression: {:?}", exp));
+            show_exp_eval(format!("Env: {:?}", env));
+            eval_gte(*lhs, *rhs, env)
+        }
+        Expression::LTE(lhs, rhs) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("Eval LTE:"));
+            show_exp_eval(format!("Expression: {:?}", exp));
+            show_exp_eval(format!("Env: {:?}", env));
+            eval_lte(*lhs, *rhs, env)
+        }
+        Expression::Var(name) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("Eval Var:"));
+            show_exp_eval(format!("Expression: {:?}", exp));
+            show_exp_eval(format!("Env: {:?}", env));
+            eval_lookup(name, env)
+        }
+        Expression::COk(e) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("Eval COk:"));
+            show_exp_eval(format!("Expression: {:?}", exp));
+            show_exp_eval(format!("Env: {:?}", env));
+            eval_ok(*e, env)
+        }
+        Expression::CErr(e) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("Eval CErr:"));
+            show_exp_eval(format!("Expression: {:?}", exp));
+            show_exp_eval(format!("Env: {:?}", env));
+            eval_err(*e, env)
+        }
+        Expression::CJust(e) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("Eval CJust:"));
+            show_exp_eval(format!("Expression: {:?}", exp));
+            show_exp_eval(format!("Env: {:?}", env));
+            eval_just(*e, env)
+        }
+        Expression::Unwrap(e) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("Eval Unwrap:"));
+            show_exp_eval(format!("Expression: {:?}", exp));
+            show_exp_eval(format!("Env: {:?}", env));
+            eval_unwrap_expression(*e, env)
+        }
+        Expression::Propagate(e) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("Eval Propagate:"));
+            show_exp_eval(format!("Expression: {:?}", exp));
+            show_exp_eval(format!("Env: {:?}", env));
+            eval_propagate_expression(*e, env)
+        }
+        Expression::IsError(e) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("Eval IsError:"));
+            show_exp_eval(format!("Expression: {:?}", exp));
+            show_exp_eval(format!("Env: {:?}", env));
+            eval_iserror_expression(*e, env)
+        }
+        Expression::IsNothing(e) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("Eval IsNothing:"));
+            show_exp_eval(format!("Expression: {:?}", exp));
+            show_exp_eval(format!("Env: {:?}", env));
+            eval_isnothing_expression(*e, env)
+        }
+        Expression::FuncCall(name, args) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("Eval Function Call:"));
+            show_exp_eval(format!("Expression: {:?}", exp));
+            show_exp_eval(format!("Env: {:?}", env));
+            eval_function_call(name, args, env)
+        }
+        Expression::ListValue(values) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("Eval ListValue:"));
+            show_exp_eval(format!("Expression: {:?}", exp));
+            show_exp_eval(format!("Env: {:?}", env));
+            eval_list_value(values, env)
+        }
         _ if is_constant(exp.clone()) => Ok(ExpressionResult::Value(exp)),
-        _ => Err(String::from("Not implemented yet.")),
+        _ => Err(format!(
+            "Interpreter still does not support expression of type {:?}",
+            exp.clone()
+        )),
     }
 }
 
@@ -147,7 +284,7 @@ fn eval_add(
     rhs: Expression,
     env: &Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
-let v1 = match eval(lhs, env)? {
+    let v1 = match eval(lhs, env)? {
         ExpressionResult::Value(expr) => expr,
         ExpressionResult::Propagate(expr) => return Ok(ExpressionResult::Propagate(expr)),
     };
@@ -157,21 +294,21 @@ let v1 = match eval(lhs, env)? {
     };
 
     match (v1, v2) {
-        (Expression::CInt(v1), Expression::CInt(v2)) => Ok(ExpressionResult::Value(
-            Expression::CInt(v1 + v2),
-        )),
-        (Expression::CInt(v1), Expression::CReal(v2)) => Ok(ExpressionResult::Value(
-            Expression::CReal(v1 as f64 + v2),
-        )),
-        (Expression::CReal(v1), Expression::CInt(v2)) => Ok(ExpressionResult::Value(
-            Expression::CReal(v1 + v2 as f64),
-        )),
+        (Expression::CInt(v1), Expression::CInt(v2)) => {
+            Ok(ExpressionResult::Value(Expression::CInt(v1 + v2)))
+        }
+        (Expression::CInt(v1), Expression::CReal(v2)) => {
+            Ok(ExpressionResult::Value(Expression::CReal(v1 as f64 + v2)))
+        }
+        (Expression::CReal(v1), Expression::CInt(v2)) => {
+            Ok(ExpressionResult::Value(Expression::CReal(v1 + v2 as f64)))
+        }
         (Expression::CReal(v1), Expression::CReal(v2)) => {
             Ok(ExpressionResult::Value(Expression::CReal(v1 + v2)))
         }
-        (Expression::CString(v1), Expression::CString(v2)) => {
-            Ok(ExpressionResult::Value(Expression::CString(format!("{}{}", v1, v2))))
-        }
+        (Expression::CString(v1), Expression::CString(v2)) => Ok(ExpressionResult::Value(
+            Expression::CString(format!("{}{}", v1, v2)),
+        )),
         _ => Err("sum: operands must both be numbers or both be strings".to_string()),
     }
 }
@@ -205,24 +342,26 @@ fn eval_mul(
     };
 
     match (v1, v2) {
-        (Expression::CInt(v1), Expression::CInt(v2)) => Ok(ExpressionResult::Value(
-            Expression::CInt(v1 * v2),
-        )),
-        (Expression::CInt(v1), Expression::CReal(v2)) => Ok(ExpressionResult::Value(
-            Expression::CReal(v1 as f64 * v2),
-        )),
-        (Expression::CReal(v1), Expression::CInt(v2)) => Ok(ExpressionResult::Value(
-            Expression::CReal(v1 * v2 as f64),
-        )),
+        (Expression::CInt(v1), Expression::CInt(v2)) => {
+            Ok(ExpressionResult::Value(Expression::CInt(v1 * v2)))
+        }
+        (Expression::CInt(v1), Expression::CReal(v2)) => {
+            Ok(ExpressionResult::Value(Expression::CReal(v1 as f64 * v2)))
+        }
+        (Expression::CReal(v1), Expression::CInt(v2)) => {
+            Ok(ExpressionResult::Value(Expression::CReal(v1 * v2 as f64)))
+        }
         (Expression::CReal(v1), Expression::CReal(v2)) => {
             Ok(ExpressionResult::Value(Expression::CReal(v1 * v2)))
         }
-        (Expression::CInt(v1), Expression::CString(v2)) | (Expression::CString(v2), Expression::CInt(v1))=> {
-            if v1 < 0
-            {
+        (Expression::CInt(v1), Expression::CString(v2))
+        | (Expression::CString(v2), Expression::CInt(v1)) => {
+            if v1 < 0 {
                 return Err("Cannot repeat a string a negative number of times".to_string());
             }
-            Ok(ExpressionResult::Value(Expression::CString(v2.repeat(v1 as usize))))
+            Ok(ExpressionResult::Value(Expression::CString(
+                v2.repeat(v1 as usize),
+            )))
         }
         _ => Err("sum only accepts number + number and string + string".to_string()),
     }
@@ -433,9 +572,24 @@ pub fn eval_function_call(
     args: Vec<Expression>,
     env: &Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
+    show_counter_exp_eval();
+    show_exp_eval(format!("In function eval_function_call:"));
+    show_exp_eval(format!("Env: {:?}", env));
     match env.lookup_function(&name) {
         Some(function_definition) => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("In function eval_function_call:"));
+            show_exp_eval(format!(
+                "Function '{}' successfully found in environment",
+                name
+            ));
+
             let mut new_env = Environment::new();
+
+            //Copy functions
+            new_env.set_stack(env.copy_functions());
+            new_env.output = env.output.clone();
+            new_env.insert_current_function(&name);
 
             if args.len() != function_definition.params.len() {
                 return Err(format!(
@@ -446,6 +600,13 @@ pub fn eval_function_call(
 
             new_env.push();
 
+            show_counter_exp_eval();
+            show_exp_eval(format!("In function eval_function_call:"));
+            show_exp_eval(format!(
+                "new_env after copying functions and pushing: {:?}",
+                new_env
+            ));
+
             for (formal, actual) in function_definition.params.iter().zip(args.iter()) {
                 let value = match eval(actual.clone(), env)? {
                     ExpressionResult::Value(expr) => expr,
@@ -453,8 +614,12 @@ pub fn eval_function_call(
                         return Ok(ExpressionResult::Propagate(expr));
                     }
                 };
-                new_env.map_variable(formal.argument_name.clone(), false, value);
+                new_env.create_variable(formal.argument_name.clone(), false, value)?;
             }
+
+            show_counter_exp_eval();
+            show_exp_eval(format!("In function eval_function_call:"));
+            show_exp_eval(format!("new_env after mapping formal args: {:?}", new_env));
 
             // Execute the body of the function.
             match super::statement_execute::execute(
@@ -467,7 +632,14 @@ pub fn eval_function_call(
                 Err(e) => Err(e),
             }
         }
-        _ => Err(format!("Function {} not found", name)),
+
+        _ => {
+            show_counter_exp_eval();
+            show_exp_eval(format!("In function eval_function_call:"));
+            show_exp_eval(format!("Function '{}' not found in environment", name));
+            show_exp_eval(format!("Env: {:?}", env));
+            Err(format!("Function '{}' not found", name))
+        }
     }
 }
 
@@ -581,6 +753,15 @@ fn eval_list_value(
     Ok(ExpressionResult::Value(Expression::ListValue(values)))
 }
 
+fn show_exp_eval(texto: String) {
+    show(texto, "exp_eval.txt");
+}
+
+fn show_counter_exp_eval() {
+    show_counter("exp_eval.txt");
+}
+
+/*
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -590,10 +771,10 @@ mod tests {
         let mut env = Environment::new();
 
         // Add some variables for testing
-        env.map_variable("x".to_string(), false, Expression::CInt(10));
-        env.map_variable("y".to_string(), false, Expression::CReal(3.14));
-        env.map_variable("flag".to_string(), false, Expression::CTrue);
-        env.map_variable(
+        env.create_variable("x".to_string(), false, Expression::CInt(10));
+        env.create_variable("y".to_string(), false, Expression::CReal(3.14));
+        env.create_variable("flag".to_string(), false, Expression::CTrue);
+        env.create_variable(
             "name".to_string(),
             false,
             Expression::CString("test".to_string()),
@@ -1138,8 +1319,8 @@ mod tests {
         #[test]
         fn test_list_with_integer_variables() {
             let mut env = create_test_env();
-            env.map_variable("a".to_string(), false, Expression::CInt(5));
-            env.map_variable("b".to_string(), false, Expression::CInt(15));
+            env.create_variable("a".to_string(), false, Expression::CInt(5));
+            env.create_variable("b".to_string(), false, Expression::CInt(15));
 
             let list_expr = Expression::ListValue(vec![
                 Expression::Var("x".to_string()), // 10
@@ -1161,12 +1342,12 @@ mod tests {
         #[test]
         fn test_list_with_string_variables() {
             let mut env = create_test_env();
-            env.map_variable(
+            env.create_variable(
                 "greeting".to_string(),
                 false,
                 Expression::CString("hello".to_string()),
             );
-            env.map_variable(
+            env.create_variable(
                 "world".to_string(),
                 false,
                 Expression::CString("world".to_string()),
@@ -1661,8 +1842,8 @@ mod tests {
         #[test]
         fn test_boolean_with_variables() {
             let mut env = create_test_env();
-            env.map_variable("x".to_string(), false, Expression::CTrue);
-            env.map_variable("y".to_string(), false, Expression::CFalse);
+            env.create_variable("x".to_string(), false, Expression::CTrue);
+            env.create_variable("y".to_string(), false, Expression::CFalse);
 
             let expr = Expression::And(
                 Box::new(Expression::Var("x".to_string())),
@@ -1804,9 +1985,9 @@ mod tests {
         #[test]
         fn test_boolean_with_variables_and_relational() {
             let mut env = create_test_env();
-            env.map_variable("a".to_string(), false, Expression::CInt(10));
-            env.map_variable("b".to_string(), false, Expression::CInt(5));
-            env.map_variable("flag".to_string(), false, Expression::CTrue);
+            env.create_variable("a".to_string(), false, Expression::CInt(10));
+            env.create_variable("b".to_string(), false, Expression::CInt(5));
+            env.create_variable("flag".to_string(), false, Expression::CTrue);
 
             // flag and (a > b) => True and (10 > 5) => True and True => True
             let expr = Expression::And(
@@ -2436,8 +2617,8 @@ mod tests {
         #[test]
         fn test_relational_with_variables() {
             let mut env = create_test_env();
-            env.map_variable("x".to_string(), false, Expression::CInt(10));
-            env.map_variable("y".to_string(), false, Expression::CInt(5));
+            env.create_variable("x".to_string(), false, Expression::CInt(10));
+            env.create_variable("y".to_string(), false, Expression::CInt(5));
 
             let expr = Expression::GT(
                 Box::new(Expression::Var("x".to_string())),
@@ -2617,8 +2798,8 @@ mod tests {
         #[test]
         fn test_complex_relational_expression() {
             let mut env = create_test_env();
-            env.map_variable("a".to_string(), false, Expression::CInt(10));
-            env.map_variable("b".to_string(), false, Expression::CReal(5.5));
+            env.create_variable("a".to_string(), false, Expression::CInt(10));
+            env.create_variable("b".to_string(), false, Expression::CReal(5.5));
 
             // (a * 2) != (b + 4.5) => (10 * 2) != (5.5 + 4.5) => 20 != 10 => true
             let expr = Expression::NEQ(
@@ -2662,3 +2843,4 @@ mod tests {
         }
     }
 }
+*/

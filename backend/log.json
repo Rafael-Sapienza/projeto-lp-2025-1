@@ -2,70 +2,179 @@
   {
     "type": "function_declaration_block",
     "fields": {
-      "FUNCTION_NAME": "my_func",
-      "RETURN_TYPE": "VOID"
+      "RETURN_TYPE": "INT",
+      "FUNCTION_NAME": "fatorial"
     },
     "inputs": {
-      "RETURN_EXPRESSION": {
-        "block": null,
-        "shadow": {
-          "type": "expression_block",
-          "fields": {
-            "TEXT": "a"
-          },
-          "inputs": null,
-          "next": null
-        }
-      },
       "FORMAL_ARGUMENTS": {
         "block": {
           "type": "formal_argument_block",
           "fields": {
-            "RETURN_TYPE": "INT",
+            "ARGUMENT_TYPE": "INT",
             "FORMAL_ARGUMENT": "x"
           },
-          "inputs": {
-            "NEXT_ARGUMENT": {
-              "block": {
-                "type": "formal_argument_block",
-                "fields": {
-                  "RETURN_TYPE": "BOOL",
-                  "FORMAL_ARGUMENT": "y"
-                },
-                "inputs": null,
-                "next": null
-              },
-              "shadow": null
-            }
-          },
+          "inputs": null,
           "next": null
         },
         "shadow": null
       },
       "FUNCTION_BODY": {
         "block": {
-          "type": "assignment_block",
+          "type": "declaration_block",
           "fields": {
-            "VARIABLE": "a"
+            "VARIABLE": "m",
+            "TYPE": "INT"
           },
-          "inputs": {
-            "EXPRESSION": {
-              "block": null,
-              "shadow": {
-                "type": "expression_block",
-                "fields": {
-                  "TEXT": "1"
+          "inputs": null,
+          "next": {
+            "block": {
+              "type": "if_else_block",
+              "fields": null,
+              "inputs": {
+                "CONDITION": {
+                  "block": null,
+                  "shadow": {
+                    "type": "expression_block",
+                    "fields": {
+                      "TEXT": "x == 1"
+                    },
+                    "inputs": null,
+                    "next": null
+                  }
                 },
-                "inputs": null,
-                "next": null
-              }
+                "ELSE_BODY": {
+                  "block": {
+                    "type": "assignment_block",
+                    "fields": {
+                      "VARIABLE": "m"
+                    },
+                    "inputs": {
+                      "EXPRESSION": {
+                        "block": null,
+                        "shadow": {
+                          "type": "expression_block",
+                          "fields": {
+                            "TEXT": "x*fatorial(x-1)"
+                          },
+                          "inputs": null,
+                          "next": null
+                        }
+                      }
+                    },
+                    "next": null
+                  },
+                  "shadow": null
+                },
+                "IF_BODY": {
+                  "block": {
+                    "type": "assignment_block",
+                    "fields": {
+                      "VARIABLE": "m"
+                    },
+                    "inputs": {
+                      "EXPRESSION": {
+                        "block": null,
+                        "shadow": {
+                          "type": "expression_block",
+                          "fields": {
+                            "TEXT": "1"
+                          },
+                          "inputs": null,
+                          "next": null
+                        }
+                      }
+                    },
+                    "next": null
+                  },
+                  "shadow": null
+                }
+              },
+              "next": null
             }
-          },
-          "next": null
+          }
         },
         "shadow": null
+      },
+      "RETURN_EXPRESSION": {
+        "block": null,
+        "shadow": {
+          "type": "expression_block",
+          "fields": {
+            "TEXT": "m"
+          },
+          "inputs": null,
+          "next": null
+        }
       }
     },
     "next": null
+  },
+  {
+    "type": "declaration_block",
+    "fields": {
+      "VARIABLE": "resultado",
+      "TYPE": "INT"
+    },
+    "inputs": null,
+    "next": {
+      "block": {
+        "type": "assignment_block",
+        "fields": {
+          "VARIABLE": "resultado"
+        },
+        "inputs": {
+          "EXPRESSION": {
+            "block": null,
+            "shadow": {
+              "type": "expression_block",
+              "fields": {
+                "TEXT": "fatorial(10)"
+              },
+              "inputs": null,
+              "next": null
+            }
+          }
+        },
+        "next": {
+          "block": {
+            "type": "print_block",
+            "fields": null,
+            "inputs": {
+              "EXPRESSION": {
+                "block": null,
+                "shadow": {
+                  "type": "expression_block",
+                  "fields": {
+                    "TEXT": "\"resultado:\""
+                  },
+                  "inputs": null,
+                  "next": null
+                }
+              }
+            },
+            "next": {
+              "block": {
+                "type": "print_block",
+                "fields": null,
+                "inputs": {
+                  "EXPRESSION": {
+                    "block": null,
+                    "shadow": {
+                      "type": "expression_block",
+                      "fields": {
+                        "TEXT": "resultado"
+                      },
+                      "inputs": null,
+                      "next": null
+                    }
+                  }
+                },
+                "next": null
+              }
+            }
+          }
+        }
+      }
+    }
   }
 ]

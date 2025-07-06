@@ -1,0 +1,161 @@
+[
+  {
+    "type": "function_declaration_block",
+    "fields": {
+      "RETURN_TYPE": "INT",
+      "FUNCTION_NAME": "factorial"
+    },
+    "inputs": {
+      "FUNCTION_BODY": {
+        "block": {
+          "type": "declaration_block",
+          "fields": {
+            "TYPE": "INT",
+            "VARIABLE": "m"
+          },
+          "inputs": null,
+          "next": {
+            "block": {
+              "type": "if_else_block",
+              "fields": null,
+              "inputs": {
+                "IF_BODY": {
+                  "block": {
+                    "type": "assignment_block",
+                    "fields": {
+                      "VARIABLE": "m"
+                    },
+                    "inputs": {
+                      "EXPRESSION": {
+                        "block": null,
+                        "shadow": {
+                          "type": "expression_block",
+                          "fields": {
+                            "TEXT": "x*factorial(x-1)"
+                          },
+                          "inputs": null,
+                          "next": null
+                        }
+                      }
+                    },
+                    "next": null
+                  },
+                  "shadow": null
+                },
+                "ELSE_BODY": {
+                  "block": {
+                    "type": "assignment_block",
+                    "fields": {
+                      "VARIABLE": "m"
+                    },
+                    "inputs": {
+                      "EXPRESSION": {
+                        "block": null,
+                        "shadow": {
+                          "type": "expression_block",
+                          "fields": {
+                            "TEXT": "1"
+                          },
+                          "inputs": null,
+                          "next": null
+                        }
+                      }
+                    },
+                    "next": null
+                  },
+                  "shadow": null
+                },
+                "CONDITION": {
+                  "block": null,
+                  "shadow": {
+                    "type": "expression_block",
+                    "fields": {
+                      "TEXT": "not(x == 1)"
+                    },
+                    "inputs": null,
+                    "next": null
+                  }
+                }
+              },
+              "next": null
+            }
+          }
+        },
+        "shadow": null
+      },
+      "RETURN_EXPRESSION": {
+        "block": null,
+        "shadow": {
+          "type": "expression_block",
+          "fields": {
+            "TEXT": "m"
+          },
+          "inputs": null,
+          "next": null
+        }
+      },
+      "FORMAL_ARGUMENTS": {
+        "block": {
+          "type": "formal_argument_block",
+          "fields": {
+            "FORMAL_ARGUMENT": "x",
+            "ARGUMENT_TYPE": "INT"
+          },
+          "inputs": null,
+          "next": null
+        },
+        "shadow": null
+      }
+    },
+    "next": null
+  },
+  {
+    "type": "declaration_block",
+    "fields": {
+      "TYPE": "INT",
+      "VARIABLE": "a"
+    },
+    "inputs": null,
+    "next": {
+      "block": {
+        "type": "assignment_block",
+        "fields": {
+          "VARIABLE": "a"
+        },
+        "inputs": {
+          "EXPRESSION": {
+            "block": null,
+            "shadow": {
+              "type": "expression_block",
+              "fields": {
+                "TEXT": "factorial(5)"
+              },
+              "inputs": null,
+              "next": null
+            }
+          }
+        },
+        "next": {
+          "block": {
+            "type": "print_block",
+            "fields": null,
+            "inputs": {
+              "EXPRESSION": {
+                "block": null,
+                "shadow": {
+                  "type": "expression_block",
+                  "fields": {
+                    "TEXT": "a"
+                  },
+                  "inputs": null,
+                  "next": null
+                }
+              }
+            },
+            "next": null
+          }
+        }
+      }
+    }
+  }
+]
