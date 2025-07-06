@@ -311,7 +311,7 @@ pub fn execute_block(
         show_statement_exec(format!("Env: {:?}", current_env));
         match execute(stmt, &current_env)? {
             Computation::Continue(new_env) => current_env = new_env,
-            Computation::Return(expr, env) => {
+            Computation::Return(expr, mut new_env) => {
                 show_counter_statement_exec();
                 show_statement_exec(format!("In function execute_block:"));
                 show_statement_exec(format!(
@@ -321,8 +321,8 @@ pub fn execute_block(
                 show_statement_exec(format!("Return result: {:?}", expr));
                 show_statement_exec(format!("All statements: {:?}", stmts));
                 show_statement_exec(format!("Env is about to be popped"));
-                current_env.pop();
-                return Ok(Computation::Return(expr, current_env));
+                new_env.pop();
+                return Ok(Computation::Return(expr, new_env));
             }
             Computation::PropagateError(expr, env) => {
                 return Ok(Computation::PropagateError(expr, current_env));
