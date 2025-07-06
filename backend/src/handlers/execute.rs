@@ -26,6 +26,8 @@ use std::str::FromStr;
 use std::{fs::File, process::Output};
 
 pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
+    reset_txt_files();
+
     let mut output: Vec<String> = Vec::new();
 
     println!("Recebi execução");

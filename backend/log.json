@@ -6,6 +6,17 @@
       "FUNCTION_NAME": "fatorial"
     },
     "inputs": {
+      "RETURN_EXPRESSION": {
+        "block": null,
+        "shadow": {
+          "type": "expression_block",
+          "fields": {
+            "TEXT": "m"
+          },
+          "inputs": null,
+          "next": null
+        }
+      },
       "FORMAL_ARGUMENTS": {
         "block": {
           "type": "formal_argument_block",
@@ -22,8 +33,8 @@
         "block": {
           "type": "declaration_block",
           "fields": {
-            "VARIABLE": "m",
-            "TYPE": "INT"
+            "TYPE": "INT",
+            "VARIABLE": "m"
           },
           "inputs": null,
           "next": {
@@ -31,12 +42,35 @@
               "type": "if_else_block",
               "fields": null,
               "inputs": {
+                "IF_BODY": {
+                  "block": {
+                    "type": "assignment_block",
+                    "fields": {
+                      "VARIABLE": "m"
+                    },
+                    "inputs": {
+                      "EXPRESSION": {
+                        "block": null,
+                        "shadow": {
+                          "type": "expression_block",
+                          "fields": {
+                            "TEXT": "1"
+                          },
+                          "inputs": null,
+                          "next": null
+                        }
+                      }
+                    },
+                    "next": null
+                  },
+                  "shadow": null
+                },
                 "CONDITION": {
                   "block": null,
                   "shadow": {
                     "type": "expression_block",
                     "fields": {
-                      "TEXT": "x == 1"
+                      "TEXT": "x ==    1"
                     },
                     "inputs": null,
                     "next": null
@@ -64,29 +98,6 @@
                     "next": null
                   },
                   "shadow": null
-                },
-                "IF_BODY": {
-                  "block": {
-                    "type": "assignment_block",
-                    "fields": {
-                      "VARIABLE": "m"
-                    },
-                    "inputs": {
-                      "EXPRESSION": {
-                        "block": null,
-                        "shadow": {
-                          "type": "expression_block",
-                          "fields": {
-                            "TEXT": "1"
-                          },
-                          "inputs": null,
-                          "next": null
-                        }
-                      }
-                    },
-                    "next": null
-                  },
-                  "shadow": null
                 }
               },
               "next": null
@@ -94,17 +105,6 @@
           }
         },
         "shadow": null
-      },
-      "RETURN_EXPRESSION": {
-        "block": null,
-        "shadow": {
-          "type": "expression_block",
-          "fields": {
-            "TEXT": "m"
-          },
-          "inputs": null,
-          "next": null
-        }
       }
     },
     "next": null
@@ -112,15 +112,15 @@
   {
     "type": "declaration_block",
     "fields": {
-      "VARIABLE": "resultado",
-      "TYPE": "INT"
+      "TYPE": "INT",
+      "VARIABLE": "a"
     },
     "inputs": null,
     "next": {
       "block": {
         "type": "assignment_block",
         "fields": {
-          "VARIABLE": "resultado"
+          "VARIABLE": "a"
         },
         "inputs": {
           "EXPRESSION": {
@@ -128,7 +128,7 @@
             "shadow": {
               "type": "expression_block",
               "fields": {
-                "TEXT": "fatorial(10)"
+                "TEXT": "fatorial(7)"
               },
               "inputs": null,
               "next": null
@@ -145,7 +145,7 @@
                 "shadow": {
                   "type": "expression_block",
                   "fields": {
-                    "TEXT": "\"resultado:\""
+                    "TEXT": "\"Resultado:\""
                   },
                   "inputs": null,
                   "next": null
@@ -162,7 +162,7 @@
                     "shadow": {
                       "type": "expression_block",
                       "fields": {
-                        "TEXT": "resultado"
+                        "TEXT": "a"
                       },
                       "inputs": null,
                       "next": null

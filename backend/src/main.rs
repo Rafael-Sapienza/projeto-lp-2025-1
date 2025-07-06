@@ -26,7 +26,6 @@ mod type_checker;
 
 
 async fn main() -> std::io::Result<()> {
-    reset_txt_files();
     const ADDRESS: &str = "127.0.0.1";
     const PORT: u16 = 8080;
 
