@@ -1,4 +1,4 @@
-import { blocksCategories } from "./blocks-categories.js";
+/*import { blocksCategories } from "./blocks-categories.js";
 
 export const compareBlocks = {};
 
@@ -110,5 +110,4 @@ const equal = {
         },
     },
 }
-compareBlocks.equal = equal;
-
+compareBlocks.equal = equal;*/

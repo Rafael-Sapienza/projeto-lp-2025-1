@@ -12,7 +12,7 @@ const numberShadow = {
     output: "Number",
     colour: "#52689c",
 };
-shadowBlocks.numberTemplate = numberShadow;
+shadowBlocks["number_shadow"] = numberShadow;
 
 const textShadow = {
     type: "text_shadow",
@@ -26,4 +26,4 @@ const textShadow = {
     output: "String",
     colour: "#52689c",
 };
-shadowBlocks.textTemplate = textShadow;
+shadowBlocks["text_shadow"] = textShadow;
