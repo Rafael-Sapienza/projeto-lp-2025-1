@@ -5,15 +5,15 @@ body {
     margin: 0;
     padding: 20px;
     font-family: 'Segoe UI', Arial, sans-serif;
-    background: url('../assets/backgroundInicial.png') no-repeat center center fixed;;
+    background: url('../assets/backgroundDark.png') no-repeat center center fixed;;
     background-size: 100% 100%;
 
 }
 
 .logo { /* título */
-  width: 750px;
-  height: 350px;
-  background-image: url('../assets/logoInicio.png');
+  width: 650px;
+  height: 250px;
+  background-image: url('../assets/logoDark.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -21,15 +21,16 @@ body {
   margin: 0 auto;
 }
 
-.fa-solid.fa-font {
-    font-size: 30px;
-    color: black;
-    
+
+.blocklySvg {
+  border-radius: 20px;     /* arredonda a borda da caixa */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* sombra elegante */
+  transition: all 0.3s ease;
 }
 
 .blocklyToolboxCategoryLabel {
-    font-family: 'Chau Philomene One';
-    color: rgb(113, 43, 17);
+    font-family: 'Merienda';
+    color: rgb(146, 199, 230);
     font-size: 25px;
 }
 
@@ -38,7 +39,7 @@ body {
   display: flex;
   align-items: center;  /* centraliza verticalmente */
   height: 100%;         /* garante que ocupe toda a altura */
-  gap: 8px;             /* opcional: espaço entre ícone e texto */
+  gap: 20px;             /* opcional: espaço entre ícone e texto */
 }
 
 
@@ -51,14 +52,17 @@ body {
 }
 
 
+
 .blocklyToolboxCategoryContainer {
     margin: 0px 0px 7px 7px;
-    border-bottom: #7a4323 solid 2px;
-}
+    border-bottom: #88b6cd solid 2px;
+} 
 
 /* Cor lateral da categoria/bordinha (tiramos) */
 .blocklyToolboxCategory {
-    border-left: 0px !important;   
+    border-left: 0px !important; 
+    margin-bottom: 10px !important; 
+    margin-top: 3px !important; 
 }
 
 /* Container principal */
@@ -72,11 +76,11 @@ body {
 
 /* Área do Blockly */
 #blocklyDiv {
+    background-size: cover;
     width: 100%;
     height: 500px;
-    background: rgb(255, 255, 255);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 12px rgba(73, 120, 145, 0.7);
+    border: 1px solid #0d1032;
     border-radius: 20px;
     overflow: hidden; /* força os cantos arredondados */
     position: relative;
@@ -88,11 +92,6 @@ body {
   rx: 8; /* arredonda os cantos */
 }
 
-/*.blocklyToolboxFlyout {
-  transform: translateX(149px) !important; ajuste esse valor até alinhar bem 
-}
-*/
-
 /* Container do output */
 .output-container {
     width: 100%;
@@ -102,37 +101,18 @@ body {
     gap: 15px;
 }
 
-/* Botão */
-button {
-    padding: 12px 24px;
-    background: #8a4c28;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s;
-    width: auto;
-}
-
-button:hover {
-    background: #7a4323;
-    transform: translateY(-2px);
-}
-
 /* Área de output */
 #output {
     width: 100%;
     min-height: 80px;
-    padding: 20px;
-    background: white;
+    background-color: #142C38;     /* azul-marinho fosco */
+    color: #CDEDF6;
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    border: 1px solid #e0e0e0;
-    font-family: 'Consolas', monospace;
-    font-size: 0.95rem;
-    line-height: 1.5;
+    box-shadow: 0 0 10px rgba(88, 200, 255, 0.1); /* leve brilho azulado */
+    border: 2px solid #1A3D4F;     /* borda escura consistente com a theme */
+    padding: 12px;
+    font-family: 'Girassol', monospace;
+    font-size: 25px;
+    white-space: pre-wrap;     
 }
-
 

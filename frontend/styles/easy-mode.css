@@ -5,15 +5,15 @@ body {
     margin: 0;
     padding: 20px;
     font-family: 'Segoe UI', Arial, sans-serif;
-    background: url('../assets/backgroundInicial.png') no-repeat center center fixed;;
+    background: url('../assets/easyBackground.png') no-repeat center center fixed;;
     background-size: 100% 100%;
 
 }
 
 .logo { /* título */
-  width: 750px;
-  height: 350px;
-  background-image: url('../assets/logoInicio.png');
+  width: 600px;
+  height: 200px;
+  background-image: url('../assets/logoNormal.PNG');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -21,10 +21,11 @@ body {
   margin: 0 auto;
 }
 
-.fa-solid.fa-font {
-    font-size: 30px;
-    color: black;
-    
+
+.blocklySvg {
+  border-radius: 20px;     /* arredonda a borda da caixa */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* sombra elegante */
+  transition: all 0.3s ease;
 }
 
 .blocklyToolboxCategoryLabel {
@@ -59,6 +60,8 @@ body {
 /* Cor lateral da categoria/bordinha (tiramos) */
 .blocklyToolboxCategory {
     border-left: 0px !important;   
+    margin-bottom: 10px !important; 
+    margin-top: 3px !important; 
 }
 
 /* Container principal */
@@ -87,11 +90,6 @@ body {
   margin-left: 0px;
   rx: 8; /* arredonda os cantos */
 }
-
-/*.blocklyToolboxFlyout {
-  transform: translateX(149px) !important; ajuste esse valor até alinhar bem 
-}
-*/
 
 /* Container do output */
 .output-container {
@@ -125,14 +123,12 @@ button:hover {
 #output {
     width: 100%;
     min-height: 80px;
-    padding: 20px;
+    padding: 12px;
     background: white;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     border: 1px solid #e0e0e0;
     font-family: 'Consolas', monospace;
-    font-size: 0.95rem;
-    line-height: 1.5;
+    font-size: 25px;
+    white-space: pre-wrap; 
 }
-
-
