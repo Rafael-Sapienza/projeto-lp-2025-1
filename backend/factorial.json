@@ -128,7 +128,7 @@
             "shadow": {
               "type": "expression_block",
               "fields": {
-                "TEXT": "factorial(5)"
+                "TEXT": "factorial(1)"
               },
               "inputs": null,
               "next": null

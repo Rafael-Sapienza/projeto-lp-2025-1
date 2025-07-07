@@ -88,13 +88,13 @@ impl<A: Clone + Debug> Environment<A> {
         return self.stack.clone();
     }
 
-    pub fn set_globals(&mut self, globals: Scope<A>) {
-        self.globals = globals;
-    }
-
     pub fn set_stack(&mut self, stack: LinkedList<Scope<A>>) {
         self.stack_len = stack.len();
         self.stack = stack;
+    }
+
+    pub fn set_global_functions(&mut self, global_functions: HashMap<Name, Function>) {
+        self.globals.functions = global_functions;
     }
 
     //pub fn set_stack
@@ -275,35 +275,18 @@ impl<A: Clone + Debug> Environment<A> {
         vars
     }
 
-    pub fn get_all_functions(&self) -> Vec<Name> {
-        let mut func_vector = Vec::new();
+    // The type checker ensures that each function is defined only once
+    pub fn get_all_functions(&self) -> HashMap<Name, Function> {
+        let mut all_functions = HashMap::new();
+        for (name, func) in &self.globals.functions {
+            all_functions.insert(name.clone(), func.clone());
+        }
         for scope in self.stack.iter() {
-            for (func_name, _func) in &scope.functions {
-                if !func_vector.iter().any(|n| n == func_name) {
-                    func_vector.push(func_name.to_string());
-                }
+            for (name, func) in &scope.functions {
+                all_functions.insert(name.clone(), func.clone());
             }
         }
-
-        for (func_name, _func) in &self.globals.functions {
-            if !func_vector.iter().any(|n| n == func_name) {
-                func_vector.push(func_name.to_string());
-            }
-        }
-        return func_vector;
-    }
-
-    pub fn copy_functions(&self) -> LinkedList<Scope<A>> {
-        let mut new_stack = LinkedList::new();
-        for scope in &self.stack {
-            let new_scope = Scope {
-                variables: HashMap::new(),
-                functions: scope.functions.clone(),
-                adts: HashMap::new(),
-            };
-            new_stack.push_back(new_scope);
-        }
-        new_stack
+        all_functions
     }
 }
 

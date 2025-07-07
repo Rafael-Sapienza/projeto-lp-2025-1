@@ -586,10 +586,11 @@ pub fn eval_function_call(
 
             let mut new_env = Environment::new();
 
-            //Copy functions
-            new_env.set_stack(env.copy_functions());
-            new_env.output = env.output.clone();
             new_env.insert_current_function(&name);
+            // Functions from the outer environment must be propagated to new_env to ensure access to external functions within the function body.
+            // This also allows the function to reference itself, which enables recursion
+            new_env.set_global_functions(env.get_all_functions());
+            new_env.output = env.output.clone();
 
             if args.len() != function_definition.params.len() {
                 return Err(format!(
@@ -598,12 +599,10 @@ pub fn eval_function_call(
                 ));
             }
 
-            new_env.push();
-
             show_counter_exp_eval();
             show_exp_eval(format!("In function eval_function_call:"));
             show_exp_eval(format!(
-                "new_env after copying functions and pushing: {:?}",
+                "new_env after copying functions: {:?}",
                 new_env
             ));
 

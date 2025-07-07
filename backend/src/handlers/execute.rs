@@ -47,7 +47,7 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 
 pub fn execute_with_json() {
     let mut output = Vec::new();
-    let mut blocks_only_res = generate_blocks_only("factorial_1.json");
+    let mut blocks_only_res = generate_blocks_only("factorial.json");
     if let Ok(blocks_only) = &blocks_only_res {
         output = process_blocks(blocks_only);
     }
@@ -147,7 +147,6 @@ pub fn process_blocks(blocks_only: &Vec<Block>) -> Vec<String> {
                         show_counter_ex();
                         show_ex(format!("Final Exp Env: {:?}", new_exp_env));
                         show_ex(format!("Variables: {:?} ", new_exp_env.get_all_variables()));
-                        show_ex(format!("Functions: {:?}", new_exp_env.get_all_functions()));
                         if !new_exp_env.get_output().is_empty() {
                             output = new_exp_env.get_output();
                         }

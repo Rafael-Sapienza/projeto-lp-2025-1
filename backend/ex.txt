@@ -29,7 +29,7 @@ final statement: Block([FuncDef(Function { name: "factorial", kind: TInteger, pa
 
 
 -----------------------------------------
-        counter: 4
+            counter: 4
 
 
 Initial Type Env: Environment { id: 0, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
@@ -37,7 +37,7 @@ Initial Type Env: Environment { id: 0, stack_len: 0, current_func: "", output: [
 
 
 -----------------------------------------
-            counter: 14
+            counter: 13
 
 
 Final Type Env: Environment { id: 0, stack_len: 0, current_func: "factorial", output: [], globals: Scope { variables: {"a": (true, TInteger)}, functions: {"factorial": Function { name: "factorial", kind: TInteger, params: [FormalArgument { argument_name: "x", argument_type: TInteger }], body: Some(Block([VarDeclaration("m", CInt(0)), IfThenElse(Not(EQ(Var("x"), CInt(1))), Block([Assignment("m", Mul(Var("x"), FuncCall("factorial", [Sub(Var("x"), CInt(1))])))]), Some(Block([Assignment("m", CInt(1))]))), Return(Var("m"))])) }}, adts: {} }, stack: [] }
@@ -45,7 +45,7 @@ Final Type Env: Environment { id: 0, stack_len: 0, current_func: "factorial", ou
 
 
 -----------------------------------------
-            counter: 16
+            counter: 15
 
 
 Initial Exp Env: Environment { id: 1, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
@@ -53,14 +53,12 @@ Initial Exp Env: Environment { id: 1, stack_len: 0, current_func: "", output: []
 
 
 -----------------------------------------
-            counter: 68
+            counter: 66
 
 
 Final Exp Env: Environment { id: 1, stack_len: 0, current_func: "", output: ["1"], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
 
 Variables: [] 
-
-Functions: []
 
 ["1"]
 

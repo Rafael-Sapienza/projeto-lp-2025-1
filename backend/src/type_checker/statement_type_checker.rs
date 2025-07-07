@@ -271,7 +271,8 @@ fn check_return_stmt(
             env.current_func, ret_type, current_func.kind
         ));
     }
-
+    return Ok(new_env);
+    /* 
     match new_env.lookup(&"return".to_string()) {
         Some(_) => Ok(new_env),
         None => {
@@ -279,6 +280,7 @@ fn check_return_stmt(
             Ok(new_env)
         }
     }
+    */
 }
 
 fn merge_environments(
