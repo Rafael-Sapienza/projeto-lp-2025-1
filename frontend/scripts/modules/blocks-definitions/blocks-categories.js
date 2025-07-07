@@ -1,3 +1,10 @@
+export const variablesCategory = {
+    kind: "category",
+    name: "MINHAS CAIXAS",
+    colour: "#5832a8",
+    custom: "variables_flyout"
+};
+
 export const blocksCategories = {
     text: {
         name: "texto",

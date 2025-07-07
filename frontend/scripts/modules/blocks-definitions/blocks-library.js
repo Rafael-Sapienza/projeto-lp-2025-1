@@ -6,6 +6,8 @@ import { shadowBlocks } from "./shadow-blocks.js";
 import { variableBlocks } from "./variable-blocks.js";
 import { runBlocks } from "./run-blocks.js";
 
+export { variablesCategory } from "./blocks-categories.js";
+
 export const customBlocks = {
     textBlocks, 
     mathBlocks,

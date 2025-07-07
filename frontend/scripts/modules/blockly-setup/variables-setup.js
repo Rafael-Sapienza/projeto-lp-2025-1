@@ -1,13 +1,5 @@
 import { createSetVariableBlock, getVariablesByType, createGetVariableBlock } from "./helper-functions.js";
 
-// Export a simple category object
-export const variablesCategory = {
-    kind: "category",
-    name: "VARIÁVEIS",
-    colour: "#5832a8",
-    custom: "variables_flyout"
-};
-
 // Export a function that returns some blocks for the flyout
 export function createVariablesFlyout(workspace) {
     const xmlList = [];
