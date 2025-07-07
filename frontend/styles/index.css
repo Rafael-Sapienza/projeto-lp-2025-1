@@ -1,0 +1,28 @@
+body {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: url('../backgroundInicial.png') no-repeat center center fixed;;
+    background-size: 100% 100%;
+
+}
+
+.logo { /* título */
+  width: 750px;
+  height: 350px;
+  background-image: url('../logoInicio.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  text-indent: -9999px; 
+  margin: 0 auto;
+}
+
+.fa-solid.fa-font {
+    font-size: 30px;
+    color: black;
+    
+}
