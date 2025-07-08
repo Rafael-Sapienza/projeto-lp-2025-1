@@ -30,6 +30,12 @@ export const setupFunctionsToolbox = function(workspace) {
             const block = createFunctionDefinitionBlock(blockDefinition);
             Blockly.defineBlocksWithJsonArray([block]);
             const newBlock = workspace.newBlock(`function_def_${blockDefinition.name.replace(/\s+/g, "_")}`);
+            for (const param of blockDefinition.parameters) {
+              const paramGetterBlockType = `function_param_get_${blockDefinition.name}_${param.name}`;
+              const paramBlock = workspace.newBlock(paramGetterBlockType);
+              paramBlock.initSvg();
+              paramBlock.render();
+            }
             newBlock.initSvg();
             newBlock.render();
         });
@@ -187,13 +193,13 @@ function createFunctionDefinitionBlock(blockDefinition) {
     }));
 
     const argNames = blockDefinition.parameters.map((param, i) => `%${i + 1}`).join(", ");
-    const message0 = `definir ${blockDefinition.name} com ${argNames}`;
+    const message0 = `DEFINIR ${blockDefinition.name} ${argNames}`;
 
     const block = {
         type: blockType,
         message0,
         args0,
-        message1: "faça %1",
+        message1: "%1",
         args1: [
             {
                 type: "input_statement",
@@ -206,10 +212,40 @@ function createFunctionDefinitionBlock(blockDefinition) {
     };
 
     if (blockDefinition.return && blockDefinition.return !== "NONE") {
+        block.message2 = "Devolver %1";
+        block.args2 = [
+            {
+                type: "input_value",
+                name: "RETURN",
+                check: blockDefinition.return,
+            },
+        ];
         block.output = blockDefinition.return;
     } else {
         block.previousStatement = null;
         block.nextStatement = null;
+    }
+
+    // After defining the function block: =====>>>> ADDED YOUR CHANGE HERE!!!!
+    for (const param of blockDefinition.parameters) {
+      const blockType = `function_param_get_${blockDefinition.name}_${param.name}`;
+      const block = {
+        type: blockType,
+        message0: `%1`,
+        args0: [
+          {
+            type: "field_label",
+            name: "PARAM_NAME",
+            text: param.name,
+          }
+        ],
+        output: param.type,
+        colour: 230,
+        tooltip: `Usa o parâmetro '${param.name}' da função '${blockDefinition.name}'`,
+        helpUrl: ""
+      };
+
+      Blockly.defineBlocksWithJsonArray([block]);
     }
 
     return block;
