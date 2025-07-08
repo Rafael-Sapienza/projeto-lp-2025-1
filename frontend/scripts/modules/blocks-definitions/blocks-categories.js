@@ -5,6 +5,20 @@ export const variablesCategory = {
     custom: "variables_flyout"
 };
 
+/*toolbox.contents.push({
+  "kind": "category",
+  "name": "Funções",
+  "categorystyle": "procedure_category",
+  "custom": "PROCEDURE"
+})*/
+
+export const functionsCategory = {
+    kind: "category",
+    name: "MEUS BLOCOS",
+    colour: "#c749c9",
+    custom: "functions_flyout"
+};
+
 export const blocksCategories = {
     text: {
         name: "texto",
