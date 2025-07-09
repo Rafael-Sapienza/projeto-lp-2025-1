@@ -1,6 +1,7 @@
 import { creatorDivHTML } from "../interface/function-creation.js";
 import { createdFunctions } from "./functions-logic.js";
-import { functionsCategory } from "../blocks-definitions/blocks-library.js"
+import { functionsCategory } from "../blocks-definitions/blocks-library.js";
+import { createSetFunctionBlock } from "./helper-functions.js";
 
 function createFunctionsFlyout(workspace) {
     const xmlList = [];
@@ -15,8 +16,16 @@ function createFunctionsFlyout(workspace) {
     deleteBlockBtn.setAttribute("callbackKey", "DELETE_FUNCTION");
     xmlList.push(deleteBlockBtn);
 
-    // CODE TO GET ALL THE SETTERS AND GETTERS OF FUNCTION!!!!!
+     // Add a separator line
+    const sep = Blockly.utils.xml.createElement("label");
+    sep.setAttribute("text", "!-------------!");
+    xmlList.push(sep);
 
+    // Add SET function blocks to the flyout
+    for (const functionName in createdFunctions) {
+
+        xmlList.push(createSetFunctionBlock(functionName, createdFunctions[functionName].parameters));
+    }   
     return xmlList;
 }
 
@@ -147,7 +156,7 @@ function defineFunctionBlocks(blockDefinition) {
         text: param.name,
         check: param.type
     }));
-    const defMessage0 = `DEFINIR ${blockDefinition.name}: ${argNames}`;
+    const defMessage0 = `DEFINIR ${blockDefinition.name}${argNames.length > 0 ? ": " + argNames : ""}`;
 
     const defBlock = {
         type: defBlockType,
@@ -186,7 +195,7 @@ function defineFunctionBlocks(blockDefinition) {
         text: param.name,
         check: param.type
     }));
-    const setMessage0 = `${blockDefinition.name}: ${argNames}`;
+    const setMessage0 = `CHAMAR ${blockDefinition.name}${argNames.length > 0 ? ": " + argNames : ""}`;
 
     const setBlock = {
         type: setBlockType,
@@ -236,6 +245,23 @@ function renderFunctionBlocks(workspace, blockSuffix) {
     defBlock.initSvg();
     defBlock.render();
     defBlock.setDeletable(false);
+
+    const blockReturn = defBlock.getInput("RETURN");
+    if (blockReturn && blockReturn.connection && !blockReturn.connection.isConnected()) {
+        const shadows = {
+            Number: "number_shadow",
+            String: "text_shadow",
+        }
+        const shadow = shadows[blockReturn.connection.check?.find( returnType =>  shadows[returnType])];
+        console.log(shadow)
+        if (shadow) {
+            const shadowBlock = workspace.newBlock(shadow);
+            shadowBlock.setShadow(true);
+            shadowBlock.initSvg();
+            shadowBlock.render();
+            blockReturn.connection.connect(shadowBlock.outputConnection);
+        }
+    }
 }
 
 /************ HELPERS *****************/
@@ -274,3 +300,4 @@ export const highlighInvalidInput = function(inputNode, message, time) {
         inputNode.placeholder = "";
     }, time);
 }
+
