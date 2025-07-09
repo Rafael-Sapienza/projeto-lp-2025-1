@@ -2,11 +2,12 @@ use std::fmt::format;
 
 use crate::environment::environment::Environment;
 use crate::ir::ast::{Expression, Name, Type};
+use crate::{show, show_counter};
 
 type ErrorMessage = String;
 
 pub fn check_expr(exp: Expression, env: &Environment<Type>) -> Result<Type, ErrorMessage> {
-    match exp {
+    match exp.clone() {
         Expression::CTrue => Ok(Type::TBool),
         Expression::CFalse => Ok(Type::TBool),
         Expression::CVoid => Ok(Type::TVoid),
@@ -26,7 +27,14 @@ pub fn check_expr(exp: Expression, env: &Environment<Type>) -> Result<Type, Erro
         Expression::LT(l, r) => check_bin_relational_expression(*l, *r, env),
         Expression::GTE(l, r) => check_bin_relational_expression(*l, *r, env),
         Expression::LTE(l, r) => check_bin_relational_expression(*l, *r, env),
-        Expression::Var(name) => check_var_name(name, env),
+        Expression::Var(name) => 
+        {
+            show_counter_tp_exp();
+            show_tp_exp(format!("Check Var:"));
+            show_tp_exp(format!("Exp: {:?}", exp));
+            show_tp_exp(format!("Env: {:?}", env));
+            check_var_name(name, env)
+        }
         Expression::COk(e) => check_result_ok(*e, env),
         Expression::CErr(e) => check_result_err(*e, env),
         Expression::CJust(e) => check_maybe_just(*e, env),
@@ -37,7 +45,12 @@ pub fn check_expr(exp: Expression, env: &Environment<Type>) -> Result<Type, Erro
         Expression::Propagate(e) => check_propagate_type(*e, env),
         Expression::ListValue(elements) => check_list_value(&elements, env),
         Expression::Constructor(name, args) => check_adt_constructor(name, args, env),
-        Expression::FuncCall(func_name, exp_vec) => {
+        Expression::FuncCall(func_name, exp_vec) => 
+        {
+            show_counter_tp_exp();
+            show_tp_exp(format!("Func Call:"));
+            show_tp_exp(format!("Exp: {:?}", exp));
+            show_tp_exp(format!("Env: {:?}", env));
             check_func_call(func_name.clone(), exp_vec.clone(), env)
         }
 
@@ -328,6 +341,14 @@ fn check_adt_constructor(
             name
         )),
     }
+}
+
+fn show_tp_exp(texto: String) {
+    show(texto, "tp_exp.txt");
+}
+
+fn show_counter_tp_exp() {
+    show_counter("tp_exp.txt");
 }
 
 /*

@@ -1,8 +1,10 @@
 use tokio::sync::watch::error;
-
+use std::collections::HashSet;
 use crate::environment::environment::Environment;
 use crate::ir::ast::{Expression, Function, Name, Statement, Type, ValueConstructor};
 use crate::type_checker::expression_type_checker::check_expr;
+use crate::{show, show_counter};
+
 
 type ErrorMessage = String;
 
@@ -10,21 +12,103 @@ pub fn check_stmt(
     stmt: Statement,
     env: &Environment<Type>,
 ) -> Result<Environment<Type>, ErrorMessage> {
-    match stmt {
-        Statement::VarDeclaration(var, expr) => check_var_declaration_stmt(var, expr, env),
-        Statement::ValDeclaration(var, expr) => check_val_declaration_stmt(var, expr, env),
-        Statement::Sequence(stmt1, stmt2) => check_squence_stmt(stmt1, stmt2, env),
-        Statement::Assignment(name, exp) => check_assignment_stmt(name, exp, env),
-        Statement::IfThenElse(cond, stmt_then, stmt_else_opt) => {
+    match stmt.clone() {
+        Statement::VarDeclaration(var, expr) => 
+        {
+            show_counter_tp_statement();
+            show_tp_statement(format!("Check VarDeclaration: "));
+            show_tp_statement(format!("Statement: {:?}", stmt));
+            show_tp_statement(format!("Env: {:?}", env));
+            check_var_declaration_stmt(var, expr, env)
+        }
+        Statement::ValDeclaration(var, expr) => 
+        {
+            show_counter_tp_statement();
+            show_tp_statement(format!("Check ValDeclaration: "));
+            show_tp_statement(format!("Statement: {:?}", stmt));
+            show_tp_statement(format!("Env: {:?}", env));
+            check_val_declaration_stmt(var, expr, env)
+        }
+        Statement::Sequence(stmt1, stmt2) => 
+        {
+            show_counter_tp_statement();
+            show_tp_statement(format!("Check Sequence: "));
+            show_tp_statement(format!("Statement: {:?}", stmt));
+            show_tp_statement(format!("Env: {:?}", env));
+            check_squence_stmt(stmt1, stmt2, env)
+        }
+        Statement::Assignment(name, exp) => 
+        {
+            show_counter_tp_statement();
+            show_tp_statement(format!("Check Assignment: "));
+            show_tp_statement(format!("Statement: {:?}", stmt));
+            show_tp_statement(format!("Env: {:?}", env));
+            check_assignment_stmt(name, exp, env)
+        }
+        Statement::IfThenElse(cond, stmt_then, stmt_else_opt) => 
+        {
+            show_counter_tp_statement();
+            show_tp_statement(format!("Check IfThenElse: "));
+            show_tp_statement(format!("Statement: {:?}", stmt));
+            show_tp_statement(format!("Env: {:?}", env));
             check_if_then_else_stmt(cond, stmt_then, stmt_else_opt, env)
         }
-        Statement::While(cond, stmt) => check_while_stmt(cond, stmt, env),
-        Statement::For(var, expr, stmt) => check_for_stmt(var, expr, stmt, env),
-        Statement::FuncDef(function) => check_func_def_stmt(function, env),
-        Statement::TypeDeclaration(name, cons) => check_adt_declarations_stmt(name, cons, env),
-        Statement::Return(exp) => check_return_stmt(exp, env),
-        Statement::Block(statements_vector) => check_block_statement(statements_vector, env),
-        Statement::Print(exp) => check_print_statement(exp, env),
+        Statement::While(cond, stmt) => 
+        {
+            show_counter_tp_statement();
+            show_tp_statement(format!("Check While: "));
+            show_tp_statement(format!("Statement: {:?}", stmt));
+            show_tp_statement(format!("Env: {:?}", env));
+            check_while_stmt(cond, stmt, env)
+        }
+        Statement::For(var, expr, stmt) => 
+        {
+            show_counter_tp_statement();
+            show_tp_statement(format!("Check For: "));
+            show_tp_statement(format!("Statement: {:?}", stmt));
+            show_tp_statement(format!("Env: {:?}", env));
+            check_for_stmt(var, expr, stmt, env)
+        }
+        Statement::FuncDef(function) => 
+        {
+            show_counter_tp_statement();
+            show_tp_statement(format!("Check FuncDef: "));
+            show_tp_statement(format!("Statement: {:?}", stmt));
+            show_tp_statement(format!("Env: {:?}", env)); 
+            check_func_def_stmt(function, env)
+        }
+        Statement::TypeDeclaration(name, cons) => 
+        {
+            show_counter_tp_statement();
+            show_tp_statement(format!("Check TypeDeclaration: "));
+            show_tp_statement(format!("Statement: {:?}", stmt));
+            show_tp_statement(format!("Env: {:?}", env));
+            check_adt_declarations_stmt(name, cons, env)
+        }
+        Statement::Return(exp) => 
+        {
+            show_counter_tp_statement();
+            show_tp_statement(format!("Check Return: "));
+            show_tp_statement(format!("Statement: {:?}", stmt));
+            show_tp_statement(format!("Env: {:?}", env));
+            check_return_stmt(exp, env)
+        }
+        Statement::Block(statements_vector) => 
+        {
+            show_counter_tp_statement();
+            show_tp_statement(format!("Check Block: "));
+            show_tp_statement(format!("Statement: {:?}", stmt));
+            show_tp_statement(format!("Env: {:?}", env));
+            check_block_statement(statements_vector, env)
+        }
+        Statement::Print(exp) => 
+        {
+            show_counter_tp_statement();
+            show_tp_statement(format!("Check Print: "));
+            show_tp_statement(format!("Statement: {:?}", stmt));
+            show_tp_statement(format!("Env: {:?}", env));
+            check_print_statement(exp, env)
+        }
         _ => Err("Not implemented yet".to_string()),
     }
 }
@@ -43,9 +127,11 @@ fn check_block_statement(
     env: &Environment<Type>,
 ) -> Result<Environment<Type>, ErrorMessage> {
     let mut new_env = env.clone();
+    new_env.push();
     for statement in &statements_vector {
         new_env = check_stmt(statement.clone(), &new_env)?;
     }
+    new_env.pop();
     return Ok(new_env);
 }
 
@@ -211,27 +297,48 @@ fn check_func_def_stmt(
     function: Function,
     env: &Environment<Type>,
 ) -> Result<Environment<Type>, ErrorMessage> {
-    let mut new_env = env.clone();
-    new_env.push();
+    let mut new_env = Environment::new();
+    //new_env.push(); -> Push and pop will happen in check_block_statement
+    new_env.set_current_func(&function.name);
+    // Previous environment functions and the formal parameters are regarded as global
+    new_env.set_global_functions(env.get_all_functions());
 
-    new_env.map_function(function.clone());
-    new_env.insert_current_function(&function.name);
+    // Ensure that each function is defined only once
+    if new_env.globals.functions.contains_key(&function.name) {
+        return Err(format!(
+            "Function {} is defined multiple times",
+            function.name
+        ));
+    }
+
+    // Ensure that no parameter names are repeated in the function's argument list
+    let mut seen_names = HashSet::new();
+    for arg in &function.params {
+        if !seen_names.insert(arg.argument_name.clone()) {
+            return Err(format!(
+                "Duplicate parameter name '{}' found in function '{}'",
+                arg.argument_name, function.name
+            ));
+        }
+    }
 
     for formal_arg in function.params.iter() {
-        new_env.create_variable(
+        new_env.map_variable(
             formal_arg.argument_name.clone(),
             false,
             formal_arg.argument_type.clone(),
-        )?;
+        );
     }
 
+    new_env.map_function(function.clone());
     if let Some(body) = function.body.clone() {
-        new_env = check_stmt(*body, &new_env)?;
+        check_stmt(*body, &new_env)?; //new_env is only used to check function body 
     }
-    new_env.pop();
-    new_env.map_function(function);
+    //new_env.pop();
 
-    Ok(new_env)
+    let mut final_env = env.clone();
+    final_env.map_function(function.clone());
+    Ok(final_env) // if function body is ok, return original env with new function
 }
 
 fn check_adt_declarations_stmt(
@@ -248,7 +355,7 @@ fn check_return_stmt(
     exp: Box<Expression>,
     env: &Environment<Type>,
 ) -> Result<Environment<Type>, ErrorMessage> {
-    let mut new_env = env.clone();
+    let new_env = env.clone();
 
     assert!(new_env.scoped_function());
 
@@ -326,6 +433,18 @@ fn merge_environments(
     Ok(merged)
 }
 
+
+fn show_tp_statement(texto: String) {
+    show(texto, "tp_statement.txt");
+}
+
+fn show_counter_tp_statement() {
+    show_counter("tp_statement.txt");
+}
+
+
+
+/* 
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -712,3 +831,4 @@ mod tests {
         assert!(check_stmt(stmt, &env).is_err());
     }
 }
+*/

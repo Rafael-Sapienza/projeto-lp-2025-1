@@ -16,7 +16,7 @@ Function statement: Block([FuncDef(Function { name: "factorial", kind: TInteger,
 
 main statement parsed successfully
 
-main statement: Block([VarDeclaration("a", CInt(0)), Assignment("a", FuncCall("factorial", [CInt(1)])), Print(Var("a"))])
+main statement: Block([VarDeclaration("a", CInt(0)), Assignment("a", FuncCall("factorial", [CInt(5)])), Print(Var("a"))])
 
 
 
@@ -24,12 +24,12 @@ main statement: Block([VarDeclaration("a", CInt(0)), Assignment("a", FuncCall("f
             counter: 3
 
 
-final statement: Block([FuncDef(Function { name: "factorial", kind: TInteger, params: [FormalArgument { argument_name: "x", argument_type: TInteger }], body: Some(Block([VarDeclaration("m", CInt(0)), IfThenElse(Not(EQ(Var("x"), CInt(1))), Block([Assignment("m", Mul(Var("x"), FuncCall("factorial", [Sub(Var("x"), CInt(1))])))]), Some(Block([Assignment("m", CInt(1))]))), Return(Var("m"))])) }), VarDeclaration("a", CInt(0)), Assignment("a", FuncCall("factorial", [CInt(1)])), Print(Var("a"))])
+final statement: Block([FuncDef(Function { name: "factorial", kind: TInteger, params: [FormalArgument { argument_name: "x", argument_type: TInteger }], body: Some(Block([VarDeclaration("m", CInt(0)), IfThenElse(Not(EQ(Var("x"), CInt(1))), Block([Assignment("m", Mul(Var("x"), FuncCall("factorial", [Sub(Var("x"), CInt(1))])))]), Some(Block([Assignment("m", CInt(1))]))), Return(Var("m"))])) }), VarDeclaration("a", CInt(0)), Assignment("a", FuncCall("factorial", [CInt(5)])), Print(Var("a"))])
 
 
 
 -----------------------------------------
-            counter: 4
+            counter: 5
 
 
 Initial Type Env: Environment { id: 0, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
@@ -37,28 +37,28 @@ Initial Type Env: Environment { id: 0, stack_len: 0, current_func: "", output: [
 
 
 -----------------------------------------
-            counter: 13
+            counter: 39
 
 
-Final Type Env: Environment { id: 0, stack_len: 0, current_func: "factorial", output: [], globals: Scope { variables: {"a": (true, TInteger)}, functions: {"factorial": Function { name: "factorial", kind: TInteger, params: [FormalArgument { argument_name: "x", argument_type: TInteger }], body: Some(Block([VarDeclaration("m", CInt(0)), IfThenElse(Not(EQ(Var("x"), CInt(1))), Block([Assignment("m", Mul(Var("x"), FuncCall("factorial", [Sub(Var("x"), CInt(1))])))]), Some(Block([Assignment("m", CInt(1))]))), Return(Var("m"))])) }}, adts: {} }, stack: [] }
-
-
-
------------------------------------------
-            counter: 15
-
-
-Initial Exp Env: Environment { id: 1, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+Final Type Env: Environment { id: 0, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
 
 
 
 -----------------------------------------
-            counter: 66
+            counter: 41
 
 
-Final Exp Env: Environment { id: 1, stack_len: 0, current_func: "", output: ["1"], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+Initial Exp Env: Environment { id: 2, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+
+
+
+-----------------------------------------
+            counter: 232
+
+
+Final Exp Env: Environment { id: 2, stack_len: 0, current_func: "", output: ["120"], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
 
 Variables: [] 
 
-["1"]
+["120"]
 

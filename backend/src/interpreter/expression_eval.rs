@@ -586,7 +586,7 @@ pub fn eval_function_call(
 
             let mut new_env = Environment::new();
 
-            new_env.insert_current_function(&name);
+            new_env.set_current_func(&name);
             // Functions from the outer environment must be propagated to new_env to ensure access to external functions within the function body.
             // This also allows the function to reference itself, which enables recursion
             new_env.set_global_functions(env.get_all_functions());

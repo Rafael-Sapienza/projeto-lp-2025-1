@@ -99,7 +99,7 @@ impl<A: Clone + Debug> Environment<A> {
 
     //pub fn set_stack
 
-    pub fn insert_current_function(&mut self, func_name: &str) {
+    pub fn set_current_func(&mut self, func_name: &str) {
         self.current_func = func_name.to_string();
     }
 

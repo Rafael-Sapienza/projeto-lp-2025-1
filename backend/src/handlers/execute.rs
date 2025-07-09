@@ -132,8 +132,8 @@ pub fn process_blocks(blocks_only: &Vec<Block>) -> Vec<String> {
         let final_statement = Statement::Block(func_def_statements);
         show_counter_ex();
         show_ex(format!("final statement: {:?}", final_statement));
-        show_counter_ex();
         let type_env: Environment<Type> = Environment::new();
+        show_counter_ex();
         show_ex(format!("Initial Type Env: {:?}", type_env));
         match check_stmt(final_statement.clone(), &type_env) {
             Ok(new_type_env) => {
@@ -165,7 +165,7 @@ pub fn process_blocks(blocks_only: &Vec<Block>) -> Vec<String> {
 }
 
 pub fn reset_txt_files() {
-    let txt_files = ["ex.txt", "env.txt", "exp_eval.txt", "statement_exec.txt"];
+    let txt_files = ["ex.txt", "env.txt", "exp_eval.txt", "statement_exec.txt", "tp_statement.txt", "tp_exp.txt"];
     for file in txt_files {
         match File::create(file) {
             Ok(_) => println!("Arquivo '{}' limpo com sucesso.", file),
