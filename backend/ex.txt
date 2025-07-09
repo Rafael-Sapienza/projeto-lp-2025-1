@@ -16,7 +16,7 @@ Function statement: Block([FuncDef(Function { name: "factorial", kind: TInteger,
 
 main statement parsed successfully
 
-main statement: Block([VarDeclaration("a", CInt(0)), Assignment("a", FuncCall("factorial", [CInt(5)])), Print(Var("a"))])
+main statement: Block([VarDeclaration("a", CInt(0)), Assignment("a", FuncCall("factorial", [CInt(3)])), Print(Var("a"))])
 
 
 
@@ -24,7 +24,7 @@ main statement: Block([VarDeclaration("a", CInt(0)), Assignment("a", FuncCall("f
             counter: 3
 
 
-final statement: Block([FuncDef(Function { name: "factorial", kind: TInteger, params: [FormalArgument { argument_name: "x", argument_type: TInteger }], body: Some(Block([VarDeclaration("m", CInt(0)), IfThenElse(Not(EQ(Var("x"), CInt(1))), Block([Assignment("m", Mul(Var("x"), FuncCall("factorial", [Sub(Var("x"), CInt(1))])))]), Some(Block([Assignment("m", CInt(1))]))), Return(Var("m"))])) }), VarDeclaration("a", CInt(0)), Assignment("a", FuncCall("factorial", [CInt(5)])), Print(Var("a"))])
+final statement: Block([FuncDef(Function { name: "factorial", kind: TInteger, params: [FormalArgument { argument_name: "x", argument_type: TInteger }], body: Some(Block([VarDeclaration("m", CInt(0)), IfThenElse(Not(EQ(Var("x"), CInt(1))), Block([Assignment("m", Mul(Var("x"), FuncCall("factorial", [Sub(Var("x"), CInt(1))])))]), Some(Block([Assignment("m", CInt(1))]))), Return(Var("m"))])) }), VarDeclaration("a", CInt(0)), Assignment("a", FuncCall("factorial", [CInt(3)])), Print(Var("a"))])
 
 
 
@@ -53,12 +53,12 @@ Initial Exp Env: Environment { id: 2, stack_len: 0, current_func: "", output: []
 
 
 -----------------------------------------
-            counter: 232
+            counter: 162
 
 
-Final Exp Env: Environment { id: 2, stack_len: 0, current_func: "", output: ["120"], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+Final Exp Env: Environment { id: 2, stack_len: 0, current_func: "", output: ["6"], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
 
 Variables: [] 
 
-["120"]
+["6"]
 

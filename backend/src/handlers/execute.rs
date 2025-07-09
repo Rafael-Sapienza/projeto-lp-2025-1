@@ -47,7 +47,7 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
 
 pub fn execute_with_json() {
     let mut output = Vec::new();
-    let mut blocks_only_res = generate_blocks_only("factorial.json");
+    let blocks_only_res = generate_blocks_only("factorial.json");
     if let Ok(blocks_only) = &blocks_only_res {
         output = process_blocks(blocks_only);
     }
