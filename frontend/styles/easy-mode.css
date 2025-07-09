@@ -179,3 +179,21 @@ button:hover {
 .invalid-function-name {
     background-color: red;
 }
+ .parameter-icon {
+    width: 16px; 
+    height: 16px; 
+    vertical-align: middle; 
+    margin-right: 4px;
+ }
+
+ .delete-parameter {
+    width: 16px; 
+    height: 16px; 
+    vertical-align: middle; 
+    margin-right: 4px;
+    cursor: pointer;
+ }
+
+.blocklyLabelField {
+    border: 2px solid black !important;
+}
