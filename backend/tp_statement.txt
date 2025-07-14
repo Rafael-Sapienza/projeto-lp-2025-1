@@ -1,0 +1,96 @@
+
+
+-----------------------------------------
+            counter: 97
+
+
+Check Block: 
+
+Statement: Block([VarDeclaration("teste", CReal(0.0)), Assignment("teste", CReal(3.4)), IfThenElse(EQ(Var("teste"), CReal(3.4)), Block([Print(CString("opa"))]), Some(Block([Print(CString("oioi"))])))])
+
+Env: Environment { id: 4, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+
+
+
+-----------------------------------------
+            counter: 99
+
+
+Check VarDeclaration: 
+
+Statement: VarDeclaration("teste", CReal(0.0))
+
+Env: Environment { id: 4, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }] }
+
+
+
+-----------------------------------------
+            counter: 101
+
+
+Check Assignment: 
+
+Statement: Assignment("teste", CReal(3.4))
+
+Env: Environment { id: 4, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {"teste": (true, TReal)}, functions: {}, adts: {} }] }
+
+
+
+-----------------------------------------
+            counter: 102
+
+
+Check IfThenElse: 
+
+Statement: IfThenElse(EQ(Var("teste"), CReal(3.4)), Block([Print(CString("opa"))]), Some(Block([Print(CString("oioi"))])))
+
+Env: Environment { id: 4, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {"teste": (true, TReal)}, functions: {}, adts: {} }] }
+
+
+
+-----------------------------------------
+            counter: 104
+
+
+Check Block: 
+
+Statement: Block([Print(CString("opa"))])
+
+Env: Environment { id: 4, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {"teste": (true, TReal)}, functions: {}, adts: {} }] }
+
+
+
+-----------------------------------------
+            counter: 106
+
+
+Check Print: 
+
+Statement: Print(CString("opa"))
+
+Env: Environment { id: 4, stack_len: 2, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }, Scope { variables: {"teste": (true, TReal)}, functions: {}, adts: {} }] }
+
+
+
+-----------------------------------------
+            counter: 108
+
+
+Check Block: 
+
+Statement: Block([Print(CString("oioi"))])
+
+Env: Environment { id: 4, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {"teste": (true, TReal)}, functions: {}, adts: {} }] }
+
+
+
+-----------------------------------------
+            counter: 110
+
+
+Check Print: 
+
+Statement: Print(CString("oioi"))
+
+Env: Environment { id: 4, stack_len: 2, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }, Scope { variables: {"teste": (true, TReal)}, functions: {}, adts: {} }] }
+

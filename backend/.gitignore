@@ -1,0 +1,27 @@
+# Gerado automaticamente por Cargo:
+/target/
+
+# Arquivos de build temporários:
+**/*.rs.bk
+
+# Logs e artefatos
+*.log
+
+# Configurações do editor/IDE (VSCode, CLion, etc.)
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Backup do editor
+*~
+
+# Arquivos do sistema (ex: macOS ou Windows)
+.DS_Store
+Thumbs.db
+
+# Arquivos de testes temporários
+/tests/output.txt
+
+# Ignorar credenciais ou configs locais opcionais
+.env
