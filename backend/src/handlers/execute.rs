@@ -10,7 +10,6 @@ pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
         execute_sequence(block, &mut output);
     }
     
-    output = process_blocks(blocks_only);
 
     //output = process_blocks(blocks_only);
     HttpResponse::Ok().json(output)

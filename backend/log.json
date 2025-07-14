@@ -1,93 +1,22 @@
 [
   {
-    "type": "declaration_block",
-    "fields": {
-      "VARIABLE": "teste",
-      "TYPE": "FLOAT"
-    },
-    "inputs": null,
-    "next": {
-      "block": {
-        "type": "assignment_block",
-        "fields": {
-          "VARIABLE": "teste"
-        },
-        "inputs": {
-          "EXPRESSION": {
-            "block": null,
-            "shadow": {
-              "type": "expression_block",
-              "fields": {
-                "TEXT": "3.4"
-              },
-              "inputs": null,
-              "next": null
-            }
-          }
-        },
-        "next": {
-          "block": {
-            "type": "if_else_block",
-            "fields": null,
-            "inputs": {
-              "CONDITION": {
-                "block": null,
-                "shadow": {
-                  "type": "expression_block",
-                  "fields": {
-                    "TEXT": "teste == 3.4"
-                  },
-                  "inputs": null,
-                  "next": null
-                }
-              },
-              "IF_BODY": {
-                "block": {
-                  "type": "print_block",
-                  "fields": null,
-                  "inputs": {
-                    "EXPRESSION": {
-                      "block": null,
-                      "shadow": {
-                        "type": "expression_block",
-                        "fields": {
-                          "TEXT": "\"opa\""
-                        },
-                        "inputs": null,
-                        "next": null
-                      }
-                    }
-                  },
-                  "next": null
-                },
-                "shadow": null
-              },
-              "ELSE_BODY": {
-                "block": {
-                  "type": "print_block",
-                  "fields": null,
-                  "inputs": {
-                    "EXPRESSION": {
-                      "block": null,
-                      "shadow": {
-                        "type": "expression_block",
-                        "fields": {
-                          "TEXT": "\"oioi\""
-                        },
-                        "inputs": null,
-                        "next": null
-                      }
-                    }
-                  },
-                  "next": null
-                },
-                "shadow": null
-              }
-            },
-            "next": null
-          }
+    "type": "print_block",
+    "id": "m,3[^KR8q}{hMMipAo(0",
+    "fields": null,
+    "inputs": {
+      "EXPRESSION": {
+        "block": null,
+        "shadow": {
+          "type": "expression_block",
+          "id": "qfcKth3_E4K7x|w]tqPV",
+          "fields": {
+            "TEXT": "\"oi\""
+          },
+          "inputs": null,
+          "next": null
         }
       }
-    }
+    },
+    "next": null
   }
 ]

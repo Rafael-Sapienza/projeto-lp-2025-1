@@ -1,7 +1,7 @@
 use actix_files::Files;
 use actix_web::{App, HttpServer};
 
-use crate::handlers::execute::{execute_with_json, reset_txt_files, show, show_counter};
+use crate::handlers::hard_interpreter::{execute_with_json, reset_txt_files, show, show_counter};
 use std::fs::File;
 use std::io::Write;
 use std::sync::Mutex;

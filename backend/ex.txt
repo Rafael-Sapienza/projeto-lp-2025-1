@@ -1,52 +1,52 @@
 
 
 -----------------------------------------
-            counter: 93
+            counter: 1
 
 
 main statement parsed successfully
 
-main statement: Block([VarDeclaration("teste", CReal(0.0)), Assignment("teste", CReal(3.4)), IfThenElse(EQ(Var("teste"), CReal(3.4)), Block([Print(CString("opa"))]), Some(Block([Print(CString("oioi"))])))])
+main statement: Block([Print(CString("oi"))])
 
 
 
 -----------------------------------------
-            counter: 94
+            counter: 2
 
 
-final statement: Block([VarDeclaration("teste", CReal(0.0)), Assignment("teste", CReal(3.4)), IfThenElse(EQ(Var("teste"), CReal(3.4)), Block([Print(CString("opa"))]), Some(Block([Print(CString("oioi"))])))])
-
-
-
------------------------------------------
-            counter: 96
-
-
-Initial Type Env: Environment { id: 4, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+final statement: Block([Print(CString("oi"))])
 
 
 
 -----------------------------------------
-            counter: 113
+            counter: 4
 
 
-Final Type Env: Environment { id: 4, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
-
-
-
------------------------------------------
-            counter: 115
-
-
-Initial Exp Env: Environment { id: 5, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+Initial Type Env: Environment { id: 0, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
 
 
 
 -----------------------------------------
-            counter: 138
+            counter: 9
 
 
-Final Exp Env: Environment { id: 5, stack_len: 0, current_func: "", output: ["opa"], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+Final Type Env: Environment { id: 0, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+
+
+
+-----------------------------------------
+            counter: 11
+
+
+Initial Exp Env: Environment { id: 1, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+
+
+
+-----------------------------------------
+            counter: 19
+
+
+Final Exp Env: Environment { id: 1, stack_len: 0, current_func: "", output: ["oi"], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
 
 Variables: [] 
 

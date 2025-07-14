@@ -2,7 +2,7 @@ use crate::COUNTER;
 use crate::environment::environment::Environment;
 use crate::interpreter::run;
 use crate::ir::ast::{Expression, FormalArgument, Function, Statement, Type};
-use crate::models::{Block, Blocks, Input, NextBlock, Workspace};
+use crate::models::{Block2, Blocks, Input, NextBlock, Workspace2};
 use crate::parser::parse_chained_blocks;
 use crate::type_checker::check_stmt;
 use actix_web::{HttpResponse, Responder, post, web};
@@ -25,7 +25,7 @@ use std::io::Write;
 use std::str::FromStr;
 use std::{fs::File, process::Output};
 
-pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
+pub async fn execute(payload: web::Json<Workspace2>) -> impl Responder {
     reset_txt_files();
 
     let mut output: Vec<String> = Vec::new();
@@ -54,11 +54,11 @@ pub fn execute_with_json() {
     show_ex(format!("{:?}", output));
 }
 
-pub fn generate_blocks_only(path: &str) -> Result<Vec<Block>, String> {
+pub fn generate_blocks_only(path: &str) -> Result<Vec<Block2>, String> {
     let json_str =
         fs::read_to_string(path).map_err(|e| format!("Erro ao ler arquivo '{}': {}", path, e))?;
 
-    let blocks_only: Vec<Block> = serde_json::from_str(&json_str)
+    let blocks_only: Vec<Block2> = serde_json::from_str(&json_str)
         .map_err(|e| format!("Erro ao desserializar JSON: {}", e))?;
 
     Ok(blocks_only)
@@ -76,7 +76,7 @@ pub fn save_json_in_file<T: Serialize>(blocks_only: &T, caminho: &str) -> Result
     Ok(())
 }
 
-pub fn process_blocks(blocks_only: &Vec<Block>) -> Vec<String> {
+pub fn process_blocks(blocks_only: &Vec<Block2>) -> Vec<String> {
     let mut output = vec!["output is empty".to_string()];
     let mut number_of_global_estatements: u16 = 0;
     let mut global_statements: Option<Vec<Statement>> = None;

@@ -1,5 +1,5 @@
 use crate::ir::ast::{Expression, FormalArgument, Function, Statement, Type};
-use crate::models::{Block, Blocks, Input, NextBlock, Workspace};
+use crate::models::{Block2, Blocks2, Input, NextBlock, Workspace2};
 use actix_web::{HttpResponse, Responder, post, web};
 use nom::{Err, Finish};
 use nom::{
@@ -20,7 +20,7 @@ use std::{fs::File, process::Output};
 use crate::parser::parser_expr::parse_expression;
 use crate::parser::parser_common::identifier;
 
-pub fn parse_chained_blocks(block: &Block) -> Result<Statement, String> {
+pub fn parse_chained_blocks(block: &Block2) -> Result<Statement, String> {
     let mut current_block = Some(block);
     let mut statements_vector: Vec<Statement> = Vec::new();
 
@@ -32,7 +32,7 @@ pub fn parse_chained_blocks(block: &Block) -> Result<Statement, String> {
     return Ok(Statement::Block(statements_vector));
 }
 
-fn parse_single_block(block: &Block) -> Result<Statement, String> {
+fn parse_single_block(block: &Block2) -> Result<Statement, String> {
     match block.r#type.as_str() {
         "print_block" => {
             if let Some(expression_string) = block
@@ -48,7 +48,7 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
                         "".to_string(),
                     ))));
                 }
-                let (rest, assignment_exp) = parse_expression(expression_string.as_str())
+                let (rest, assignment_exp) = parse_expression(expression_string)
                     .map_err(|_e| format!("Parsing error on expression: {}", expression_string))?;
                 if !rest.is_empty() {
                     return Err(format!(
@@ -76,7 +76,7 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
                 }
 
                 let (rest, variable_string) =
-                    delimited(multispace0, identifier, multispace0)(variable_name.as_str())
+                    delimited(multispace0, identifier, multispace0)(variable_name)
                         .map_err(|_e| format!("Parsing error on variable: {}", variable_name))?;
                 if !rest.is_empty() {
                     return Err(format!("Parsing error on variable: {}", variable_name));
@@ -114,7 +114,7 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
                 }
 
                 let (rest, variable_string) =
-                    delimited(multispace0, identifier, multispace0)(variable_name.as_str())
+                    delimited(multispace0, identifier, multispace0)(variable_name)
                         .map_err(|_e| format!("Parsing error on variable: {}", variable_name))?;
                 if !rest.is_empty() {
                     return Err(format!("Parsing error on variable: {}", variable_name));
@@ -132,7 +132,7 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
                         return Err("Variable assignment requires non-empty expression".to_string());
                     }
 
-                    let (rest, assignment_exp) = parse_expression(expression_string.as_str())
+                    let (rest, assignment_exp) = parse_expression(expression_string)
                         .map_err(|_e| {
                             format!("Parsing error on expression: {}", expression_string)
                         })?;
@@ -168,7 +168,7 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
                 if condition.is_empty() {
                     return Err("If condition is empty".to_string());
                 }
-                let (rest, condition_exp) = parse_expression(condition.as_str())
+                let (rest, condition_exp) = parse_expression(condition)
                     .map_err(|e| format!("Parsing error on condition: {}", condition))?;
                 if !rest.is_empty() {
                     return Err(format!("Parsing error on condition: {}", condition));
@@ -179,7 +179,7 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
                     .and_then(|i| i.get("IF_BODY"))
                     .and_then(|input| input.block.as_ref())
                 {
-                    let then_block = parse_chained_blocks(if_body.as_ref())?;
+                    let then_block = parse_chained_blocks(if_body)?;
 
                     if let Some(else_body) = block
                         .inputs
@@ -187,7 +187,7 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
                         .and_then(|i| i.get("ELSE_BODY"))
                         .and_then(|input| input.block.as_ref())
                     {
-                        let else_block = parse_chained_blocks(else_body.as_ref())?;
+                        let else_block = parse_chained_blocks(else_body)?;
                         return Ok(Statement::IfThenElse(
                             Box::new(condition_exp),
                             Box::new(then_block),
@@ -220,7 +220,7 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
                 if condition.is_empty() {
                     return Err("While condition is empty".to_string());
                 }
-                let (rest, condition_exp) = parse_expression(condition.as_str())
+                let (rest, condition_exp) = parse_expression(condition)
                     .map_err(|e| format!("Parsing error on condition: {}", condition))?;
                 if !rest.is_empty() {
                     return Err(format!("Parsing error on condition: {}", condition));
@@ -231,7 +231,7 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
                     .and_then(|i| i.get("WHILE_BODY"))
                     .and_then(|input| input.block.as_ref())
                 {
-                    let while_block = parse_chained_blocks(&*while_body)?;
+                    let while_block = parse_chained_blocks(while_body)?;
                     return Ok(Statement::While(
                         Box::new(condition_exp),
                         Box::new(while_block),
@@ -272,7 +272,7 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
                     return Err("Function was not named".to_string());
                 }
                 let (rest, func_string) =
-                    delimited(multispace0, identifier, multispace0)(&func_name.as_str())
+                    delimited(multispace0, identifier, multispace0)(func_name)
                         .map_err(|_e| format!("Parsing error on function: {}", func_name))?;
                 if !rest.is_empty() {
                     return Err(format!("Parsing error on function: {}", func_name));
@@ -327,7 +327,6 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
                 .and_then(|input| input.get("FUNCTION_BODY"))
                 .and_then(|input| input.block.as_ref())
             {
-                let func_block = func_block.as_ref();
                 func_body = Some(parse_chained_blocks(func_block)?); //func_block agora é do tipo Some(Statement::Block())
             } else {
             }
@@ -341,12 +340,13 @@ fn parse_single_block(block: &Block) -> Result<Statement, String> {
             {
                 if !return_str.is_empty() {
                     let (rest, return_exp) =
-                        parse_expression(return_str.as_str()).map_err(|error| {
-                            format!(
-                                "Parsing error on return statement {}: {:?}",
-                                return_str, error
-                            )
-                        })?;
+                        parse_expression(return_str)
+                            .map_err(|error| {
+                                format!(
+                                    "Parsing error on return statement {}: {:?}",
+                                    return_str, error
+                                )
+                            })?;
                     if !rest.is_empty() {
                         return Err(format!("Parsing error on return_str: {}", return_str));
                     }

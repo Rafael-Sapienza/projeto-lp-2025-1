@@ -284,7 +284,7 @@ async function execute() {
     const workspaceJson = Blockly.serialization.workspaces.save(workspace, {includeShadowBlocks: true});
     console.log(JSON.stringify(workspaceJson));
     try {
-        const response = await fetch('/execute', {
+        const response = await fetch('/hard-interpreter', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -307,3 +307,5 @@ async function execute() {
         document.getElementById('output').textContent = `Error: ${error}`;
     }
 }
+
+document.querySelector("#execute").addEventListener("click", execute);
