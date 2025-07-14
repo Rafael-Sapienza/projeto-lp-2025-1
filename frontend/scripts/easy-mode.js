@@ -17,7 +17,7 @@ for (const category in templateBlocks) {
 
 registerBlocks([...selectedCustomBlocks, ...selectedTemplateBlocks]);
 const toolbox = buildToolbox(selectedCustomBlocks, "categoryToolbox");
-toolbox.contents.push(variablesCategory);
+toolbox.contents.push(variablesCategory, functionsCategory);
 
 const workspace = injectWorkspace("blocklyDiv", toolbox, easyTheme);
 setupVariablesToolbox(workspace);
