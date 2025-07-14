@@ -66,6 +66,8 @@ body {
 
 /* Container principal */
 .main-container {
+    position: relative;
+    z-index: 1;
     width: 1100px;
     display: flex;
     flex-direction: column;
@@ -100,25 +102,6 @@ body {
     gap: 15px;
 }
 
-/* Botão */
-button {
-    padding: 12px 24px;
-    background: #8a4c28;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s;
-    width: auto;
-}
-
-button:hover {
-    background: #7a4323;
-    transform: translateY(-2px);
-}
-
 /* Área de output */
 #output {
     width: 100%;
@@ -128,7 +111,42 @@ button:hover {
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     border: 1px solid #e0e0e0;
-    font-family: 'Consolas', monospace;
+    font-family: 'Baloo 2', monospace;
+    font-weight: bold;
     font-size: 25px;
     white-space: pre-wrap; 
+}
+
+.bubbles {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.bubbles span {
+  position: absolute;
+  display: block;
+  bottom: -150px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  animation: bubbleFloat calc(var(--i) * 0.8s) linear infinite;
+}
+
+@keyframes bubbleFloat {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-110vh) scale(0.8);
+    opacity: 0;
+  }
 }
