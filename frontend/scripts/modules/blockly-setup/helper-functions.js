@@ -72,3 +72,28 @@ export const createGetVariableBlock = function(variable) {
 
     return getBlock;
 }
+
+
+export const createSetFunctionBlock = function(functionName, functionParameters) {
+    const setBlockType = `function_set_${functionName.replace(/\s+/g, "_")}`;
+
+    const setBlock = Blockly.utils.xml.createElement("block");
+    setBlock.setAttribute("type", setBlockType);
+
+    for (const parameter of functionParameters) {
+        const valueNode = Blockly.utils.xml.createElement("value");
+        valueNode.setAttribute("name", parameter.name);
+
+        // Insert a dummy shadow block with the correct type
+        const parameterType = parameter.type;
+        if (parameterType === "Number" || parameterType === "String") {
+            const shadowNode = Blockly.utils.xml.createElement("shadow");
+            const shadow = parameterType === "Number" ? "number_shadow" : "text_shadow";
+            shadowNode.setAttribute("type", shadow);
+            valueNode.appendChild(shadowNode);
+        }
+
+        setBlock.appendChild(valueNode);
+    }
+    return setBlock;
+}

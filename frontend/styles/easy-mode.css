@@ -112,6 +112,70 @@ body {
     white-space: pre-wrap; 
 }
 
+
+/* Function creation box */
+
+#function-creator {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border: 2px solid #995533;
+  border-radius: 10px;
+  padding: 1.5em;
+  z-index: 1000;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  font-family: sans-serif;
+  min-width: 300px;
+}
+
+.form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+}
+
+.form-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.param-item {
+  margin-top: 0.5em;
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+}
+
+.blur {
+  filter: blur(4px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.invalid-function-name {
+    background-color: red;
+}
+ .parameter-icon {
+    width: 16px; 
+    height: 16px; 
+    vertical-align: middle; 
+    margin-right: 4px;
+ }
+
+ .delete-parameter {
+    width: 16px; 
+    height: 16px; 
+    vertical-align: middle; 
+    margin-right: 4px;
+    cursor: pointer;
+ }
+
+.blocklyLabelField {
+    border: 2px solid black !important;
+}
 .bubbles {
   position: fixed;
   width: 100%;
