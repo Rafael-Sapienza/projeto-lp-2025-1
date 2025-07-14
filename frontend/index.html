@@ -1,19 +1,53 @@
 <!DOCTYPE html>
-
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://kit.fontawesome.com/c74b1a6c12.js" crossorigin="anonymous"></script>
-        <title>Crabby</title>
-    </head>
-    <body>
-       <a href="easy-mode.html">Easy mode</a> <!-- Carangueijinho da praia -->
-       <a href="hard-mode.html">Hard mode</a> <!-- Crustáceo das profundezas-->
-        <link rel="stylesheet" href="./styles/index.css">
-    </body>
-        <div class="main-container">
-        <h1 class="logo">Crabby</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Chau+Philomene+One:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
+
+    <title>Crabby</title>
+    <link rel="stylesheet" href="./styles/index.css" />
+  </head>
+
+  <body>
+    <div class="main-container">
+      <h1 class="logo">Crabby</h1>
+
+      <div class="button-row">
+        <a href="easy-mode.html" class="mode-button">
+          <span>Carangueijinho da praia</span>
+          <img src="assets/easy-mode-button.png" alt="easy-mode" />
+        </a>
+
+        <a href="hard-mode.html" class="mode-button">
+          <span>Crustáceo das profundezas</span>
+          <img src="assets/hard-mode-button.jpg" alt="hard-mode" />
+        </a>
+      </div>
     </div>
 
+    <div class="bubbles">
+      <span style="left: 5%; width: 18px; height: 18px; --i: 8;"></span>
+      <span style="left: 22%; width: 24px; height: 24px; --i: 12;"></span>
+      <span style="left: 35%; width: 12px; height: 12px; --i: 5;"></span>
+      <span style="left: 48%; width: 20px; height: 20px; --i: 15;"></span>
+      <span style="left: 53%; width: 14px; height: 14px; --i: 9;"></span>
+      <span style="left: 61%; width: 30px; height: 30px; --i: 18;"></span>
+      <span style="left: 70%; width: 16px; height: 16px; --i: 7;"></span>
+      <span style="left: 79%; width: 22px; height: 22px; --i: 10;"></span>
+      <span style="left: 86%; width: 14px; height: 14px; --i: 14;"></span>
+      <span style="left: 93%; width: 26px; height: 26px; --i: 13;"></span>
+    </div>
+
+  <script src="./scripts/bubbles.js"></script>
+
+  </body>
 </html>
