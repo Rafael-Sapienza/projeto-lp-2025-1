@@ -21,10 +21,10 @@ mod routes;
 mod type_checker;
 
 // Allows the main function to be an async function
-//#[actix_web::main]
+#[actix_web::main]
 // The function return a Result. Which Result depends on the the setting / execution of the server
 
-/* 
+ 
 async fn main() -> std::io::Result<()> {
     const ADDRESS: &str = "127.0.0.1";
     const PORT: u16 = 8080;
@@ -55,12 +55,12 @@ async fn main() -> std::io::Result<()> {
     // Starts the event loop, accepts connections, and runs the server.
     server.await
 }
-*/
 
- 
+/* 
 fn main() {
     // Tenta criar um arquivo chamado "debug.txt"
     reset_txt_files();
 
     execute_with_json();
 }
+*/

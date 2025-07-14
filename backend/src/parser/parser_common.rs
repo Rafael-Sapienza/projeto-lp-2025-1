@@ -36,6 +36,8 @@ pub const ASSERT_KEYWORD: &str = "assert";
 pub const VAR_KEYWORD: &str = "var";
 pub const VAL_KEYWORD: &str = "val";
 pub const DEF_KEYWORD: &str = "def";
+pub const RET_KEYWORD: &str = "ret";
+pub const LAMBDA_KEYWORD: &str = "lambda";
 
 // Operator and symbol constants
 pub const FUNCTION_ARROW: &str = "->";

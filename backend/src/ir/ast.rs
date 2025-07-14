@@ -120,7 +120,7 @@ pub enum Expression {
     ListValue(Vec<Expression>),
 
     //Lambda expressions
-    Lambda(Box<Function>),
+    Lambda(Function),
 
     // Constructor
     Constructor(Name, Vec<Box<Expression>>),

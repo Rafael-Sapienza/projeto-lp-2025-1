@@ -1,126 +1,16 @@
 [
   {
-    "type": "function_declaration_block",
-    "fields": {
-      "RETURN_TYPE": "INT",
-      "FUNCTION_NAME": "fatorial"
-    },
-    "inputs": {
-      "RETURN_EXPRESSION": {
-        "block": null,
-        "shadow": {
-          "type": "expression_block",
-          "fields": {
-            "TEXT": "m"
-          },
-          "inputs": null,
-          "next": null
-        }
-      },
-      "FORMAL_ARGUMENTS": {
-        "block": {
-          "type": "formal_argument_block",
-          "fields": {
-            "ARGUMENT_TYPE": "INT",
-            "FORMAL_ARGUMENT": "x"
-          },
-          "inputs": null,
-          "next": null
-        },
-        "shadow": null
-      },
-      "FUNCTION_BODY": {
-        "block": {
-          "type": "declaration_block",
-          "fields": {
-            "TYPE": "INT",
-            "VARIABLE": "m"
-          },
-          "inputs": null,
-          "next": {
-            "block": {
-              "type": "if_else_block",
-              "fields": null,
-              "inputs": {
-                "IF_BODY": {
-                  "block": {
-                    "type": "assignment_block",
-                    "fields": {
-                      "VARIABLE": "m"
-                    },
-                    "inputs": {
-                      "EXPRESSION": {
-                        "block": null,
-                        "shadow": {
-                          "type": "expression_block",
-                          "fields": {
-                            "TEXT": "1"
-                          },
-                          "inputs": null,
-                          "next": null
-                        }
-                      }
-                    },
-                    "next": null
-                  },
-                  "shadow": null
-                },
-                "CONDITION": {
-                  "block": null,
-                  "shadow": {
-                    "type": "expression_block",
-                    "fields": {
-                      "TEXT": "x ==    1"
-                    },
-                    "inputs": null,
-                    "next": null
-                  }
-                },
-                "ELSE_BODY": {
-                  "block": {
-                    "type": "assignment_block",
-                    "fields": {
-                      "VARIABLE": "m"
-                    },
-                    "inputs": {
-                      "EXPRESSION": {
-                        "block": null,
-                        "shadow": {
-                          "type": "expression_block",
-                          "fields": {
-                            "TEXT": "x*fatorial(x-1)"
-                          },
-                          "inputs": null,
-                          "next": null
-                        }
-                      }
-                    },
-                    "next": null
-                  },
-                  "shadow": null
-                }
-              },
-              "next": null
-            }
-          }
-        },
-        "shadow": null
-      }
-    },
-    "next": null
-  },
-  {
     "type": "declaration_block",
     "fields": {
-      "TYPE": "INT",
-      "VARIABLE": "a"
+      "VARIABLE": "teste",
+      "TYPE": "FLOAT"
     },
     "inputs": null,
     "next": {
       "block": {
         "type": "assignment_block",
         "fields": {
-          "VARIABLE": "a"
+          "VARIABLE": "teste"
         },
         "inputs": {
           "EXPRESSION": {
@@ -128,7 +18,7 @@
             "shadow": {
               "type": "expression_block",
               "fields": {
-                "TEXT": "fatorial(7)"
+                "TEXT": "3.4"
               },
               "inputs": null,
               "next": null
@@ -137,41 +27,64 @@
         },
         "next": {
           "block": {
-            "type": "print_block",
+            "type": "if_else_block",
             "fields": null,
             "inputs": {
-              "EXPRESSION": {
+              "CONDITION": {
                 "block": null,
                 "shadow": {
                   "type": "expression_block",
                   "fields": {
-                    "TEXT": "\"Resultado:\""
+                    "TEXT": "teste == 3.4"
                   },
                   "inputs": null,
                   "next": null
                 }
+              },
+              "IF_BODY": {
+                "block": {
+                  "type": "print_block",
+                  "fields": null,
+                  "inputs": {
+                    "EXPRESSION": {
+                      "block": null,
+                      "shadow": {
+                        "type": "expression_block",
+                        "fields": {
+                          "TEXT": "\"opa\""
+                        },
+                        "inputs": null,
+                        "next": null
+                      }
+                    }
+                  },
+                  "next": null
+                },
+                "shadow": null
+              },
+              "ELSE_BODY": {
+                "block": {
+                  "type": "print_block",
+                  "fields": null,
+                  "inputs": {
+                    "EXPRESSION": {
+                      "block": null,
+                      "shadow": {
+                        "type": "expression_block",
+                        "fields": {
+                          "TEXT": "\"oioi\""
+                        },
+                        "inputs": null,
+                        "next": null
+                      }
+                    }
+                  },
+                  "next": null
+                },
+                "shadow": null
               }
             },
-            "next": {
-              "block": {
-                "type": "print_block",
-                "fields": null,
-                "inputs": {
-                  "EXPRESSION": {
-                    "block": null,
-                    "shadow": {
-                      "type": "expression_block",
-                      "fields": {
-                        "TEXT": "a"
-                      },
-                      "inputs": null,
-                      "next": null
-                    }
-                  }
-                },
-                "next": null
-              }
-            }
+            "next": null
           }
         }
       }

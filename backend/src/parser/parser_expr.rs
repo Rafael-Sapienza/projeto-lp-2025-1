@@ -1,7 +1,7 @@
 use nom::{
     branch::alt,
     bytes::complete::{tag, take_while},
-    character::complete::{char, digit1, multispace0},
+    character::complete::{char, digit1, multispace0, multispace1},
     combinator::{map, map_res, opt, value, verify},
     error::Error,
     multi::{fold_many0, separated_list0},
@@ -11,19 +11,26 @@ use nom::{
 
 use std::str::FromStr;
 
-use crate::ir::ast::Expression;
+use crate::{ir::ast::Expression, parser::{parser_common::END_KEYWORD, parser_stmt::parse_block}};
 use crate::parser::parser_common::{
     identifier,
     is_string_char,
     keyword,
     // Other character constants
     COMMA_CHAR,
+    COLON_CHAR,
     // Bracket and parentheses constants
     LEFT_BRACKET,
     LEFT_PAREN,
     RIGHT_BRACKET,
     RIGHT_PAREN,
+    FUNCTION_ARROW,
+    LAMBDA_KEYWORD,
 };
+use crate::parser::parser_stmt::{parse_formal_argument, parse_return_statement};
+use crate::parser::parser_type::parse_type;
+use crate::ir::ast::Function;
+use crate::ir::ast::Statement;
 
 
 pub fn parse_expression(input: &str) -> IResult<&str, Expression> {
@@ -118,7 +125,7 @@ fn parse_factor(input: &str) -> IResult<&str, Expression> {
         parse_string,
         parse_list,
         parse_function_call,
-        //parse_lambda,
+        parse_lambda,
         parse_var,
         delimited(
             char::<&str, Error<&str>>(LEFT_PAREN),
@@ -197,7 +204,7 @@ fn parse_function_call(input: &str) -> IResult<&str, Expression> {
     Ok((input, Expression::FuncCall(name.to_string(), args)))
 }
 
-/* 
+
 fn parse_lambda(input: &str) -> IResult<&str, Expression> {
     map(
         tuple((
@@ -216,20 +223,20 @@ fn parse_lambda(input: &str) -> IResult<&str, Expression> {
                 char::<&str, Error<&str>>(RIGHT_PAREN),
             ),
             preceded(multispace0, tag(FUNCTION_ARROW)),
-            preceded(multispace0, parse_type),
-            parse_block,
+            delimited(multispace0, parse_type, char::<&str, Error<&str>>(COLON_CHAR)),
+            parse_return_statement, 
+            keyword(END_KEYWORD)
         )),
-        |(_, name, args, _, t, block)| {
-            Statement::FuncDef(Function {
+        |(_, name, args, _, t, return_stmt, _)| {
+            Expression::Lambda(Function {
                 name: name.to_string(),
                 kind: t,
                 params: args,
-                body: Some(Box::new(block)),
+                body: Some(Box::new(Statement::Block(vec![return_stmt]))),
             })
         },
     )(input)
 }
-*/
 
 pub fn parse_actual_arguments(input: &str) -> IResult<&str, Vec<Expression>> {
     map(

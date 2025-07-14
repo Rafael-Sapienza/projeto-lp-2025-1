@@ -1,64 +1,52 @@
 
 
 -----------------------------------------
-            counter: 1
-
-
-Function factorial parsed successfully
-
-Function statement: Block([FuncDef(Function { name: "factorial", kind: TInteger, params: [FormalArgument { argument_name: "x", argument_type: TInteger }], body: Some(Block([VarDeclaration("m", CInt(0)), IfThenElse(Not(EQ(Var("x"), CInt(1))), Block([Assignment("m", Mul(Var("x"), FuncCall("factorial", [Sub(Var("x"), CInt(1))])))]), Some(Block([Assignment("m", CInt(1))]))), Return(Var("m"))])) })])
-
-
-
------------------------------------------
-            counter: 2
+            counter: 93
 
 
 main statement parsed successfully
 
-main statement: Block([VarDeclaration("a", CInt(0)), Assignment("a", FuncCall("factorial", [CInt(3)])), Print(Var("a"))])
+main statement: Block([VarDeclaration("teste", CReal(0.0)), Assignment("teste", CReal(3.4)), IfThenElse(EQ(Var("teste"), CReal(3.4)), Block([Print(CString("opa"))]), Some(Block([Print(CString("oioi"))])))])
 
 
 
 -----------------------------------------
-            counter: 3
+            counter: 94
 
 
-final statement: Block([FuncDef(Function { name: "factorial", kind: TInteger, params: [FormalArgument { argument_name: "x", argument_type: TInteger }], body: Some(Block([VarDeclaration("m", CInt(0)), IfThenElse(Not(EQ(Var("x"), CInt(1))), Block([Assignment("m", Mul(Var("x"), FuncCall("factorial", [Sub(Var("x"), CInt(1))])))]), Some(Block([Assignment("m", CInt(1))]))), Return(Var("m"))])) }), VarDeclaration("a", CInt(0)), Assignment("a", FuncCall("factorial", [CInt(3)])), Print(Var("a"))])
-
-
-
------------------------------------------
-            counter: 5
-
-
-Initial Type Env: Environment { id: 0, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+final statement: Block([VarDeclaration("teste", CReal(0.0)), Assignment("teste", CReal(3.4)), IfThenElse(EQ(Var("teste"), CReal(3.4)), Block([Print(CString("opa"))]), Some(Block([Print(CString("oioi"))])))])
 
 
 
 -----------------------------------------
-            counter: 39
+            counter: 96
 
 
-Final Type Env: Environment { id: 0, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
-
-
-
------------------------------------------
-            counter: 41
-
-
-Initial Exp Env: Environment { id: 2, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+Initial Type Env: Environment { id: 4, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
 
 
 
 -----------------------------------------
-            counter: 162
+            counter: 113
 
 
-Final Exp Env: Environment { id: 2, stack_len: 0, current_func: "", output: ["6"], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+Final Type Env: Environment { id: 4, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+
+
+
+-----------------------------------------
+            counter: 115
+
+
+Initial Exp Env: Environment { id: 5, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+
+
+
+-----------------------------------------
+            counter: 138
+
+
+Final Exp Env: Environment { id: 5, stack_len: 0, current_func: "", output: ["opa"], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
 
 Variables: [] 
-
-["6"]
 
