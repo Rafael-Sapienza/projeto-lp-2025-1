@@ -18,7 +18,7 @@ export const easyInterpretation = async function(workspace) {
         console.log(output);
 
         // Update the <pre id="output">
-        document.getElementById('output').textContent = `Output:\n${output.join('\n')}`;
+        document.getElementById('output').textContent = `RESULTADO:\n${output.join('\n')}`;
 
     } catch (error) {
         console.error('Error:', error);

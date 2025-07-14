@@ -20,30 +20,3 @@ toolbox.contents.push(variablesCategory);
 const workspace = injectWorkspace("blocklyDiv", toolbox, abyssTheme);
 setupVariablesToolbox(workspace);
 setupRunBtn("easy_run", workspace);
-
-/*Blockly.common.setParentContainer(document.body);
-
-
-function corrigirEspacoEntreToolboxEFlyout() {
-  const flyout = workspace.getFlyout();
-  const toolboxWidth = workspace.toolbox_.getWidth();
-  const metrics = workspace.getMetrics();
-
-  // Força o reposicionamento correto
-  flyout.svgGroup_.setAttribute(
-    "transform",
-    `translate(${toolboxWidth + 0}, ${metrics.absoluteTop})` // ajuste fino aqui (0px ou mais)
-  );
-}
-
-// Corrige após a primeira renderização
-setTimeout(corrigirEspacoEntreToolboxEFlyout, 0);
-
-// Corrige toda vez que a categoria for alterada
-workspace.addChangeListener(function(event) {
-  if (event.type === Blockly.Events.TOOLBOX_ITEM_SELECT) {
-    setTimeout(corrigirEspacoEntreToolboxEFlyout, 3000); // pequeno delay para dar tempo do Blockly desenhar
-  }
-});
-*/
-

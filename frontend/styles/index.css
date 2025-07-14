@@ -50,8 +50,8 @@ body {
   text-decoration: none;
   color: #333;
   animation: floatIn 0.8s ease forwards;
-  position: relative; /* necessário para posicionar bolhas */
-  overflow: visible;  /* permite que as bolhas saiam do botão */
+  position: relative;
+  overflow: visible; 
   z-index: 1;
 }
 
@@ -80,7 +80,6 @@ body {
   text-shadow: 2px 2px 4px rgba(255, 243, 243, 0.814);
 }
 
-/* Estilos para as bolhas que saem do botão */
 .mode-button .btn-bubble {
   position: absolute;
   background: rgba(255, 255, 255, 0.7);
@@ -101,7 +100,6 @@ body {
   }
 }
 
-/* Animação de entrada (única, sem loop) */
 @keyframes floatIn {
   0% {
     opacity: 0;
@@ -113,7 +111,6 @@ body {
   }
 }
 
-/* Responsividade */
 @media (max-width: 768px) {
   .logo {
     width: 80vw;
