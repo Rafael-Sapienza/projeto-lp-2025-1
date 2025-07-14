@@ -1,0 +1,24 @@
+
+
+-----------------------------------------
+            counter: 138
+
+
+Eval Add:
+
+Expression: Add(Var("num"), CInt(5))
+
+Env: Environment { id: 10, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {"num": (true, CInt(10))}, functions: {}, adts: {} }] }
+
+
+
+-----------------------------------------
+            counter: 139
+
+
+Eval Var:
+
+Expression: Var("num")
+
+Env: Environment { id: 10, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {"num": (true, CInt(10))}, functions: {}, adts: {} }] }
+

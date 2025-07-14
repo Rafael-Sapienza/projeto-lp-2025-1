@@ -25,6 +25,9 @@ function createFunctionsFlyout(workspace) {
     for (const functionName in createdFunctions) {
 
         xmlList.push(createSetFunctionBlock(functionName, createdFunctions[functionName].parameters));
+        /*createdFunctions[functionName].parameters.forEach(parameter => {
+            xmlList.push(//CREATE A FUNCTION TO GENERATE/RETURN THE BLOCKS);
+        });*/
     }   
     return xmlList;
 }

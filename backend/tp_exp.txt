@@ -1,0 +1,12 @@
+
+
+-----------------------------------------
+            counter: 121
+
+
+Check Var:
+
+Exp: Var("num")
+
+Env: Environment { id: 9, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {"num": (true, TInteger)}, functions: {}, adts: {} }] }
+
