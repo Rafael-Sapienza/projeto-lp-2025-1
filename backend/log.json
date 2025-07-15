@@ -1,56 +1,22 @@
 [
   {
-    "type": "declaration_block",
-    "id": "qkG~/[X_C~zN-bQPo^9q",
-    "fields": {
-      "VARIABLE": "num",
-      "TYPE": "INT"
-    },
-    "inputs": null,
-    "next": {
-      "block": {
-        "type": "assignment_block",
-        "id": "#@ug[iM)q3jmY_W0[[zf",
-        "fields": {
-          "VARIABLE": "num"
-        },
-        "inputs": {
-          "EXPRESSION": {
-            "block": null,
-            "shadow": {
-              "type": "expression_block",
-              "id": "xC^~zkg2rWW!W00bg83-",
-              "fields": {
-                "TEXT": "10"
-              },
-              "inputs": null,
-              "next": null
-            }
-          }
-        },
-        "next": {
-          "block": {
-            "type": "print_block",
-            "id": "tTjn1Df9bj13HZ@79_RX",
-            "fields": null,
-            "inputs": {
-              "EXPRESSION": {
-                "block": null,
-                "shadow": {
-                  "type": "expression_block",
-                  "id": ")8_~/U(OTKlK,z#nuS^Q",
-                  "fields": {
-                    "TEXT": "num + 5 "
-                  },
-                  "inputs": null,
-                  "next": null
-                }
-              }
-            },
-            "next": null
-          }
+    "type": "print_block",
+    "id": "u0wtqQ6@MdlwURz;^jY(",
+    "fields": null,
+    "inputs": {
+      "EXPRESSION": {
+        "block": null,
+        "shadow": {
+          "type": "expression_block",
+          "id": "T;2gYuL9].vjL;b^B-,]",
+          "fields": {
+            "TEXT": "\"oi\""
+          },
+          "inputs": null,
+          "next": null
         }
       }
-    }
+    },
+    "next": null
   }
 ]

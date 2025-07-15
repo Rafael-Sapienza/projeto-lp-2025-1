@@ -1,8 +1,16 @@
 use actix_web::{web, HttpResponse, Responder}; 
 use serde_json::Value as JsonValue;
-use crate::models::{ Value, Workspace, Block, Input };
+use crate::models::{ EasyInterpreter, Value, Workspace, Block, Input };
 
+pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
+    let mut interpreter = EasyInterpreter::new();         // 👈 create interpreter
 
+    interpreter.run(&payload.blocks.blocks);          // 👈 run all blocks
+
+    HttpResponse::Ok().json(interpreter.into_output()) // 👈 return output
+}
+
+/*
 pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
     let mut output = Vec::<String>::new();
 
@@ -350,4 +358,4 @@ fn get_text_shadow(block: &Block) -> Option<String> {
         }
     }
     None
-}
+}*/
