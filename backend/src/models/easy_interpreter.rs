@@ -1,11 +1,10 @@
-use super::serialization::{Block, Input, Value};
-use serde_json::Value as JsonValue;
+use super::serialization::{Block, Input, Value}; use serde_json::Value as JsonValue;
 use std::collections::HashMap;
 
 pub struct EasyInterpreter {
     output: Vec<String>,
     variables: HashMap<String, Value>,
-    // Later: functions: HashMap<String, Vec<Block>>,
+    functions: HashMap<String, Block>,
 }
 
 impl EasyInterpreter {
@@ -13,14 +12,24 @@ impl EasyInterpreter {
         EasyInterpreter {
             output: Vec::new(),
             variables: HashMap::new(),
+            functions: HashMap::new(),
         }
     }
 
     /// Run all top‑level blocks that came from the frontend.
     pub fn run(&mut self, blocks: &[Block]) {
         for block in blocks {
-            self.execute_sequence(block);
+            if block.r#type.starts_with("function_def_") {
+                self.functions.insert(block.r#type.clone(), block.clone());
+            }
         }
+
+        for block in blocks {
+                if block.r#type == "easy_run" {
+                    self.execute_sequence(block);
+                    break;
+                }
+            }
     }
 
     /// Consume the interpreter and give the accumulated output back.
@@ -84,16 +93,24 @@ impl EasyInterpreter {
                 }
                 None
             }
+            other_type if other_type.starts_with("function_set_") => {
+                self.execute_user_function(block)
+            }
+            other_type if other_type.starts_with("function_param_get_") => {
+                let normalized = other_type.replace(' ', "_");
+                self.variables.get(&normalized).cloned()
+            }
             "print" => {
                 let mut text = String::new();
                 if let Some(inputs) = &block.inputs {
                     if let Some(input) = inputs.get("TEXT") {
-                        text = self.get_string_input(input).unwrap_or_else(|| "".to_string());
+                        if let Some(text) = self.get_string_input(input) {
+                            self.output.push(text);
+                        }
                     }
                 }
-                Some(Value::String(text))
+                Some(Value::String(String::new()))
             }
-
             "join" => {
                 let mut left_text = String::new();
                 let mut right_text = String::new();
@@ -109,7 +126,24 @@ impl EasyInterpreter {
 
                 Some(Value::String(format!("{}{}", left_text, right_text)))
             }
-
+            "number_to_text" => {
+                if let Some(inputs) = &block.inputs {
+                    if let Some(input) = inputs.get("NUM") {
+                        if let Some(num) = self.get_number_input(input) {
+                            return Some(Value::String(num.to_string()));
+                        }
+                    }
+                }
+                Some(Value::String(String::new()))
+            }
+            "compare_texts" => {
+                if let Some(inputs) = &block.inputs {
+                    let left = inputs.get("TEXT1").and_then(|i| self.get_string_input(i)).unwrap_or_default();
+                    let right = inputs.get("TEXT2").and_then(|i| self.get_string_input(i)).unwrap_or_default();
+                    return Some(Value::Boolean(left == right));
+                }
+                Some(Value::Boolean(false))
+            }
             "length" => {
                 let mut total: f64 = 0.0;
                 if let Some(inputs) = &block.inputs {
@@ -146,7 +180,7 @@ impl EasyInterpreter {
                 Some(Value::Number(result))
             }
 
-            "bigger" | "smaller" | "equal" => {
+            "bigger" | "smaller" | "equal" | "less_equal" | "greater_equal" => {
                 let mut num1 = 0.0;
                 let mut num2 = 0.0;
 
@@ -163,6 +197,8 @@ impl EasyInterpreter {
                     "bigger"  => num1 > num2,
                     "smaller" => num1 < num2,
                     "equal"   => (num1 - num2).abs() < std::f64::EPSILON,
+                    "less_equal"  => num1 <= num2,
+                    "greater_equal" => num1 >= num2,
                     _ => unreachable!(),
                 };
 
@@ -190,7 +226,67 @@ impl EasyInterpreter {
 
                 Some(Value::String(String::new()))
             }
+            "if_else" => {
+                if let Some(inputs) = &block.inputs {
+                    let mut condition_met = false;
 
+                    if let Some(condition_input) = inputs.get("CONDITION") {
+                        if let Some(b) = self.get_boolean_input(condition_input) {
+                            condition_met = b;
+                        }
+                    }
+
+                    let selected_branch = if condition_met {
+                        inputs.get("DO")
+                    } else {
+                        inputs.get("ELSE")
+                    };
+
+                    if let Some(Some(branch_block)) = selected_branch.map(|input| input.block.as_ref()) {
+                        self.execute_sequence(branch_block);
+                    }
+                }
+
+                Some(Value::String(String::new()))
+            }
+            "repeat" => {
+                if let Some(inputs) = &block.inputs {
+                    let times = inputs.get("TIMES")
+                        .and_then(|input| self.get_number_input(input))
+                        .unwrap_or(0.0) as usize;
+
+                    for _ in 0..times {
+                        if let Some(input) = inputs.get("DO") {
+                            if let Some(sub_block) = &input.block {
+                                self.execute_sequence(sub_block);
+                            }
+                        }
+                    }
+                }
+                Some(Value::String(String::new()))
+            }
+            "while" => {
+                if let Some(inputs) = &block.inputs {
+                    let mut guard = 0; // Optional: prevent infinite loops
+                    while inputs.get("CONDITION")
+                        .and_then(|input| self.get_boolean_input(input))
+                        .unwrap_or(false)
+                    {
+                        if let Some(input) = inputs.get("DO") {
+                            if let Some(sub_block) = &input.block {
+                                self.execute_sequence(sub_block);
+                            }
+                        }
+
+                        guard += 1;
+                        if guard > 10000 {
+                            eprintln!("Infinite loop protection triggered.");
+                            break;
+                        }
+                    }
+                }
+                Some(Value::String(String::new()))
+            }
             "text_shadow" => {
                 Some(Value::String(self.get_text_shadow(block).unwrap_or_else(|| "".to_string())))
             }
@@ -274,5 +370,75 @@ impl EasyInterpreter {
             }
         }
         None
+    }
+
+
+    fn execute_user_function(&mut self, block: &Block) -> Option<Value> {
+        let function_name = block.r#type.replacen("function_set_", "function_def_", 1);
+        let function_def = self.functions.get(&function_name)?.clone();
+
+        let mut local_vars = HashMap::new();
+
+        // 1. Pass arguments to local variables
+        if let Some(input_map) = &block.inputs {
+            for (input_name, input) in input_map {
+                let value = self.execute_input(input);
+                // Param names in definition: "function_param_get_<function_name>_<input_name>"
+                let var_block_type = format!("function_param_get_{}_{}", 
+                    function_name.strip_prefix("function_def_").unwrap_or(""),
+                    input_name);
+
+                if let Some(Value::String(val)) = &value {
+                    local_vars.insert(var_block_type.clone(), Value::String(val.clone()));
+                } else if let Some(Value::Number(val)) = &value {
+                    local_vars.insert(var_block_type.clone(), Value::Number(*val));
+                } else if let Some(Value::Boolean(val)) = &value {
+                    local_vars.insert(var_block_type.clone(), Value::Boolean(*val));
+                }
+            }
+        }
+
+        // 2. Save current scope
+        let old_variables = std::mem::replace(&mut self.variables, local_vars);
+
+        // 3. Execute BODY
+        if let Some(inputs) = &function_def.inputs {
+            if let Some(body_input) = inputs.get("BODY") {
+                if let Some(body_block) = &body_input.block {
+                    self.execute_sequence(body_block);
+                }
+            }
+        }
+
+        // 4. Extract RETURN
+        let return_value = if let Some(inputs) = &function_def.inputs {
+            if let Some(ret_input) = inputs.get("RETURN") {
+                self.execute_input(ret_input)
+            } else {
+                None
+            }
+        } else {
+            None
+        };
+
+        // 5. Restore original scope
+        self.variables = old_variables;
+
+        // 6. Execute next block, if present
+        /*if let Some(next_block) = &block.next {
+            self.execute_sequence(&next_block.block);
+        }*/
+
+        return_value
+    }
+
+    fn execute_input(&mut self, input: &Input) -> Option<Value> {
+        if let Some(block) = &input.block {
+            self.execute_block(block)
+        } else if let Some(shadow) = &input.shadow {
+            self.execute_block(shadow)
+        } else {
+            None
+        }
     }
 }

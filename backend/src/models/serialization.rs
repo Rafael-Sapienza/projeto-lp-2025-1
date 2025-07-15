@@ -22,7 +22,7 @@ pub struct Blocks2 {
     pub blocks: Vec<Block2>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Block {
     pub r#type: String, // "r#" is because "type" is reserved
     pub id: String,
@@ -40,7 +40,7 @@ pub struct Block2 {
     pub next: Option<NextBlock2>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Input {
     pub block: Option<Box<Block>>,
     pub shadow: Option<Box<Block>>,
@@ -52,7 +52,7 @@ pub struct Input2 {
     pub shadow: Option<Box<Block2>>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct NextBlock {
     pub block: Box<Block>,
 }
