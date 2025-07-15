@@ -1,10 +1,10 @@
-//! models/easy_interpreter.rs
 use super::serialization::{Block, Input, Value};
 use serde_json::Value as JsonValue;
+use std::collections::HashMap;
 
 pub struct EasyInterpreter {
     output: Vec<String>,
-    // Later: variables: HashMap<String, Value>,
+    variables: HashMap<String, Value>,
     // Later: functions: HashMap<String, Vec<Block>>,
 }
 
@@ -12,6 +12,7 @@ impl EasyInterpreter {
     pub fn new() -> Self {
         EasyInterpreter {
             output: Vec::new(),
+            variables: HashMap::new(),
         }
     }
 
@@ -47,6 +48,42 @@ impl EasyInterpreter {
 
     fn execute_block(&mut self, block: &Block) -> Option<Value> {
         match block.r#type.as_str() {
+
+            "variables_set_number" => {
+                if let (Some(fields), Some(inputs)) = (&block.fields, &block.inputs) {
+                    if let (Some(var_field), Some(input)) = (fields.get("VAR"), inputs.get("NUM")) {
+                        if let Some(var_id) = var_field.get("id").and_then(|v| v.as_str()) {
+                            if let Some(num) = self.get_number_input(input) {
+                                self.variables.insert(var_id.to_string(), Value::Number(num));
+                            }
+                        }
+                    }
+                }
+                Some(Value::String(String::new()))
+            }
+
+            "variables_set_string" => {
+                if let (Some(fields), Some(inputs)) = (&block.fields, &block.inputs) {
+                    if let (Some(var_field), Some(input)) = (fields.get("VAR"), inputs.get("TEXT")) {
+                        if let Some(var_id) = var_field.get("id").and_then(|v| v.as_str()) {
+                            if let Some(text) = self.get_string_input(input) {
+                                self.variables.insert(var_id.to_string(), Value::String(text));
+                            }
+                        }
+                    }
+                }
+                Some(Value::String(String::new()))
+            }
+            "variables_get_number" | "variables_get_string" => {
+                if let Some(fields) = &block.fields {
+                    if let Some(var_field) = fields.get("VAR") {
+                        if let Some(var_id) = var_field.get("id").and_then(|v| v.as_str()) {
+                            return self.variables.get(var_id).cloned();
+                        }
+                    }
+                }
+                None
+            }
             "print" => {
                 let mut text = String::new();
                 if let Some(inputs) = &block.inputs {

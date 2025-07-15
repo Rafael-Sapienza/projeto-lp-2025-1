@@ -62,6 +62,7 @@ pub struct NextBlock2 {
     pub block: Box<Block2>,
 }
 
+#[derive(Debug, Clone)]
 pub enum Value {
     String(String),
     Number(f64),
