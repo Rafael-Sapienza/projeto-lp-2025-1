@@ -1,87 +1,122 @@
 [
   {
     "type": "function_declaration_block",
-    "id": "cf6$dFMKIZ-EAXUNy=.{",
+    "id": "BW,Q%_EP%o2GUi@Z{Oc)",
     "fields": {
       "FUNCTION_NAME": "f",
-      "RETURN_TYPE": "VOID"
+      "RETURN_TYPE": "INT"
     },
     "inputs": {
-      "RETURN_EXPRESSION": {
-        "block": null,
-        "shadow": {
-          "type": "expression_block",
-          "id": "R2`WL,9do?l=,DMje~mt",
-          "fields": {
-            "TEXT": ""
-          },
-          "inputs": null,
-          "next": null
-        }
-      },
-      "FUNCTION_BODY": {
+      "FORMAL_ARGUMENTS": {
         "block": {
-          "type": "print_block",
-          "id": "[x2LFb5%+2Q|:3hy$eZl",
-          "fields": null,
+          "type": "formal_argument_block",
+          "id": "x#fMFm/i1rXEf%}y=BLm",
+          "fields": {
+            "ARGUMENT_TYPE": "INT",
+            "FORMAL_ARGUMENT": "x"
+          },
           "inputs": {
-            "EXPRESSION": {
-              "block": null,
-              "shadow": {
-                "type": "expression_block",
-                "id": "|hN!/({FBFZa:m_Q7LbH",
+            "NEXT_ARGUMENT": {
+              "block": {
+                "type": "formal_argument_block",
+                "id": "*Q-vKyjGmxpAV(C1Utn;",
                 "fields": {
-                  "TEXT": "x"
+                  "FORMAL_ARGUMENT": "y",
+                  "ARGUMENT_TYPE": "INT"
                 },
                 "inputs": null,
                 "next": null
-              }
+              },
+              "shadow": null
             }
           },
           "next": null
         },
         "shadow": null
       },
-      "FORMAL_ARGUMENTS": {
+      "FUNCTION_BODY": {
         "block": {
-          "type": "formal_argument_block",
-          "id": "HD6fTbR8U*DYw|g[lJ79",
+          "type": "print_block",
+          "id": "{UYZvtxPDf:R$kkL~aW:",
+          "fields": null,
+          "inputs": {
+            "EXPRESSION": {
+              "block": null,
+              "shadow": {
+                "type": "expression_block",
+                "id": "b=+TAr0BV`Tl`_9K6Hxr",
+                "fields": {
+                  "TEXT": "x *y"
+                },
+                "inputs": null,
+                "next": null
+              }
+            }
+          },
+          "next": {
+            "block": {
+              "type": "print_block",
+              "id": "tlIT8GkAu|F_TijI:le@",
+              "fields": null,
+              "inputs": {
+                "EXPRESSION": {
+                  "block": null,
+                  "shadow": {
+                    "type": "expression_block",
+                    "id": "03{UZB%ii+gb:Wi,w$*b",
+                    "fields": {
+                      "TEXT": "y"
+                    },
+                    "inputs": null,
+                    "next": null
+                  }
+                }
+              },
+              "next": null
+            }
+          }
+        },
+        "shadow": null
+      },
+      "RETURN_EXPRESSION": {
+        "block": null,
+        "shadow": {
+          "type": "expression_block",
+          "id": "6*~{XhUM/onJ!9x_#{0u",
           "fields": {
-            "ARGUMENT_TYPE": "INT",
-            "FORMAL_ARGUMENT": "x"
+            "TEXT": "x"
           },
           "inputs": null,
           "next": null
-        },
-        "shadow": null
+        }
       }
     },
     "next": null
   },
   {
     "type": "sigle_func_call_block",
-    "id": "Amml@9{tl{7GlOm3QBye",
+    "id": "85D]X3b.HuK4W9N8}Kxx",
     "fields": null,
     "inputs": {
-      "ACTUAL_ARGS": {
+      "FUNC_NAME": {
         "block": null,
         "shadow": {
           "type": "expression_block",
-          "id": "~J*ftA@J4Mm5Y?}C1ovL",
+          "id": "*]/C)l.29m@;%3)pYmPC",
           "fields": {
-            "TEXT": "7"
+            "TEXT": "f"
           },
           "inputs": null,
           "next": null
         }
       },
-      "FUNC_NAME": {
+      "ACTUAL_ARGS": {
         "block": null,
         "shadow": {
           "type": "expression_block",
-          "id": "pnU^xD:5fmLA(b?wZz8m",
+          "id": "VOD|14Qb9?DQKTcBcGh6",
           "fields": {
-            "TEXT": "f"
+            "TEXT": "1,2"
           },
           "inputs": null,
           "next": null
