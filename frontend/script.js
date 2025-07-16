@@ -35,7 +35,7 @@ Blockly.defineBlocksWithJsonArray([{
 /***** VARIABLE DECLARATION BLOCK *****/
 Blockly.defineBlocksWithJsonArray([{
   "type": "declaration_block",
-  "message0": "tipo %1 %2",
+  "message0": "declare %1 %2",
   "args0": [
     {
       "type": "field_dropdown",
@@ -55,7 +55,7 @@ Blockly.defineBlocksWithJsonArray([{
   "previousStatement": null,
   "nextStatement": null,
   "output": null,
-  "colour": 230,
+  "colour": '#547792',
   "tooltip": "Seleciona um tipo",
   "helpUrl": ""
 }]);
@@ -94,7 +94,7 @@ Blockly.defineBlocksWithJsonArray([{
       "name": "RETURN_EXPRESSION"
     }
   ],
-  "colour": 210,
+  "colour": '#40679E',
   "tooltip": "If-Else conditional",
   "helpUrl": ""
 }]);
@@ -102,7 +102,7 @@ Blockly.defineBlocksWithJsonArray([{
 /***** FORMAL ARGUMENTS BLOCK*****/
 Blockly.defineBlocksWithJsonArray([{
   "type": "formal_argument_block",
-  "message0": "%1 %2 , %3",
+  "message0": "add parameter %1 %2 , %3",
   "args0": [
     {
       "type": "field_dropdown",
@@ -126,7 +126,7 @@ Blockly.defineBlocksWithJsonArray([{
   ],
   "output": "FormalArgumentList",
   "outputShape": Blockly.OUTPUT_SHAPE_ROUND,
-  "colour": 210,
+  "colour": '#40679E',
   "tooltip": "Function definition",
   "helpUrl": ""
 }]);
@@ -143,7 +143,7 @@ Blockly.defineBlocksWithJsonArray([{
   ],
   "previousStatement": null,
   "nextStatement": null,
-  "colour": 160,
+  "colour": '#00909E',
   "tooltip": "Prints output to the console",
   "helpUrl": ""
 }]);
@@ -151,7 +151,7 @@ Blockly.defineBlocksWithJsonArray([{
 /***** ASSIGNMENT BLOCK *****/
 Blockly.defineBlocksWithJsonArray([{
   "type": "assignment_block",
-  "message0": "%1 = %2",
+  "message0": "assign %1 = %2",
   "args0": [
     {
       "type": "field_input",
@@ -164,7 +164,7 @@ Blockly.defineBlocksWithJsonArray([{
   ],
   "previousStatement": null,
   "nextStatement": null,
-  "colour": 210,
+  "colour": '#547792',
   "tooltip": "Assignment command",
   "helpUrl": ""
 }]);
@@ -193,7 +193,7 @@ Blockly.defineBlocksWithJsonArray([{
   ],
   "previousStatement": null,
   "nextStatement": null,
-  "colour": 210,
+  "colour": '#465881',
   "tooltip": "If-Else conditional",
   "helpUrl": ""
 }]);
@@ -215,7 +215,7 @@ Blockly.defineBlocksWithJsonArray([{
   ],
   "previousStatement": null,
   "nextStatement": null,
-  "colour": 210,
+  "colour": '#94B4C1',
   "inputsInline": true, 
   "tooltip": "while loop",
   "helpUrl": ""
@@ -223,58 +223,33 @@ Blockly.defineBlocksWithJsonArray([{
 
 // INITIALIZE BLOCKLY WORKSPACE
 const workspace = Blockly.inject('blocklyDiv', {
-  renderer: "zelos", // Prettier format
+  renderer: "zelos",
   trashcan: true,
   toolbox: {
-    //kind: "flyoutToolbox",
-    kind: "categoryToolbox",
+    kind: "flyoutToolbox",  // flyout lateral
     contents: [
-      {
-        kind: "category",
-        name: "Custom Blocks",
-        colour: "#5CA699",
-        contents: [
-          { kind: "block", 
-            type: "print_block",
-            inputs: {"EXPRESSION": {shadow:{type:"expression_block"}} }
-          },
-          { kind: "block", type: "declaration_block"},
-          { kind: "block", 
-            type: "if_else_block",
-            inputs: {"CONDITION": {shadow:{type:"expression_block"}}}
-          },
-          { kind: "block",
-            type: "while_block",
-            inputs:{"CONDITION": {shadow:{type:"expression_block"}}}
-          },
-          { kind: "block",
-            type: "assignment_block",
-            inputs: {"EXPRESSION": {shadow:{type:"expression_block"}}},
-          },
-          { kind: "block", 
-            type: "function_declaration_block",
-            inputs: {"RETURN_EXPRESSION": {shadow:{type:"expression_block"}} }
-          },
-          {kind: "block",type:"formal_argument_block"},
-        ]
+      { kind: "block", type: "declaration_block" },
+      { kind: "block", 
+        type: "assignment_block",
+        inputs: {"EXPRESSION": {shadow:{type:"expression_block"}} }
       },
-      {
-        kind: "category",
-        name: "Logic",
-        colour: "%{BKY_LOGIC_HUE}",
-        contents: [
-          { kind: "block", type: "logic_compare" },
-          { kind: "block", type: "logic_boolean" }
-        ]
+      { kind: "block", 
+        type: "print_block",
+        inputs: {"EXPRESSION": {shadow:{type:"expression_block"}} }
       },
-      {
-        kind: "category",
-        name: "Math",
-        colour: "%{BKY_MATH_HUE}",
-        contents: [
-          { kind: "block", type: "math_number" }
-        ]
-      }
+      { kind: "block", 
+        type: "if_else_block",
+        inputs: {"CONDITION": {shadow:{type:"expression_block"}} }
+      },
+      { kind: "block", 
+        type: "while_block",
+        inputs: {"CONDITION": {shadow:{type:"expression_block"}} }
+      },
+      { kind: "block", 
+        type: "function_declaration_block",
+        inputs: {"RETURN_EXPRESSION": {shadow:{type:"expression_block"}} }
+      },
+      { kind: "block", type: "formal_argument_block" },
     ]
   }
 });
@@ -301,6 +276,12 @@ async function execute() {
 
         // Update the <pre id="output">
         document.getElementById('output').textContent = `Output:\n${output.join('\n')}`;
+
+        const outputElement = document.getElementById('output');
+        outputElement.textContent = `Output:\n${output.join('\n')}`;
+
+        outputElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
 
     } catch (error) {
         console.error('Error:', error);

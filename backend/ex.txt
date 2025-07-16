@@ -1,52 +1,52 @@
 
 
 -----------------------------------------
-            counter: 111
+            counter: 9
 
 
 main statement parsed successfully
 
-main statement: Block([VarDeclaration("num", CInt(0)), Assignment("num", CInt(10)), Print(Add(Var("num"), CInt(5)))])
+main statement: Block([Print(CString("teste"))])
 
 
 
 -----------------------------------------
-            counter: 112
+            counter: 10
 
 
-final statement: Block([VarDeclaration("num", CInt(0)), Assignment("num", CInt(10)), Print(Add(Var("num"), CInt(5)))])
-
-
-
------------------------------------------
-            counter: 114
-
-
-Initial Type Env: Environment { id: 9, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+final statement: Block([Print(CString("teste"))])
 
 
 
 -----------------------------------------
-            counter: 123
+            counter: 12
 
 
-Final Type Env: Environment { id: 9, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
-
-
-
------------------------------------------
-            counter: 125
-
-
-Initial Exp Env: Environment { id: 10, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+Initial Type Env: Environment { id: 1, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
 
 
 
 -----------------------------------------
-            counter: 142
+            counter: 17
 
 
-Final Exp Env: Environment { id: 10, stack_len: 0, current_func: "", output: ["15"], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+Final Type Env: Environment { id: 1, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+
+
+
+-----------------------------------------
+            counter: 19
+
+
+Initial Exp Env: Environment { id: 2, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+
+
+
+-----------------------------------------
+            counter: 27
+
+
+Final Exp Env: Environment { id: 2, stack_len: 0, current_func: "", output: ["teste"], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
 
 Variables: [] 
 

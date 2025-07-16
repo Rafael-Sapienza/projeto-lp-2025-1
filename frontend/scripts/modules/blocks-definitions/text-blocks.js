@@ -9,7 +9,7 @@ const print = {
     type: "print",
     category: category,
     colour: category.colour,
-    message0: "escrever na tela %1",
+    message0: "escrever %1 na tela",
     args0: [
         {
             type: "input_value",

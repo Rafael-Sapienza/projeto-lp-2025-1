@@ -22,12 +22,6 @@ body {
 }
 
 
-.blocklySvg {
-  border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
-}
-
 .blocklyToolboxCategoryLabel {
     font-family: 'Chau Philomene One';
     color: rgb(113, 43, 17);
@@ -74,9 +68,9 @@ body {
 }
 
 #blocklyDiv {
-    width: 100%;
-    height: 500px;
-    background: rgb(255, 255, 255);
+    width: 1300px;
+    height: 700px;
+    background: rgba(246, 166, 120, 0.65);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border: 1px solid #e0e0e0;
     border-radius: 20px;
@@ -101,7 +95,7 @@ body {
     width: 100%;
     min-height: 80px;
     padding: 12px;
-    background: white;
+    background: rgb(250, 214, 185);
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     border: 1px solid #e0e0e0;
@@ -111,9 +105,6 @@ body {
     font-size: 25px;
     white-space: pre-wrap; 
 }
-
-
-/* Function creation box */
 
 #function-creator {
   position: fixed;
@@ -158,7 +149,8 @@ body {
 .invalid-function-name {
     background-color: red;
 }
- .parameter-icon {
+
+.parameter-icon {
     width: 16px; 
     height: 16px; 
     vertical-align: middle; 
