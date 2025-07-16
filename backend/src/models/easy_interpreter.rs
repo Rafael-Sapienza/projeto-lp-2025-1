@@ -5,6 +5,7 @@ use std::collections::HashMap;
 use crate::models::sub_interpreters::math::{ handle_math_operations, handle_math_comparisons };
 use crate::models::sub_interpreters::text::{ print, join, num_to_text, compare_texts, text_length };
 use crate::models::sub_interpreters::control::{ check_if, check_if_else, repeat, repeat_while };
+use crate::models::sub_interpreters::variables::{ set_variable, get_variable };
 
 pub struct EasyInterpreter {
     output: Vec<String>,
@@ -27,6 +28,14 @@ impl BlockExecutor for EasyInterpreter {
 
     fn push_output(&mut self, text: String) {
         self.output.push(text);
+    }
+
+    fn set_variable(&mut self, id: &str, value: Value) {
+        self.variables.insert(id.to_string(), value);
+    }
+
+    fn get_variable(&mut self, id: &str) -> Option<Value> {
+        self.variables.get(id).cloned()
     }
 }
 
@@ -81,46 +90,16 @@ impl EasyInterpreter {
 
     fn execute_block(&mut self, block: &Block) -> Option<Value> {
         match block.r#type.as_str() {
-            "variables_set_number" => {
-                if let (Some(fields), Some(inputs)) = (&block.fields, &block.inputs) {
-                    if let (Some(var_field), Some(input)) = (fields.get("VAR"), inputs.get("NUM")) {
-                        if let Some(var_id) = var_field.get("id").and_then(|v| v.as_str()) {
-                            if let Some(num) = get_number_input(self, input) {
-                                self.variables.insert(var_id.to_string(), Value::Number(num));
-                            }
-                        }
-                    }
-                }
-                Some(Value::String(String::new()))
-            }
+            "variables_set_number" | "variables_set_string" => set_variable(self, block),
+            
+            "variables_get_number" | "variables_get_string" => get_variable(self, block),
 
-            "variables_set_string" => {
-                if let (Some(fields), Some(inputs)) = (&block.fields, &block.inputs) {
-                    if let (Some(var_field), Some(input)) = (fields.get("VAR"), inputs.get("TEXT")) {
-                        if let Some(var_id) = var_field.get("id").and_then(|v| v.as_str()) {
-                            if let Some(text) = get_string_input(self, input) {
-                                self.variables.insert(var_id.to_string(), Value::String(text));
-                            }
-                        }
-                    }
-                }
-                Some(Value::String(String::new()))
-            }
-            "variables_get_number" | "variables_get_string" => {
-                if let Some(fields) = &block.fields {
-                    if let Some(var_field) = fields.get("VAR") {
-                        if let Some(var_id) = var_field.get("id").and_then(|v| v.as_str()) {
-                            return self.variables.get(var_id).cloned();
-                        }
-                    }
-                }
-                None
-            }
-            other_type if other_type.starts_with("function_set_") => {
+            function_set if function_set.starts_with("function_set_") => {
                 self.execute_user_function(block)
             }
-            other_type if other_type.starts_with("function_param_get_") => {
-                let normalized = other_type.replace(' ', "_");
+
+            function_param_get if function_param_get.starts_with("function_param_get_") => {
+                let normalized = function_param_get.replace(' ', "_");
                 self.variables.get(&normalized).cloned()
             }
 
@@ -157,10 +136,6 @@ impl EasyInterpreter {
             _ => None,
         }
     }
-
-    /* ---------- helpers ---------- */
-
-
 
     fn execute_user_function(&mut self, block: &Block) -> Option<Value> {
         let function_name = block.r#type.replacen("function_set_", "function_def_", 1);
