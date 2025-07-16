@@ -4,6 +4,7 @@ use super::{get_string_input, get_number_input, get_boolean_input, get_number_sh
 use std::collections::HashMap;
 use crate::models::sub_interpreters::math::{ handle_math_operations, handle_math_comparisons };
 use crate::models::sub_interpreters::text::{ print, join, num_to_text, compare_texts, text_length };
+use crate::models::sub_interpreters::control::{ check_if, check_if_else, repeat, repeat_while };
 
 pub struct EasyInterpreter {
     output: Vec<String>,
@@ -18,6 +19,10 @@ impl BlockExecutor for EasyInterpreter {
 
     fn exec_input(&mut self, input: &Input) -> Option<Value> {
         self.execute_input(input)
+    }
+
+    fn exec_sequence(&mut self, block: &Block) {
+        self.execute_sequence(block);
     }
 
     fn push_output(&mut self, text: String) {
@@ -76,7 +81,6 @@ impl EasyInterpreter {
 
     fn execute_block(&mut self, block: &Block) -> Option<Value> {
         match block.r#type.as_str() {
-
             "variables_set_number" => {
                 if let (Some(fields), Some(inputs)) = (&block.fields, &block.inputs) {
                     if let (Some(var_field), Some(input)) = (fields.get("VAR"), inputs.get("NUM")) {
@@ -134,88 +138,14 @@ impl EasyInterpreter {
 
             "bigger" | "smaller" | "equal" | "less_equal" | "greater_equal" => handle_math_comparisons(self, block),
 
-            "if" => {
-                let mut condition_met = false;
+            "if" => check_if(self, block),
 
-                if let Some(inputs) = &block.inputs {
-                    if let Some(input) = inputs.get("CONDITION") {
-                        if let Some(b) = get_boolean_input(self, input) {
-                            condition_met = b;
-                        }
-                    }
+            "if_else" => check_if_else(self, block),
 
-                    if condition_met {
-                        if let Some(input) = inputs.get("DO") {
-                            if let Some(sub_block) = &input.block {
-                                self.execute_sequence(sub_block);
-                            }
-                        }
-                    }
-                }
+            "repeat" => repeat(self, block),
 
-                Some(Value::String(String::new()))
-            }
-            "if_else" => {
-                if let Some(inputs) = &block.inputs {
-                    let mut condition_met = false;
+            "while" => repeat_while(self, block),
 
-                    if let Some(condition_input) = inputs.get("CONDITION") {
-                        if let Some(b) = get_boolean_input(self, condition_input) {
-                            condition_met = b;
-                        }
-                    }
-
-                    let selected_branch = if condition_met {
-                        inputs.get("DO")
-                    } else {
-                        inputs.get("ELSE")
-                    };
-
-                    if let Some(Some(branch_block)) = selected_branch.map(|input| input.block.as_ref()) {
-                        self.execute_sequence(branch_block);
-                    }
-                }
-
-                Some(Value::String(String::new()))
-            }
-            "repeat" => {
-                if let Some(inputs) = &block.inputs {
-                    let times = inputs.get("TIMES")
-                        .and_then(|input| get_number_input(self, input))
-                        .unwrap_or(0.0) as usize;
-
-                    for _ in 0..times {
-                        if let Some(input) = inputs.get("DO") {
-                            if let Some(sub_block) = &input.block {
-                                self.execute_sequence(sub_block);
-                            }
-                        }
-                    }
-                }
-                Some(Value::String(String::new()))
-            }
-            "while" => {
-                if let Some(inputs) = &block.inputs {
-                    let mut guard = 0; // Optional: prevent infinite loops
-                    while inputs.get("CONDITION")
-                        .and_then(|input| get_boolean_input(self, input))
-                        .unwrap_or(false)
-                    {
-                        if let Some(input) = inputs.get("DO") {
-                            if let Some(sub_block) = &input.block {
-                                self.execute_sequence(sub_block);
-                            }
-                        }
-
-                        guard += 1;
-                        if guard > 10000 {
-                            eprintln!("Infinite loop protection triggered.");
-                            break;
-                        }
-                    }
-                }
-                Some(Value::String(String::new()))
-            }
             "text_shadow" => {
                 Some(Value::String(get_text_shadow(block).unwrap_or_else(|| "".to_string())))
             }
