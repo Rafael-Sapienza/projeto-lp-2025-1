@@ -58,6 +58,10 @@ export const setupRunBtn = function(type, workspace) {
                 if (block && block.type === "easy_run") {
                   console.log("Main block clicked!!!!!");
                   easyInterpretation(workspace);
+                  document.getElementById('output').scrollIntoView({
+                     behavior: 'smooth',
+                     block: 'start'
+                  });
                 }
             }
             lastSelectedBlockId = newId;

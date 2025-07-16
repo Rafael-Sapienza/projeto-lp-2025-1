@@ -1,17 +1,17 @@
 
 
 -----------------------------------------
-            counter: 226
+            counter: 312
 
 
 In function eval_function_call:
 
-Env: Environment { id: 16, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {}, functions: {"f": Function { name: "f", kind: TInteger, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Mul(Var("x"), Var("y"))), Print(Var("y")), Return(Var("x"))])) }}, adts: {} }] }
+Env: Environment { id: 22, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {}, functions: {"f": Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Print(Var("y")), Return(CVoid)])) }}, adts: {} }] }
 
 
 
 -----------------------------------------
-            counter: 227
+            counter: 313
 
 
 In function eval_function_call:
@@ -21,94 +21,58 @@ Function 'f' successfully found in environment
 
 
 -----------------------------------------
-            counter: 229
+            counter: 315
 
 
 In function eval_function_call:
 
-new_env after copying functions: Environment { id: 17, stack_len: 0, current_func: "f", output: [], globals: Scope { variables: {}, functions: {"f": Function { name: "f", kind: TInteger, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Mul(Var("x"), Var("y"))), Print(Var("y")), Return(Var("x"))])) }}, adts: {} }, stack: [] }
+new_env after copying functions: Environment { id: 23, stack_len: 0, current_func: "f", output: [], globals: Scope { variables: {}, functions: {"f": Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Print(Var("y")), Return(CVoid)])) }}, adts: {} }, stack: [] }
 
 
 
 -----------------------------------------
-            counter: 232
+            counter: 318
 
 
 In function eval_function_call:
 
-new_env after mapping formal args: Environment { id: 17, stack_len: 0, current_func: "f", output: [], globals: Scope { variables: {"y": (false, CInt(2)), "x": (false, CInt(1))}, functions: {"f": Function { name: "f", kind: TInteger, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Mul(Var("x"), Var("y"))), Print(Var("y")), Return(Var("x"))])) }}, adts: {} }, stack: [] }
+new_env after mapping formal args: Environment { id: 23, stack_len: 0, current_func: "f", output: [], globals: Scope { variables: {"y": (false, CInt(2)), "x": (false, CInt(1))}, functions: {"f": Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Print(Var("y")), Return(CVoid)])) }}, adts: {} }, stack: [] }
 
 
 
 -----------------------------------------
-            counter: 238
-
-
-Eval Mul:
-
-Expression: Mul(Var("x"), Var("y"))
-
-Env: Environment { id: 17, stack_len: 1, current_func: "f", output: [], globals: Scope { variables: {"y": (false, CInt(2)), "x": (false, CInt(1))}, functions: {"f": Function { name: "f", kind: TInteger, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Mul(Var("x"), Var("y"))), Print(Var("y")), Return(Var("x"))])) }}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }] }
-
-
-
------------------------------------------
-            counter: 239
+            counter: 324
 
 
 Eval Var:
 
 Expression: Var("x")
 
-Env: Environment { id: 17, stack_len: 1, current_func: "f", output: [], globals: Scope { variables: {"y": (false, CInt(2)), "x": (false, CInt(1))}, functions: {"f": Function { name: "f", kind: TInteger, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Mul(Var("x"), Var("y"))), Print(Var("y")), Return(Var("x"))])) }}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }] }
+Env: Environment { id: 23, stack_len: 1, current_func: "f", output: [], globals: Scope { variables: {"y": (false, CInt(2)), "x": (false, CInt(1))}, functions: {"f": Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Print(Var("y")), Return(CVoid)])) }}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }] }
 
 
 
 -----------------------------------------
-            counter: 240
+            counter: 327
 
 
 Eval Var:
 
 Expression: Var("y")
 
-Env: Environment { id: 17, stack_len: 1, current_func: "f", output: [], globals: Scope { variables: {"y": (false, CInt(2)), "x": (false, CInt(1))}, functions: {"f": Function { name: "f", kind: TInteger, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Mul(Var("x"), Var("y"))), Print(Var("y")), Return(Var("x"))])) }}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }] }
+Env: Environment { id: 23, stack_len: 1, current_func: "f", output: ["1"], globals: Scope { variables: {"y": (false, CInt(2)), "x": (false, CInt(1))}, functions: {"f": Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Print(Var("y")), Return(CVoid)])) }}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }] }
 
 
 
 -----------------------------------------
-            counter: 243
-
-
-Eval Var:
-
-Expression: Var("y")
-
-Env: Environment { id: 17, stack_len: 1, current_func: "f", output: ["2"], globals: Scope { variables: {"y": (false, CInt(2)), "x": (false, CInt(1))}, functions: {"f": Function { name: "f", kind: TInteger, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Mul(Var("x"), Var("y"))), Print(Var("y")), Return(Var("x"))])) }}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }] }
-
-
-
------------------------------------------
-            counter: 246
-
-
-Eval Var:
-
-Expression: Var("x")
-
-Env: Environment { id: 17, stack_len: 1, current_func: "f", output: ["2", "2"], globals: Scope { variables: {"y": (false, CInt(2)), "x": (false, CInt(1))}, functions: {"f": Function { name: "f", kind: TInteger, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Mul(Var("x"), Var("y"))), Print(Var("y")), Return(Var("x"))])) }}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }] }
-
-
-
------------------------------------------
-            counter: 250
+            counter: 333
 
 
 Env is about to receive output from function f
 
-Function f generated Environment { id: 17, stack_len: 0, current_func: "f", output: ["2", "2"], globals: Scope { variables: {"y": (false, CInt(2)), "x": (false, CInt(1))}, functions: {"f": Function { name: "f", kind: TInteger, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Mul(Var("x"), Var("y"))), Print(Var("y")), Return(Var("x"))])) }}, adts: {} }, stack: [] }
+Function f generated Environment { id: 23, stack_len: 0, current_func: "f", output: ["1", "2"], globals: Scope { variables: {"y": (false, CInt(2)), "x": (false, CInt(1))}, functions: {"f": Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Print(Var("y")), Return(CVoid)])) }}, adts: {} }, stack: [] }
 
-output: ["2", "2"]
+output: ["1", "2"]
 
-Env after receiving output: Environment { id: 16, stack_len: 1, current_func: "", output: ["2", "2"], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {}, functions: {"f": Function { name: "f", kind: TInteger, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Mul(Var("x"), Var("y"))), Print(Var("y")), Return(Var("x"))])) }}, adts: {} }] }
+Env after receiving output: Environment { id: 22, stack_len: 1, current_func: "", output: ["1", "2"], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {}, functions: {"f": Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Print(Var("y")), Return(CVoid)])) }}, adts: {} }] }
 

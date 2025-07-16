@@ -1,6 +1,7 @@
 use crate::ir::ast::{Expression, FormalArgument, Function, Statement, Type};
-use crate::models::{Block2, Blocks2, Input, NextBlock, Workspace2};
+use crate::models::{Block2, Blocks2, Input2, NextBlock2, Workspace2};
 use crate::parser::parser_common::identifier;
+use crate::parser::parser_expr::parse_actual_arguments;
 use crate::parser::parser_expr::parse_expression;
 use actix_web::{HttpResponse, Responder, post, web};
 use nom::{Err, Finish};
@@ -19,7 +20,6 @@ use std::fmt::format;
 use std::io::Write;
 use std::str::FromStr;
 use std::{fs::File, process::Output};
-use crate::parser::parser_expr::parse_actual_arguments;
 
 pub fn parse_chained_blocks(block: &Block2) -> Result<Statement, String> {
     let mut current_block = Some(block);
@@ -371,8 +371,7 @@ fn parse_single_block(block: &Block2) -> Result<Statement, String> {
             return Ok(Statement::FuncDef(func));
         }
 
-        "sigle_func_call_block" => 
-        {
+        "sigle_func_call_block" => {
             if let Some(func_name) = block
                 .inputs
                 .as_ref()
@@ -383,27 +382,28 @@ fn parse_single_block(block: &Block2) -> Result<Statement, String> {
             {
                 if func_name.is_empty() {
                     return Err("Function name is empty".to_string());
-                }
-                else 
-                {
+                } else {
                     if let Some(actual_args) = block
-                    .inputs
-                    .as_ref()
-                    .and_then(|i| i.get("ACTUAL_ARGS"))
-                    .and_then(|input| input.shadow.as_ref())
-                    .and_then(|shadow_block| shadow_block.fields.as_ref())
-                    .and_then(|fields| fields.get("TEXT"))
+                        .inputs
+                        .as_ref()
+                        .and_then(|i| i.get("ACTUAL_ARGS"))
+                        .and_then(|input| input.shadow.as_ref())
+                        .and_then(|shadow_block| shadow_block.fields.as_ref())
+                        .and_then(|fields| fields.get("TEXT"))
                     {
-                        let (input, args) = parse_actual_arguments(&format!("({})", actual_args)) 
-                        .map_err(|e| format!("Erro ao fazer parse dos argumentos: {}", e))?;
-                        return Ok(Statement::SingleFuncCall(func_name.to_string(), args));                        
-                    }
-                    else {
-                        return Err(format!("Parse Error on single call of function {}", func_name));
+                        let (input, args) = parse_actual_arguments(&format!("({})", actual_args))
+                            .map_err(|e| {
+                            format!("Erro ao fazer parse dos argumentos: {}", e)
+                        })?;
+                        return Ok(Statement::SingleFuncCall(func_name.to_string(), args));
+                    } else {
+                        return Err(format!(
+                            "Parse Error on single call of function {}",
+                            func_name
+                        ));
                     }
                 }
-            }
-            else {
+            } else {
                 return Err(format!("Parse Error on single function call"));
             }
         }

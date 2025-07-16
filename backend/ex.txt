@@ -1,17 +1,17 @@
 
 
 -----------------------------------------
-            counter: 193
+            counter: 281
 
 
 Function f parsed successfully
 
-Function statement: Block([FuncDef(Function { name: "f", kind: TInteger, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Mul(Var("x"), Var("y"))), Print(Var("y")), Return(Var("x"))])) })])
+Function statement: Block([FuncDef(Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Print(Var("y")), Return(CVoid)])) })])
 
 
 
 -----------------------------------------
-            counter: 194
+            counter: 282
 
 
 main statement parsed successfully
@@ -21,42 +21,42 @@ main statement: Block([SingleFuncCall("f", [CInt(1), CInt(2)])])
 
 
 -----------------------------------------
-            counter: 195
+            counter: 283
 
 
-final statement: Block([FuncDef(Function { name: "f", kind: TInteger, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Mul(Var("x"), Var("y"))), Print(Var("y")), Return(Var("x"))])) }), SingleFuncCall("f", [CInt(1), CInt(2)])])
-
-
-
------------------------------------------
-            counter: 197
-
-
-Initial Type Env: Environment { id: 14, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+final statement: Block([FuncDef(Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Print(Var("y")), Return(CVoid)])) }), SingleFuncCall("f", [CInt(1), CInt(2)])])
 
 
 
 -----------------------------------------
-            counter: 216
+            counter: 285
 
 
-Final Type Env: Environment { id: 14, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
-
-
-
------------------------------------------
-            counter: 218
-
-
-Initial Exp Env: Environment { id: 16, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+Initial Type Env: Environment { id: 20, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
 
 
 
 -----------------------------------------
-            counter: 253
+            counter: 302
 
 
-Final Exp Env: Environment { id: 16, stack_len: 0, current_func: "", output: ["2", "2"], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+Final Type Env: Environment { id: 20, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+
+
+
+-----------------------------------------
+            counter: 304
+
+
+Initial Exp Env: Environment { id: 22, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+
+
+
+-----------------------------------------
+            counter: 336
+
+
+Final Exp Env: Environment { id: 22, stack_len: 0, current_func: "", output: ["1", "2"], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
 
 Variables: [] 
 
