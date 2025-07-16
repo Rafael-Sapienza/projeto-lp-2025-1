@@ -1,7 +1,7 @@
 import { creatorDivHTML } from "../interface/function-creation.js";
 import { createdFunctions } from "./functions-logic.js";
 import { functionsCategory } from "../blocks-definitions/blocks-library.js";
-import { createSetFunctionBlock } from "./helper-functions.js";
+import { createSetFunctionBlock, createGetFunctionParamBlock } from "./helper-functions.js";
 
 function createFunctionsFlyout(workspace) {
     const xmlList = [];
@@ -17,17 +17,17 @@ function createFunctionsFlyout(workspace) {
     xmlList.push(deleteBlockBtn);
 
      // Add a separator line
-    const sep = Blockly.utils.xml.createElement("label");
-    sep.setAttribute("text", "!-------------!");
-    xmlList.push(sep);
+    //const sep = Blockly.utils.xml.createElement("label");
+    //sep.setAttribute("text", "!-------------!");
+    //xmlList.push(sep);
 
     // Add SET function blocks to the flyout
     for (const functionName in createdFunctions) {
 
         xmlList.push(createSetFunctionBlock(functionName, createdFunctions[functionName].parameters));
-        /*createdFunctions[functionName].parameters.forEach(parameter => {
-            xmlList.push(//CREATE A FUNCTION TO GENERATE/RETURN THE BLOCKS);
-        });*/
+        createdFunctions[functionName].parameters.forEach(parameter => {
+            xmlList.push(createGetFunctionParamBlock(functionName, parameter));
+        });
     }   
     return xmlList;
 }
@@ -239,6 +239,41 @@ function defineFunctionBlocks(blockDefinition) {
         };
 
         Blockly.defineBlocksWithJsonArray([getBlock]);
+
+Blockly.Blocks[blockType].onchange = function(event) {
+    // Only run for this block’s move or end of drag events
+    if (!this.workspace || event.blockId !== this.id) return;
+
+    // Check event type: do nothing unless the block move is finished
+    if (event.type !== Blockly.Events.BLOCK_MOVE) return;
+
+    // Now do your check:
+    const expectedDefType = `function_def_${blockDefinition.name.replace(/\s+/g, "_")}`;
+    let block = this.getParent();
+
+    let foundFunctionDef = false;
+    while (block) {
+        if (block.type === expectedDefType) {
+            foundFunctionDef = true;
+            break;
+        }
+        block = block.getParent();
+    }
+
+    if (!foundFunctionDef) {
+        if (!this.workspace.isFlyout) {
+            this.dispose(false, true);
+        }
+        return;
+    }
+
+    if (typeof this.setWarningText === "function") {
+        this.setWarningText(null);
+    }
+    if (typeof this.setEnabled === "function") {
+        this.setEnabled(true);
+    }
+};
     }
 
 }

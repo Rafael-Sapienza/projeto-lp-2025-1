@@ -97,3 +97,11 @@ export const createSetFunctionBlock = function(functionName, functionParameters)
     }
     return setBlock;
 }
+
+export const createGetFunctionParamBlock = function(functionName, parameter) {
+    const blockType = `function_param_get_${functionName}_${parameter.name}`;
+
+    const getBlock = Blockly.utils.xml.createElement("block");
+    getBlock.setAttribute("type", blockType);
+    return getBlock;
+};

@@ -1,5 +1,5 @@
 use crate::ir::ast::{Expression, FormalArgument, Function, Statement, Type};
-use crate::models::{Block2, Blocks2, Input, NextBlock, Workspace2};
+use crate::models::{Block2, Blocks2, Input2, NextBlock2, Workspace2};
 use actix_web::{HttpResponse, Responder, post, web};
 use nom::{Err, Finish};
 use nom::{

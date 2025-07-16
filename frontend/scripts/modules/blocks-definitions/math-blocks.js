@@ -181,6 +181,33 @@ const bigger = {
 }
 mathBlocks.bigger = bigger;
 
+const greaterEqual = {
+    type: "greater_equal",
+    category,
+    colour: category.colour,
+    message0: "%1 ≥ %2", // or "maior ou igual a"
+    args0: [
+        {
+            type: "input_value",
+            name: "NUM1",
+            check: "Number",
+        },
+        {
+            type: "input_value",
+            name: "NUM2",
+            check: "Number",
+        },
+    ],
+    output: "Boolean",
+    inputsInline: true,
+    tooltip: "Verdadeiro se o número 1 for maior ou igual ao número 2",
+    shadow: {
+        NUM1: { shadow: { type: "number_shadow" } },
+        NUM2: { shadow: { type: "number_shadow" } },
+    },
+};
+mathBlocks.greaterEqual = greaterEqual;
+
 const smaller = {
     type: "smaller",
     category,
@@ -216,6 +243,33 @@ const smaller = {
     },
 }
 mathBlocks.smaller = smaller;
+
+const lessEqual = {
+    type: "less_equal",
+    category,
+    colour: category.colour,
+    message0: "%1 ≤ %2", // or "menor ou igual a"
+    args0: [
+        {
+            type: "input_value",
+            name: "NUM1",
+            check: "Number",
+        },
+        {
+            type: "input_value",
+            name: "NUM2",
+            check: "Number",
+        },
+    ],
+    output: "Boolean",
+    inputsInline: true,
+    tooltip: "Verdadeiro se o número 1 for menor ou igual ao número 2",
+    shadow: {
+        NUM1: { shadow: { type: "number_shadow" } },
+        NUM2: { shadow: { type: "number_shadow" } },
+    },
+};
+mathBlocks.lessEqual = lessEqual;
 
 const equal = {
     type: "equal",
