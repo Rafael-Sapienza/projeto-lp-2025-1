@@ -1,122 +1,62 @@
 
 
 -----------------------------------------
-            counter: 126
+            counter: 20
 
 
 Exec Block:
 
-Statement: Block([VarDeclaration("num", CInt(0)), Assignment("num", CInt(10)), Print(Add(Var("num"), CInt(5)))])
+Statement: Block([Print(CString("teste"))])
 
-Env: Environment { id: 10, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+Env: Environment { id: 2, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
 
 
 
 -----------------------------------------
-            counter: 127
+            counter: 21
 
 
 In function execute_block:
 
-All statements: [VarDeclaration("num", CInt(0)), Assignment("num", CInt(10)), Print(Add(Var("num"), CInt(5)))]
+All statements: [Print(CString("teste"))]
 
-Env: Environment { id: 10, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+Env: Environment { id: 2, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
 
 
 
 -----------------------------------------
-            counter: 129
+            counter: 23
 
 
 In function execute_block:
 
-Single Statement: VarDeclaration("num", CInt(0))
+Single Statement: Print(CString("teste"))
 
-Env: Environment { id: 10, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }] }
-
-
-
------------------------------------------
-            counter: 130
-
-
-Exec VarDeclaration:
-
-Statement: VarDeclaration("num", CInt(0))
-
-Env: Environment { id: 10, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }] }
+Env: Environment { id: 2, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }] }
 
 
 
 -----------------------------------------
-            counter: 132
-
-
-In function execute_block:
-
-Single Statement: Assignment("num", CInt(10))
-
-Env: Environment { id: 10, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {"num": (true, CInt(0))}, functions: {}, adts: {} }] }
-
-
-
------------------------------------------
-            counter: 133
-
-
-Exec Assignement:
-
-Statement: Assignment("num", CInt(10))
-
-Env: Environment { id: 10, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {"num": (true, CInt(0))}, functions: {}, adts: {} }] }
-
-
-
------------------------------------------
-            counter: 134
-
-
-Finishing Exec Assignement:
-
-Statement: Assignment("num", CInt(10))
-
-Env: Environment { id: 10, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {"num": (true, CInt(0))}, functions: {}, adts: {} }] }
-
-
-
------------------------------------------
-            counter: 136
-
-
-In function execute_block:
-
-Single Statement: Print(Add(Var("num"), CInt(5)))
-
-Env: Environment { id: 10, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {"num": (true, CInt(10))}, functions: {}, adts: {} }] }
-
-
-
------------------------------------------
-            counter: 137
+            counter: 24
 
 
 Exec Print:
 
-Statement: Print(Add(Var("num"), CInt(5)))
+Statement: Print(CString("teste"))
 
-Env: Environment { id: 10, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {"num": (true, CInt(10))}, functions: {}, adts: {} }] }
+Env: Environment { id: 2, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }] }
 
 
 
 -----------------------------------------
-            counter: 140
+            counter: 25
 
 
 Exiting function execute_block:
 
-All statements: [VarDeclaration("num", CInt(0)), Assignment("num", CInt(10)), Print(Add(Var("num"), CInt(5)))]
+All statements: [Print(CString("teste"))]
 
-Env: Environment { id: 10, stack_len: 1, current_func: "", output: ["15"], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {"num": (true, CInt(10))}, functions: {}, adts: {} }] }
+Env: Environment { id: 2, stack_len: 1, current_func: "", output: ["teste"], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }] }
 
 Env is about to be popped
 

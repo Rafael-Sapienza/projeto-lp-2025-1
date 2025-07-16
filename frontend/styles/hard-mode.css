@@ -81,9 +81,8 @@ body {
 
 #blocklyDiv {
     background-size: cover;
-    width: 1300px;         
-    height: 650px;
-    height: 500px;
+    width: 1300px;
+    height: 700px;
     box-shadow: 0 4px 12px rgba(73, 120, 145, 0.7);
     border: 1px solid #0d1032;
     border-radius: 20px;
