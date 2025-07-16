@@ -1,0 +1,203 @@
+body {
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: url('../assets/easyBackground.png') no-repeat center center fixed;;
+    background-size: 100% 100%;
+
+}
+
+.logo {
+  width: 600px;
+  height: 200px;
+  background-image: url('../assets/logoNormal.PNG');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  text-indent: -9999px; 
+  margin: 0 auto;
+}
+
+
+.blocklyToolboxCategoryLabel {
+    font-family: 'Chau Philomene One';
+    color: rgb(113, 43, 17);
+    font-size: 25px;
+}
+
+
+.blocklyTreeRowContentContainer {
+  display: flex;
+  align-items: center;  
+  height: 100%;         
+  gap: 8px;             
+}
+
+
+.blocklyToolboxCategory.blocklyToolboxSelected {
+    padding: 5px;
+}
+
+#blockly-0 .blocklyToolboxCategory.blocklyToolboxSelected {
+    border-top-left-radius: 18px;
+}
+
+
+.blocklyToolboxCategoryContainer {
+    margin: 0px 0px 7px 7px;
+    border-bottom: #7a4323 solid 2px;
+}
+
+.blocklyToolboxCategory {
+    border-left: 0px !important;   
+    margin-bottom: 10px !important; 
+    margin-top: 3px !important; 
+}
+
+.main-container {
+    position: relative;
+    z-index: 1;
+    width: 1100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+#blocklyDiv {
+    width: 1300px;
+    height: 700px;
+    background: rgba(246, 166, 120, 0.65);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+.blocklyFlyoutBackground {
+  margin-left: 0px;
+  rx: 8;
+}
+
+.output-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+#output {
+    width: 100%;
+    min-height: 80px;
+    padding: 12px;
+    background: rgb(250, 214, 185);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid #e0e0e0;
+    font-family: 'Baloo 2', monospace;
+    color: rgb(108, 16, 11);
+    font-weight: bold;
+    font-size: 25px;
+    white-space: pre-wrap; 
+}
+
+#function-creator {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border: 2px solid #995533;
+  border-radius: 10px;
+  padding: 1.5em;
+  z-index: 1000;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  font-family: sans-serif;
+  min-width: 300px;
+}
+
+.form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+}
+
+.form-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.param-item {
+  margin-top: 0.5em;
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+}
+
+.blur {
+  filter: blur(4px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.invalid-function-name {
+    background-color: red;
+}
+
+.parameter-icon {
+    width: 16px; 
+    height: 16px; 
+    vertical-align: middle; 
+    margin-right: 4px;
+ }
+
+ .delete-parameter {
+    width: 16px; 
+    height: 16px; 
+    vertical-align: middle; 
+    margin-right: 4px;
+    cursor: pointer;
+ }
+
+.blocklyLabelField {
+    border: 2px solid black !important;
+}
+.bubbles {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.bubbles span {
+  position: absolute;
+  display: block;
+  bottom: -150px;
+  background: rgb(255, 255, 255);
+  border-radius: 50%;
+  animation: bubbleFloat calc(var(--i) * 0.8s) linear infinite;
+}
+
+@keyframes bubbleFloat {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-110vh) scale(0.8);
+    opacity: 0;
+  }
+}

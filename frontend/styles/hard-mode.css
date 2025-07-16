@@ -1,0 +1,177 @@
+body {
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: url('../assets/backgroundDark.png') no-repeat center center fixed;;
+    background-size: 100% 100%;
+
+}
+
+.logo {
+  width: 650px;
+  height: 250px;
+  background-image: url('../assets/logoDark.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  text-indent: -9999px; 
+  margin: 0 auto;
+}
+
+
+.blocklySvg {
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  background-color: rgba(17, 43, 60, 0.9);
+}
+
+.blocklyToolboxCategoryLabel {
+    font-family: 'Merienda';
+    color: #eaf6fb;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.blocklyToolbox {
+  background-color: rgb(49, 94, 118);
+}
+
+
+.blocklyTreeRowContentContainer {
+  display: flex;
+  align-items: center;
+  height: 100%;       
+  gap: 20px;          
+}
+
+
+.blocklyToolboxCategory.blocklyToolboxSelected {
+    padding: 5px;
+}
+
+#blockly-0 .blocklyToolboxCategory.blocklyToolboxSelected {
+    border-top-left-radius: 18px;
+}
+
+
+.blocklyToolboxCategoryContainer {
+    margin: 0px 0px 7px 7px;
+    border-bottom: #01072d solid 3px;
+} 
+
+.blocklyToolboxCategory {
+    border-left: 0px !important; 
+    margin-bottom: 10px !important; 
+    margin-top: 3px !important; 
+}
+
+.main-container {
+    position: relative;
+    z-index: 1;
+    width: 1100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+#blocklyDiv {
+    background-size: cover;
+    width: 1300px;
+    height: 700px;
+    box-shadow: 0 4px 12px rgba(73, 120, 145, 0.7);
+    border: 1px solid #0d1032;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    padding: 0;          
+    margin: 0; 
+}
+
+.blocklyFlyoutBackground {
+  margin-left: 0px;
+  rx: 8;
+  fill: #758da375 !important;
+}
+
+.output-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+#output {
+    width: 100%;
+    min-height: 80px;
+    background-color: #142C38;     
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(88, 200, 255, 0.1);
+    border: 2px solid #1A3D4F;
+    padding: 12px;
+    font-family: 'Girassol', monospace;
+    color:azure;
+    font-size: 25px;
+    white-space: pre-wrap;     
+}
+
+#execute {
+    background-color: #26485e;
+    color: #eaf6fb;
+    font-family: 'Merienda', cursive;
+    font-size: 18px;            
+    padding: 8px 20px; 
+    border: 2px solid #88b6cd;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    margin-top: 10px;
+}
+
+#execute:hover {
+    background-color: #345e73;
+    color: #ffffff;
+    transform: scale(1.05);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+}
+
+
+.bubbles {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.bubbles span {
+  position: absolute;
+  display: block;
+  bottom: -150px;
+  background: rgba(89, 119, 156, 0.9);
+  border-radius: 50%;
+  animation: bubbleFloat calc(var(--i) * 0.8s) linear infinite;
+}
+
+@keyframes bubbleFloat {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-110vh) scale(0.8);
+    opacity: 0;
+  }
+}

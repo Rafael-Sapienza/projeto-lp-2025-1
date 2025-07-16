@@ -1,0 +1,84 @@
+
+
+-----------------------------------------
+            counter: 286
+
+
+Check Block: 
+
+Statement: Block([FuncDef(Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Print(Var("y")), Return(CVoid)])) }), SingleFuncCall("f", [CInt(1), CInt(2)])])
+
+Env: Environment { id: 20, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+
+
+
+-----------------------------------------
+            counter: 288
+
+
+Check FuncDef: 
+
+Statement: FuncDef(Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Print(Var("y")), Return(CVoid)])) })
+
+Env: Environment { id: 20, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }] }
+
+
+
+-----------------------------------------
+            counter: 291
+
+
+Check Block: 
+
+Statement: Block([Print(Var("x")), Print(Var("y")), Return(CVoid)])
+
+Env: Environment { id: 21, stack_len: 0, current_func: "f", output: [], globals: Scope { variables: {"x": (false, TInteger), "y": (false, TInteger)}, functions: {"f": Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Print(Var("y")), Return(CVoid)])) }}, adts: {} }, stack: [] }
+
+
+
+-----------------------------------------
+            counter: 293
+
+
+Check Print: 
+
+Statement: Print(Var("x"))
+
+Env: Environment { id: 21, stack_len: 1, current_func: "f", output: [], globals: Scope { variables: {"x": (false, TInteger), "y": (false, TInteger)}, functions: {"f": Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Print(Var("y")), Return(CVoid)])) }}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }] }
+
+
+
+-----------------------------------------
+            counter: 295
+
+
+Check Print: 
+
+Statement: Print(Var("y"))
+
+Env: Environment { id: 21, stack_len: 1, current_func: "f", output: [], globals: Scope { variables: {"x": (false, TInteger), "y": (false, TInteger)}, functions: {"f": Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Print(Var("y")), Return(CVoid)])) }}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }] }
+
+
+
+-----------------------------------------
+            counter: 297
+
+
+Check Return: 
+
+Statement: Return(CVoid)
+
+Env: Environment { id: 21, stack_len: 1, current_func: "f", output: [], globals: Scope { variables: {"x": (false, TInteger), "y": (false, TInteger)}, functions: {"f": Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Print(Var("y")), Return(CVoid)])) }}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }] }
+
+
+
+-----------------------------------------
+            counter: 300
+
+
+Check SingleFuncCall: 
+
+Statement: SingleFuncCall("f", [CInt(1), CInt(2)])
+
+Env: Environment { id: 20, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {}, functions: {"f": Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }, FormalArgument { argument_name: "y", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Print(Var("y")), Return(CVoid)])) }}, adts: {} }] }
+

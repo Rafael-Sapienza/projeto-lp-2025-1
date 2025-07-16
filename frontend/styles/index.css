@@ -1,138 +1,173 @@
 body {
-    display: flex;
-    justify-content: center; /* Centraliza horizontalmente */
-    min-height: 100vh;
-    margin: 0;
-    padding: 20px;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: url('../back.png') no-repeat center center fixed;;
-    background-size: 100% 100%;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+  font-family: 'Fredoka One', sans-serif;
+  background: url('../assets/backgroundInicial.png') no-repeat center center fixed;
+  background-size: 100% 100%;
 }
 
-.logo { /* título */
-  width: 600px;
-  height: 200px;
-  background-image: url('../MagicEraser_250701_105454.PNG');
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo {
+  width: 750px;
+  height: 350px;
+  background-image: url('../assets/init_logo.PNG');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  text-indent: -9999px; 
-  margin: 0 auto;
+  text-indent: -9999px;
+  margin-bottom: 20px;
 }
 
-
-.blocklySvg {
-  border-radius: 20px;     /* arredonda a borda da caixa */
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* sombra elegante */
-  transition: all 0.3s ease;
+.subtitle {
+  font-family: 'Sour Gummy', sans-serif;
+  font-size: 1.5rem;
+  color: #fff;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+  margin-bottom: 40px;
+  text-align: center;
 }
 
-.blocklyToolboxCategoryLabel {
-    font-family: 'Chau Philomene One';
-    color: rgb(113, 43, 17);
-    font-size: 20px;
-}
-
-
-.blocklyTreeRowContentContainer {
+.button-row {
   display: flex;
-  align-items: center;  /* centraliza verticalmente */
-  height: 100%;         /* garante que ocupe toda a altura */
-  gap: 8px;             /* opcional: espaço entre ícone e texto */
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 90px;
 }
 
-
-.blocklyToolboxCategory.blocklyToolboxSelected {
-    padding: 5px;
+.mode-button {
+  display: inline-block;
+  margin: 20px;
+  text-align: center;
+  text-decoration: none;
+  color: #333;
+  animation: floatIn 0.8s ease forwards;
+  position: relative;
+  overflow: visible; 
+  z-index: 1;
 }
 
-#blockly-0 .blocklyToolboxCategory.blocklyToolboxSelected {
-    border-top-left-radius: 18px;
+.mode-button img {
+  width: 300px;
+  height: auto;
+  display: block;
+  margin: 15px auto 10px auto;
+  border-radius: 40px;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+  border: 4px solid rgba(255, 255, 255, 0.5);
 }
 
-
-.blocklyToolboxCategoryContainer {
-    margin: 0px 0px 5px 5px;
-    border-bottom: #7a4323 solid 2px;
+.mode-button:hover img {
+  transform: scale(1.05);
+  filter: brightness(1.1);
 }
 
-/* Cor lateral da categoria/bordinha (tiramos) */
-.blocklyToolboxCategory {
-    border-left: 0px !important;   
+.mode-button span {
+  font-family: 'Baloo 2', sans-serif;
+  display: block;
+  font-weight: bold;
+  color: rgb(116, 12, 12);
+  font-size: 35px;
+  text-shadow: 2px 2px 4px rgba(255, 243, 243, 0.814);
 }
 
-/* Container principal */
-.main-container {
-    width: 1100px;
-    display: flex;
+.mode-button .btn-bubble {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: bubbleUp 1s forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes bubbleUp {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-60px) scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes floatIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .logo {
+    width: 80vw;
+    height: auto;
+    margin-bottom: 20px;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    padding: 0 10px;
+  }
+
+  .mode-button img {
+    width: 80vw;
+  }
+
+  .mode-button span {
+    font-size: 6vw;
+  }
+
+  .button-row {
     flex-direction: column;
-    align-items: center; /* Centraliza os itens internos */
-    gap: 15px; /* Espaçamento uniforme */
+    gap: 40px;
+  }
 }
 
-/* Área do Blockly */
-#blocklyDiv {
-    width: 100%;
-    height: 500px;
-    background: rgb(255, 255, 255);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e0e0e0;
-    border-radius: 20px;
-    overflow: hidden; /* força os cantos arredondados */
-    position: relative;
+.bubbles {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: 0; 
+  pointer-events: none; 
 }
 
-/* arredondar também a borda da área de blocos flutuantes (flyout) */
-.blocklyFlyoutBackground {
-  margin-left: 0px;
-  rx: 8; /* arredonda os cantos */
+.bubbles span {
+  position: absolute;
+  display: block;
+  bottom: -150px;
+  background: rgba(255, 255, 255, 0.5); 
+  border-radius: 50%;
+  animation: bubbleFloat calc(var(--i) * 0.8s) linear infinite; 
 }
 
-/*.blocklyToolboxFlyout {
-  transform: translateX(149px) !important; ajuste esse valor até alinhar bem 
+@keyframes bubbleFloat {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-110vh) scale(0.8);
+    opacity: 0;
+  }
 }
-*/
-
-/* Container do output */
-.output-container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Centraliza botão e output */
-    gap: 15px;
-}
-
-/* Botão */
-button {
-    padding: 12px 24px;
-    background: #8a4c28;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s;
-    width: auto;
-}
-
-button:hover {
-    background: #7a4323;
-    transform: translateY(-2px);
-}
-
-/* Área de output */
-#output {
-    width: 100%;
-    min-height: 80px;
-    padding: 20px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    border: 1px solid #e0e0e0;
-    font-family: 'Consolas', monospace;
-    font-size: 0.95rem;
-    line-height: 1.5;
-}
-

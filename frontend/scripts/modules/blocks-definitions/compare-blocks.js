@@ -1,4 +1,4 @@
-import { blocksCategories } from "./blocks-categories.js";
+/*import { blocksCategories } from "./blocks-categories.js";
 
 export const compareBlocks = {};
 
@@ -28,12 +28,12 @@ const bigger = {
     shadow: {
         NUM1: {
             shadow: {
-                type: "numberTemplate",
+                type: "number_shadow",
             },
         },
         NUM2: {
             shadow: {
-                type: "numberTemplate",
+                type: "number_shadow",
             },
         },
     },
@@ -64,12 +64,12 @@ const smaller = {
     shadow: {
         NUM1: {
             shadow: {
-                type: "numberTemplate",
+                type: "number_shadow",
             },
         },
         NUM2: {
             shadow: {
-                type: "numberTemplate",
+                type: "number_shadow",
             },
         },
     },
@@ -100,15 +100,14 @@ const equal = {
     shadow: {
         NUM1: {
             shadow: {
-                type: "numberTemplate",
+                type: "number_shadow",
             },
         },
         NUM2: {
             shadow: {
-                type: "numberTemplate",
+                type: "number_shadow",
             },
         },
     },
 }
-compareBlocks.equal = equal;
-
+compareBlocks.equal = equal;*/
