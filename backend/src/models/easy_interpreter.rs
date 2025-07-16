@@ -1,10 +1,22 @@
-use super::serialization::{Block, Input, Value}; use serde_json::Value as JsonValue;
+use super::{Block, Input, Value}; 
+use super::BlockExecutor; 
+use super::{get_string_input, get_number_input, get_boolean_input, get_number_shadow, get_text_shadow};
 use std::collections::HashMap;
 
 pub struct EasyInterpreter {
     output: Vec<String>,
     variables: HashMap<String, Value>,
     functions: HashMap<String, Block>,
+}
+
+impl BlockExecutor for EasyInterpreter {
+    fn exec_block(&mut self, block: &Block) -> Option<Value> { 
+        self.execute_block(block)
+    }
+
+    fn exec_input(&mut self, input: &Input) -> Option<Value> {
+        self.execute_input(input)
+    }
 }
 
 impl EasyInterpreter {
@@ -16,14 +28,15 @@ impl EasyInterpreter {
         }
     }
 
-    /// Run all top‑level blocks that came from the frontend.
+    // Run all top‑level blocks that came from the frontend.
     pub fn run(&mut self, blocks: &[Block]) {
+        // Store function definition blocks
         for block in blocks {
             if block.r#type.starts_with("function_def_") {
                 self.functions.insert(block.r#type.clone(), block.clone());
             }
         }
-
+        // Find/execute the main function
         for block in blocks {
                 if block.r#type == "easy_run" {
                     self.execute_sequence(block);
@@ -62,7 +75,7 @@ impl EasyInterpreter {
                 if let (Some(fields), Some(inputs)) = (&block.fields, &block.inputs) {
                     if let (Some(var_field), Some(input)) = (fields.get("VAR"), inputs.get("NUM")) {
                         if let Some(var_id) = var_field.get("id").and_then(|v| v.as_str()) {
-                            if let Some(num) = self.get_number_input(input) {
+                            if let Some(num) = get_number_input(self, input) {
                                 self.variables.insert(var_id.to_string(), Value::Number(num));
                             }
                         }
@@ -75,7 +88,7 @@ impl EasyInterpreter {
                 if let (Some(fields), Some(inputs)) = (&block.fields, &block.inputs) {
                     if let (Some(var_field), Some(input)) = (fields.get("VAR"), inputs.get("TEXT")) {
                         if let Some(var_id) = var_field.get("id").and_then(|v| v.as_str()) {
-                            if let Some(text) = self.get_string_input(input) {
+                            if let Some(text) = get_string_input(self, input) {
                                 self.variables.insert(var_id.to_string(), Value::String(text));
                             }
                         }
@@ -104,7 +117,7 @@ impl EasyInterpreter {
                 let mut text = String::new();
                 if let Some(inputs) = &block.inputs {
                     if let Some(input) = inputs.get("TEXT") {
-                        if let Some(text) = self.get_string_input(input) {
+                        if let Some(text) = get_string_input(self, input) {
                             self.output.push(text);
                         }
                     }
@@ -117,10 +130,10 @@ impl EasyInterpreter {
 
                 if let Some(inputs) = &block.inputs {
                     if let Some(input) = inputs.get("TEXT1") {
-                        left_text = self.get_string_input(input).unwrap_or_else(|| "".to_string());
+                        left_text = get_string_input(self, input).unwrap_or_else(|| "".to_string());
                     }
                     if let Some(input) = inputs.get("TEXT2") {
-                        right_text = self.get_string_input(input).unwrap_or_else(|| "".to_string());
+                        right_text = get_string_input(self, input).unwrap_or_else(|| "".to_string());
                     }
                 }
 
@@ -129,7 +142,7 @@ impl EasyInterpreter {
             "number_to_text" => {
                 if let Some(inputs) = &block.inputs {
                     if let Some(input) = inputs.get("NUM") {
-                        if let Some(num) = self.get_number_input(input) {
+                        if let Some(num) = get_number_input(self, input) {
                             return Some(Value::String(num.to_string()));
                         }
                     }
@@ -138,8 +151,8 @@ impl EasyInterpreter {
             }
             "compare_texts" => {
                 if let Some(inputs) = &block.inputs {
-                    let left = inputs.get("TEXT1").and_then(|i| self.get_string_input(i)).unwrap_or_default();
-                    let right = inputs.get("TEXT2").and_then(|i| self.get_string_input(i)).unwrap_or_default();
+                    let left = inputs.get("TEXT1").and_then(|i| get_string_input(self, i)).unwrap_or_default();
+                    let right = inputs.get("TEXT2").and_then(|i| get_string_input(self, i)).unwrap_or_default();
                     return Some(Value::Boolean(left == right));
                 }
                 Some(Value::Boolean(false))
@@ -148,7 +161,7 @@ impl EasyInterpreter {
                 let mut total: f64 = 0.0;
                 if let Some(inputs) = &block.inputs {
                     if let Some(input) = inputs.get("TEXT") {
-                        if let Some(s) = self.get_string_input(input) {
+                        if let Some(s) = get_string_input(self, input) {
                             total = s.len() as f64;
                         }
                     }
@@ -162,10 +175,10 @@ impl EasyInterpreter {
 
                 if let Some(inputs) = &block.inputs {
                     if let Some(input) = inputs.get("NUM1") {
-                        num1 = self.get_number_input(input).unwrap_or(0.0);
+                        num1 = get_number_input(self, input).unwrap_or(0.0);
                     }
                     if let Some(input) = inputs.get("NUM2") {
-                        num2 = self.get_number_input(input).unwrap_or(0.0);
+                        num2 = get_number_input(self, input).unwrap_or(0.0);
                     }
                 }
 
@@ -186,10 +199,10 @@ impl EasyInterpreter {
 
                 if let Some(inputs) = &block.inputs {
                     if let Some(input) = inputs.get("NUM1") {
-                        num1 = self.get_number_input(input).unwrap_or(0.0);
+                        num1 = get_number_input(self, input).unwrap_or(0.0);
                     }
                     if let Some(input) = inputs.get("NUM2") {
-                        num2 = self.get_number_input(input).unwrap_or(0.0);
+                        num2 = get_number_input(self, input).unwrap_or(0.0);
                     }
                 }
 
@@ -210,7 +223,7 @@ impl EasyInterpreter {
 
                 if let Some(inputs) = &block.inputs {
                     if let Some(input) = inputs.get("CONDITION") {
-                        if let Some(b) = self.get_boolean_input(input) {
+                        if let Some(b) = get_boolean_input(self, input) {
                             condition_met = b;
                         }
                     }
@@ -231,7 +244,7 @@ impl EasyInterpreter {
                     let mut condition_met = false;
 
                     if let Some(condition_input) = inputs.get("CONDITION") {
-                        if let Some(b) = self.get_boolean_input(condition_input) {
+                        if let Some(b) = get_boolean_input(self, condition_input) {
                             condition_met = b;
                         }
                     }
@@ -252,7 +265,7 @@ impl EasyInterpreter {
             "repeat" => {
                 if let Some(inputs) = &block.inputs {
                     let times = inputs.get("TIMES")
-                        .and_then(|input| self.get_number_input(input))
+                        .and_then(|input| get_number_input(self, input))
                         .unwrap_or(0.0) as usize;
 
                     for _ in 0..times {
@@ -269,7 +282,7 @@ impl EasyInterpreter {
                 if let Some(inputs) = &block.inputs {
                     let mut guard = 0; // Optional: prevent infinite loops
                     while inputs.get("CONDITION")
-                        .and_then(|input| self.get_boolean_input(input))
+                        .and_then(|input| get_boolean_input(self, input))
                         .unwrap_or(false)
                     {
                         if let Some(input) = inputs.get("DO") {
@@ -288,89 +301,19 @@ impl EasyInterpreter {
                 Some(Value::String(String::new()))
             }
             "text_shadow" => {
-                Some(Value::String(self.get_text_shadow(block).unwrap_or_else(|| "".to_string())))
+                Some(Value::String(get_text_shadow(block).unwrap_or_else(|| "".to_string())))
             }
 
             "number_shadow" => {
-                self.get_number_shadow(block).map(Value::Number)
+                get_number_shadow(block).map(Value::Number)
             }
 
             _ => None,
         }
     }
 
-    /* ---------- helpers (unchanged style) ---------- */
+    /* ---------- helpers ---------- */
 
-    fn get_string_input(&mut self, input: &Input) -> Option<String> {
-        let value = if let Some(sub_block) = &input.block {
-            self.execute_block(sub_block)
-        } else if let Some(shadow_block) = &input.shadow {
-            self.execute_block(shadow_block)
-        } else {
-            None
-        };
-
-        match value {
-            Some(Value::String(s))  => Some(s),
-            Some(Value::Number(n))  => Some(n.to_string()),
-            Some(Value::Boolean(b)) => Some(b.to_string()),
-            _ => None,
-        }
-    }
-
-    fn get_number_input(&mut self, input: &Input) -> Option<f64> {
-        let value = if let Some(sub_block) = &input.block {
-            self.execute_block(sub_block)
-        } else if let Some(shadow_block) = &input.shadow {
-            self.execute_block(shadow_block)
-        } else {
-            None
-        };
-
-        match value {
-            Some(Value::Number(n)) => Some(n),
-            _ => None,
-        }
-    }
-
-    fn get_boolean_input(&mut self, input: &Input) -> Option<bool> {
-        let value = if let Some(sub_block) = &input.block {
-            self.execute_block(sub_block)
-        } else {
-            None
-        };
-
-        match value {
-            Some(Value::Boolean(b)) => Some(b),
-            _ => None,
-        }
-    }
-
-    fn get_number_shadow(&self, block: &Block) -> Option<f64> {
-        if let Some(fields) = &block.fields {
-            if let Some(value) = fields.get("NUM") {
-                return match value {
-                    JsonValue::String(s) => s.parse::<f64>().ok(),
-                    JsonValue::Number(n) => n.as_f64(),
-                    _ => None,
-                };
-            }
-        }
-        None
-    }
-
-    fn get_text_shadow(&self, block: &Block) -> Option<String> {
-        if let Some(fields) = &block.fields {
-            if let Some(value) = fields.get("TEXT") {
-                if let JsonValue::String(s) = value {
-                    if !s.is_empty() {
-                        return Some(s.to_string());
-                    }
-                }
-            }
-        }
-        None
-    }
 
 
     fn execute_user_function(&mut self, block: &Block) -> Option<Value> {
@@ -423,11 +366,6 @@ impl EasyInterpreter {
 
         // 5. Restore original scope
         self.variables = old_variables;
-
-        // 6. Execute next block, if present
-        /*if let Some(next_block) = &block.next {
-            self.execute_sequence(&next_block.block);
-        }*/
 
         return_value
     }
