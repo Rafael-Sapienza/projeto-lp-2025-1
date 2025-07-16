@@ -8,7 +8,7 @@ const if_block = {
     type: "if",
     category,
     colour: category.colour,
-    message0: "se %1 então",
+    message0: "se %1",
     args0: [
         {
             type: "input_value",
@@ -16,7 +16,7 @@ const if_block = {
             check: "Boolean",
         }
     ],
-    message1: "%1",
+    message1: "então %1",
     args1: [
         {
             type: "input_statement",

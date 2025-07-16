@@ -7,13 +7,13 @@ export const easyTheme = Blockly.Theme.defineTheme(
             'size': 18,
         },
         componentStyles: {
-            workspaceBackgroundColour: '#FFF9F0',
+            workspaceBackgroundColour: 'rgba(233, 199, 176, 0.85)',
             toolboxBackgroundColour: '#FCE4D6',
             toolboxForegroundColour: '#3E2723',
             flyoutBackgroundColour: '#FFF3E0',
             flyoutForegroundColour: '#4E342E',
             flyoutOpacity: 0.95,
-            scrollbarColour: '#D7CCC8',
+            scrollbarColour: '#9e665c9c',
             insertionMarkerColour: '#FF7043',
             insertionMarkerOpacity: 0.5,
             markerColour: '#F50057',
@@ -35,17 +35,17 @@ export const abyssTheme = Blockly.Theme.defineTheme(
       
     },
     componentStyles: {
-      workspaceBackgroundColour: '#102C3A',           // azul-petróleo escuro (base do fundo)
-      toolboxBackgroundColour: '#1A3D4F',             // tom mais intenso para contraste
-      toolboxForegroundColour: '#D0F4F7',             // azul claro visível
-      flyoutBackgroundColour: '#153544',              // tom semelhante à sombra do fundo
-      flyoutForegroundColour: '#88C0D0',              // destaque suave em azul
+      workspaceBackgroundColour: '#102C3A',           
+      toolboxBackgroundColour: '#1A3D4F',             
+      toolboxForegroundColour: '#D0F4F7',             
+      flyoutBackgroundColour: '#153544',              
+      flyoutForegroundColour: '#88C0D0',              
       flyoutOpacity: 0.95,
-      scrollbarColour: '#88C0D0',                     // azul claro para detalhes visíveis
-      insertionMarkerColour: '#FF8A65',               // coral suave para visibilidade
+      scrollbarColour: '#88C0D0',                     
+      insertionMarkerColour: '#FF8A65',               
       insertionMarkerOpacity: 0.5,
-      markerColour: '#FFD54F',                        // dourado claro para marcar
-      cursorColour: '#80DEEA'                         // azul neon sutil
+      markerColour: '#FFD54F',                        
+      cursorColour: '#80DEEA'                         
     },
 
         startHats: true,
