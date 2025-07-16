@@ -26,12 +26,18 @@ body {
   border-radius: 20px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
+  background-color: rgba(17, 43, 60, 0.9);
 }
 
 .blocklyToolboxCategoryLabel {
     font-family: 'Merienda';
-    color: rgb(146, 199, 230);
+    color: #eaf6fb;
     font-size: 25px;
+    font-weight: bold;
+}
+
+.blocklyToolbox {
+  background-color: rgb(49, 94, 118);
 }
 
 
@@ -52,10 +58,9 @@ body {
 }
 
 
-
 .blocklyToolboxCategoryContainer {
     margin: 0px 0px 7px 7px;
-    border-bottom: #88b6cd solid 2px;
+    border-bottom: #01072d solid 3px;
 } 
 
 .blocklyToolboxCategory {
@@ -76,18 +81,22 @@ body {
 
 #blocklyDiv {
     background-size: cover;
-    width: 100%;
+    width: 1300px;         
+    height: 650px;
     height: 500px;
     box-shadow: 0 4px 12px rgba(73, 120, 145, 0.7);
     border: 1px solid #0d1032;
     border-radius: 20px;
     overflow: hidden;
     position: relative;
+    padding: 0;          
+    margin: 0; 
 }
 
 .blocklyFlyoutBackground {
   margin-left: 0px;
   rx: 8;
+  fill: #758da375 !important;
 }
 
 .output-container {
@@ -102,7 +111,6 @@ body {
     width: 100%;
     min-height: 80px;
     background-color: #142C38;     
-    color: #CDEDF6;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(88, 200, 255, 0.1);
     border: 2px solid #1A3D4F;
@@ -112,6 +120,28 @@ body {
     font-size: 25px;
     white-space: pre-wrap;     
 }
+
+#execute {
+    background-color: #26485e;
+    color: #eaf6fb;
+    font-family: 'Merienda', cursive;
+    font-size: 18px;            
+    padding: 8px 20px; 
+    border: 2px solid #88b6cd;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    margin-top: 10px;
+}
+
+#execute:hover {
+    background-color: #345e73;
+    color: #ffffff;
+    transform: scale(1.05);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+}
+
 
 .bubbles {
   position: fixed;
