@@ -12,7 +12,7 @@ pub enum ExpressionResult {
     Propagate(Expression), // For error propagation in Maybe/Result types
 }
 
-pub fn eval(exp: Expression, env: &Environment<Expression>) -> Result<ExpressionResult, String> {
+pub fn eval(exp: Expression, env: &mut Environment<Expression>) -> Result<ExpressionResult, String> {
     match exp.clone() {
         Expression::Add(lhs, rhs) => {
             show_counter_exp_eval();
@@ -181,7 +181,7 @@ pub fn eval(exp: Expression, env: &Environment<Expression>) -> Result<Expression
 fn eval_binary_arith_op<F>(
     lhs: Expression,
     rhs: Expression,
-    env: &Environment<Expression>,
+    env: &mut Environment<Expression>,
     op: F,
     error_msg: &str,
 ) -> Result<ExpressionResult, String>
@@ -218,7 +218,7 @@ where
 fn eval_binary_boolean_op<F>(
     lhs: Expression,
     rhs: Expression,
-    env: &Environment<Expression>,
+    env: &mut Environment<Expression>,
     op: F,
     error_msg: &str,
 ) -> Result<ExpressionResult, String>
@@ -247,7 +247,7 @@ where
 fn eval_binary_rel_op<F>(
     lhs: Expression,
     rhs: Expression,
-    env: &Environment<Expression>,
+    env: &mut Environment<Expression>,
     op: F,
     error_msg: &str,
 ) -> Result<ExpressionResult, String>
@@ -282,7 +282,7 @@ where
 fn eval_add(
     lhs: Expression,
     rhs: Expression,
-    env: &Environment<Expression>,
+    env: &mut Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
     let v1 = match eval(lhs, env)? {
         ExpressionResult::Value(expr) => expr,
@@ -316,7 +316,7 @@ fn eval_add(
 fn eval_sub(
     lhs: Expression,
     rhs: Expression,
-    env: &Environment<Expression>,
+    env: &mut Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
     eval_binary_arith_op(
         lhs,
@@ -330,7 +330,7 @@ fn eval_sub(
 fn eval_mul(
     lhs: Expression,
     rhs: Expression,
-    env: &Environment<Expression>,
+    env: &mut Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
     let v1 = match eval(lhs, env)? {
         ExpressionResult::Value(expr) => expr,
@@ -370,7 +370,7 @@ fn eval_mul(
 fn eval_div(
     lhs: Expression,
     rhs: Expression,
-    env: &Environment<Expression>,
+    env: &mut Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
     eval_binary_arith_op(
         lhs,
@@ -385,7 +385,7 @@ fn eval_div(
 fn eval_and(
     lhs: Expression,
     rhs: Expression,
-    env: &Environment<Expression>,
+    env: &mut Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
     eval_binary_boolean_op(
         lhs,
@@ -405,7 +405,7 @@ fn eval_and(
 fn eval_or(
     lhs: Expression,
     rhs: Expression,
-    env: &Environment<Expression>,
+    env: &mut Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
     eval_binary_boolean_op(
         lhs,
@@ -422,7 +422,7 @@ fn eval_or(
     )
 }
 
-fn eval_not(lhs: Expression, env: &Environment<Expression>) -> Result<ExpressionResult, String> {
+fn eval_not(lhs: Expression, env: &mut Environment<Expression>) -> Result<ExpressionResult, String> {
     let v = match eval(lhs, env)? {
         ExpressionResult::Value(expr) => expr,
         ExpressionResult::Propagate(expr) => return Ok(ExpressionResult::Propagate(expr)),
@@ -438,7 +438,7 @@ fn eval_not(lhs: Expression, env: &Environment<Expression>) -> Result<Expression
 fn eval_eq(
     lhs: Expression,
     rhs: Expression,
-    env: &Environment<Expression>,
+    env: &mut Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
     eval_binary_rel_op(
         lhs,
@@ -458,7 +458,7 @@ fn eval_eq(
 fn eval_neq(
     lhs: Expression,
     rhs: Expression,
-    env: &Environment<Expression>,
+    env: &mut Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
     eval_binary_rel_op(
         lhs,
@@ -478,7 +478,7 @@ fn eval_neq(
 fn eval_gt(
     lhs: Expression,
     rhs: Expression,
-    env: &Environment<Expression>,
+    env: &mut Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
     eval_binary_rel_op(
         lhs,
@@ -498,7 +498,7 @@ fn eval_gt(
 fn eval_lt(
     lhs: Expression,
     rhs: Expression,
-    env: &Environment<Expression>,
+    env: &mut Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
     eval_binary_rel_op(
         lhs,
@@ -518,7 +518,7 @@ fn eval_lt(
 fn eval_gte(
     lhs: Expression,
     rhs: Expression,
-    env: &Environment<Expression>,
+    env: &mut Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
     eval_binary_rel_op(
         lhs,
@@ -538,7 +538,7 @@ fn eval_gte(
 fn eval_lte(
     lhs: Expression,
     rhs: Expression,
-    env: &Environment<Expression>,
+    env: &mut Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
     eval_binary_rel_op(
         lhs,
@@ -558,7 +558,7 @@ fn eval_lte(
 // Variable lookup
 pub fn eval_lookup(
     name: String,
-    env: &Environment<Expression>,
+    env: &mut Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
     match env.lookup(&name) {
         Some((_, value)) => Ok(ExpressionResult::Value(value.clone())),
@@ -570,12 +570,12 @@ pub fn eval_lookup(
 pub fn eval_function_call(
     name: Name,
     args: Vec<Expression>,
-    env: &Environment<Expression>,
+    env: &mut Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
     show_counter_exp_eval();
     show_exp_eval(format!("In function eval_function_call:"));
     show_exp_eval(format!("Env: {:?}", env));
-    match env.lookup_function(&name) {
+    match env.lookup_function(&name).cloned() {
         Some(function_definition) => {
             show_counter_exp_eval();
             show_exp_eval(format!("In function eval_function_call:"));
@@ -623,10 +623,19 @@ pub fn eval_function_call(
             // Execute the body of the function.
             match super::statement_execute::execute(
                 *function_definition.body.as_ref().unwrap().clone(),
-                &new_env,
+                &mut new_env,
             ) {
                 Ok(Computation::Continue(_)) => Err("Function did not return a value".to_string()),
-                Ok(Computation::Return(value, _)) => Ok(ExpressionResult::Value(value)),
+                Ok(Computation::Return(value, mut func_final_env)) => 
+                {
+                    show_counter_exp_eval();
+                    show_exp_eval(format!("Env is about to receive output from function {}", name));
+                    show_exp_eval(format!("Function {} generated {:?}", name, func_final_env));
+                    show_exp_eval(format!("output: {:?}", func_final_env.output));
+                    env.output.append(&mut func_final_env.output);
+                    show_exp_eval(format!("Env after receiving output: {:?}", env));
+                    Ok(ExpressionResult::Value(value))
+                }
                 Ok(Computation::PropagateError(value, _)) => Ok(ExpressionResult::Propagate(value)),
                 Err(e) => Err(e),
             }
@@ -645,7 +654,7 @@ pub fn eval_function_call(
 // Other helpers
 fn eval_unwrap_expression(
     exp: Expression,
-    env: &Environment<Expression>,
+    env: &mut Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
     let v = match eval(exp, env)? {
         ExpressionResult::Value(expr) => expr,
@@ -660,7 +669,7 @@ fn eval_unwrap_expression(
 
 fn eval_propagate_expression(
     exp: Expression,
-    env: &Environment<Expression>,
+    env: &mut Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
     let v = match eval(exp, env)? {
         ExpressionResult::Value(expr) => expr,
@@ -679,7 +688,7 @@ fn eval_propagate_expression(
 
 fn eval_isnothing_expression(
     exp: Expression,
-    env: &Environment<Expression>,
+    env: &mut Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
     let v = match eval(exp, env)? {
         ExpressionResult::Value(expr) => expr,
@@ -692,7 +701,7 @@ fn eval_isnothing_expression(
 }
 fn eval_iserror_expression(
     exp: Expression,
-    env: &Environment<Expression>,
+    env: &mut Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
     let v = match eval(exp, env)? {
         ExpressionResult::Value(expr) => expr,
@@ -703,21 +712,21 @@ fn eval_iserror_expression(
         _ => Ok(ExpressionResult::Value(Expression::CFalse)),
     }
 }
-fn eval_just(exp: Expression, env: &Environment<Expression>) -> Result<ExpressionResult, String> {
+fn eval_just(exp: Expression, env: &mut Environment<Expression>) -> Result<ExpressionResult, String> {
     let v = match eval(exp, env)? {
         ExpressionResult::Value(expr) => expr,
         ExpressionResult::Propagate(expr) => return Ok(ExpressionResult::Propagate(expr)),
     };
     Ok(ExpressionResult::Value(Expression::CJust(Box::new(v))))
 }
-fn eval_ok(exp: Expression, env: &Environment<Expression>) -> Result<ExpressionResult, String> {
+fn eval_ok(exp: Expression, env: &mut Environment<Expression>) -> Result<ExpressionResult, String> {
     let v = match eval(exp, env)? {
         ExpressionResult::Value(expr) => expr,
         ExpressionResult::Propagate(expr) => return Ok(ExpressionResult::Propagate(expr)),
     };
     Ok(ExpressionResult::Value(Expression::COk(Box::new(v))))
 }
-fn eval_err(exp: Expression, env: &Environment<Expression>) -> Result<ExpressionResult, String> {
+fn eval_err(exp: Expression, env: &mut Environment<Expression>) -> Result<ExpressionResult, String> {
     let v = match eval(exp, env)? {
         ExpressionResult::Value(expr) => expr,
         ExpressionResult::Propagate(expr) => return Ok(ExpressionResult::Propagate(expr)),
@@ -740,7 +749,7 @@ fn is_constant(exp: Expression) -> bool {
 
 fn eval_list_value(
     sub_expressions: Vec<Expression>,
-    env: &Environment<Expression>,
+    env: &mut Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
     let mut values = Vec::new();
     for exp in sub_expressions {

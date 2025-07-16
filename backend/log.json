@@ -1,55 +1,34 @@
 [
   {
     "type": "declaration_block",
-    "id": "qkG~/[X_C~zN-bQPo^9q",
+    "id": ",@j!3Mr!xl@NlU.ULcs=",
     "fields": {
-      "VARIABLE": "num",
-      "TYPE": "INT"
+      "TYPE": "INT",
+      "VARIABLE": "x"
     },
     "inputs": null,
     "next": {
       "block": {
         "type": "assignment_block",
-        "id": "#@ug[iM)q3jmY_W0[[zf",
+        "id": "C#wjnOe_y,j6Sx.h`dDz",
         "fields": {
-          "VARIABLE": "num"
+          "VARIABLE": "x"
         },
         "inputs": {
           "EXPRESSION": {
             "block": null,
             "shadow": {
               "type": "expression_block",
-              "id": "xC^~zkg2rWW!W00bg83-",
+              "id": ":e*`o-fg$~z~6AWw@;Hg",
               "fields": {
-                "TEXT": "10"
+                "TEXT": "f()"
               },
               "inputs": null,
               "next": null
             }
           }
         },
-        "next": {
-          "block": {
-            "type": "print_block",
-            "id": "tTjn1Df9bj13HZ@79_RX",
-            "fields": null,
-            "inputs": {
-              "EXPRESSION": {
-                "block": null,
-                "shadow": {
-                  "type": "expression_block",
-                  "id": ")8_~/U(OTKlK,z#nuS^Q",
-                  "fields": {
-                    "TEXT": "num + 5 "
-                  },
-                  "inputs": null,
-                  "next": null
-                }
-              }
-            },
-            "next": null
-          }
-        }
+        "next": null
       }
     }
   }

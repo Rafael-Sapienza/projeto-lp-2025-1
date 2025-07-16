@@ -1,48 +1,36 @@
 
 
 -----------------------------------------
-            counter: 115
+            counter: 98
 
 
 Check Block: 
 
-Statement: Block([VarDeclaration("num", CInt(0)), Assignment("num", CInt(10)), Print(Add(Var("num"), CInt(5)))])
+Statement: Block([VarDeclaration("x", CInt(0)), Assignment("x", FuncCall("f", []))])
 
-Env: Environment { id: 9, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+Env: Environment { id: 10, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
 
 
 
 -----------------------------------------
-            counter: 117
+            counter: 100
 
 
 Check VarDeclaration: 
 
-Statement: VarDeclaration("num", CInt(0))
+Statement: VarDeclaration("x", CInt(0))
 
-Env: Environment { id: 9, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }] }
+Env: Environment { id: 10, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }] }
 
 
 
 -----------------------------------------
-            counter: 119
+            counter: 102
 
 
 Check Assignment: 
 
-Statement: Assignment("num", CInt(10))
+Statement: Assignment("x", FuncCall("f", []))
 
-Env: Environment { id: 9, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {"num": (true, TInteger)}, functions: {}, adts: {} }] }
-
-
-
------------------------------------------
-            counter: 120
-
-
-Check Print: 
-
-Statement: Print(Add(Var("num"), CInt(5)))
-
-Env: Environment { id: 9, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {"num": (true, TInteger)}, functions: {}, adts: {} }] }
+Env: Environment { id: 10, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {"x": (true, TInteger)}, functions: {}, adts: {} }] }
 

@@ -101,6 +101,7 @@ pub fn process_blocks(blocks_only: &Vec<Block2>) -> Vec<String> {
                     }
                 }
                 Err(e) => {
+                    output = vec![e.clone()];
                     show_ex(format!("{:?}", e));
                 }
             }
@@ -113,16 +114,22 @@ pub fn process_blocks(blocks_only: &Vec<Block2>) -> Vec<String> {
                     show_ex(format!("main statement: {:?}", statement));
                     match statement {
                         Statement::Block(vector) => global_statements = Some(vector),
-                        _ => show_ex("main body cannot be empty".to_string()),
+                        _ => 
+                        {
+                            output = vec!["main body cannot be empty".to_string()];
+                            show_ex("main body cannot be empty".to_string());
+                        }
                     }
                 }
                 Err(e) => {
+                    output = vec![e.clone()];
                     show_ex(format!("{:?}", e));
                 }
             }
         }
     }
     if number_of_global_estatements != 1 {
+        output = vec!["There must be one and only one global statement".to_string()];
         show_ex("There must be one and only one global statement".to_string());
     } else {
         let global_statements = global_statements.unwrap();
@@ -152,11 +159,13 @@ pub fn process_blocks(blocks_only: &Vec<Block2>) -> Vec<String> {
                         }
                     }
                     Err(e) => {
+                        output = vec![e.clone()];
                         show_ex(format!("{:?}", e));
                     }
                 }
             }
             Err(e) => {
+                output = vec![e.clone()];
                 show_ex(format!("{:?}", e));
             }
         }
