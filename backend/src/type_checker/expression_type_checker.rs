@@ -27,8 +27,7 @@ pub fn check_expr(exp: Expression, env: &Environment<Type>) -> Result<Type, Erro
         Expression::LT(l, r) => check_bin_relational_expression(*l, *r, env),
         Expression::GTE(l, r) => check_bin_relational_expression(*l, *r, env),
         Expression::LTE(l, r) => check_bin_relational_expression(*l, *r, env),
-        Expression::Var(name) => 
-        {
+        Expression::Var(name) => {
             show_counter_tp_exp();
             show_tp_exp(format!("Check Var:"));
             show_tp_exp(format!("Exp: {:?}", exp));
@@ -45,8 +44,7 @@ pub fn check_expr(exp: Expression, env: &Environment<Type>) -> Result<Type, Erro
         Expression::Propagate(e) => check_propagate_type(*e, env),
         Expression::ListValue(elements) => check_list_value(&elements, env),
         Expression::Constructor(name, args) => check_adt_constructor(name, args, env),
-        Expression::FuncCall(func_name, exp_vec) => 
-        {
+        Expression::FuncCall(func_name, exp_vec) => {
             show_counter_tp_exp();
             show_tp_exp(format!("Func Call:"));
             show_tp_exp(format!("Exp: {:?}", exp));
@@ -61,7 +59,7 @@ pub fn check_expr(exp: Expression, env: &Environment<Type>) -> Result<Type, Erro
     }
 }
 
-fn check_func_call(
+pub fn check_func_call(
     func_name: Name,
     exp_vector: Vec<Expression>,
     env: &Environment<Type>,

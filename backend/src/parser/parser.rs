@@ -1,5 +1,7 @@
 use crate::ir::ast::{Expression, FormalArgument, Function, Statement, Type};
 use crate::models::{Block2, Blocks2, Input, NextBlock, Workspace2};
+use crate::parser::parser_common::identifier;
+use crate::parser::parser_expr::parse_expression;
 use actix_web::{HttpResponse, Responder, post, web};
 use nom::{Err, Finish};
 use nom::{
@@ -17,8 +19,7 @@ use std::fmt::format;
 use std::io::Write;
 use std::str::FromStr;
 use std::{fs::File, process::Output};
-use crate::parser::parser_expr::parse_expression;
-use crate::parser::parser_common::identifier;
+use crate::parser::parser_expr::parse_actual_arguments;
 
 pub fn parse_chained_blocks(block: &Block2) -> Result<Statement, String> {
     let mut current_block = Some(block);
@@ -132,8 +133,8 @@ fn parse_single_block(block: &Block2) -> Result<Statement, String> {
                         return Err("Variable assignment requires non-empty expression".to_string());
                     }
 
-                    let (rest, assignment_exp) = parse_expression(expression_string)
-                        .map_err(|_e| {
+                    let (rest, assignment_exp) =
+                        parse_expression(expression_string).map_err(|_e| {
                             format!("Parsing error on expression: {}", expression_string)
                         })?;
                     if !rest.is_empty() {
@@ -339,14 +340,12 @@ fn parse_single_block(block: &Block2) -> Result<Statement, String> {
                 .and_then(|fields| fields.get("TEXT"))
             {
                 if !return_str.is_empty() {
-                    let (rest, return_exp) =
-                        parse_expression(return_str)
-                            .map_err(|error| {
-                                format!(
-                                    "Parsing error on return statement {}: {:?}",
-                                    return_str, error
-                                )
-                            })?;
+                    let (rest, return_exp) = parse_expression(return_str).map_err(|error| {
+                        format!(
+                            "Parsing error on return statement {}: {:?}",
+                            return_str, error
+                        )
+                    })?;
                     if !rest.is_empty() {
                         return Err(format!("Parsing error on return_str: {}", return_str));
                     }
@@ -372,6 +371,42 @@ fn parse_single_block(block: &Block2) -> Result<Statement, String> {
             return Ok(Statement::FuncDef(func));
         }
 
+        "sigle_func_call_block" => 
+        {
+            if let Some(func_name) = block
+                .inputs
+                .as_ref()
+                .and_then(|i| i.get("FUNC_NAME"))
+                .and_then(|input| input.shadow.as_ref())
+                .and_then(|shadow_block| shadow_block.fields.as_ref())
+                .and_then(|fields| fields.get("TEXT"))
+            {
+                if func_name.is_empty() {
+                    return Err("Function name is empty".to_string());
+                }
+                else 
+                {
+                    if let Some(actual_args) = block
+                    .inputs
+                    .as_ref()
+                    .and_then(|i| i.get("ACTUAL_ARGS"))
+                    .and_then(|input| input.shadow.as_ref())
+                    .and_then(|shadow_block| shadow_block.fields.as_ref())
+                    .and_then(|fields| fields.get("TEXT"))
+                    {
+                        let (input, args) = parse_actual_arguments(&format!("({})", actual_args)) 
+                        .map_err(|e| format!("Erro ao fazer parse dos argumentos: {}", e))?;
+                        return Ok(Statement::SingleFuncCall(func_name.to_string(), args));                        
+                    }
+                    else {
+                        return Err(format!("Parse Error on single call of function {}", func_name));
+                    }
+                }
+            }
+            else {
+                return Err(format!("Parse Error on single function call"));
+            }
+        }
         _ => {
             //output.push(format!("Unknown block type: {}", block.r#type));
             return Err("Non-existent block".to_string());

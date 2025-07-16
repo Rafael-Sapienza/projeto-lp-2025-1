@@ -1,28 +1,62 @@
 
 
 -----------------------------------------
-            counter: 94
+            counter: 98
+
+
+Function f parsed successfully
+
+Function statement: Block([FuncDef(Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Return(CVoid)])) })])
+
+
+
+-----------------------------------------
+            counter: 99
 
 
 main statement parsed successfully
 
-main statement: Block([VarDeclaration("x", CInt(0)), Assignment("x", FuncCall("f", []))])
+main statement: Block([SingleFuncCall("f", [CInt(7)])])
 
 
 
 -----------------------------------------
-            counter: 95
+            counter: 100
 
 
-final statement: Block([VarDeclaration("x", CInt(0)), Assignment("x", FuncCall("f", []))])
+final statement: Block([FuncDef(Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Return(CVoid)])) }), SingleFuncCall("f", [CInt(7)])])
 
 
 
 -----------------------------------------
-            counter: 97
+            counter: 102
 
 
-Initial Type Env: Environment { id: 10, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+Initial Type Env: Environment { id: 8, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
 
-"Function f was called but never declared"
+
+
+-----------------------------------------
+            counter: 117
+
+
+Final Type Env: Environment { id: 8, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+
+
+
+-----------------------------------------
+            counter: 119
+
+
+Initial Exp Env: Environment { id: 10, stack_len: 0, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+
+
+
+-----------------------------------------
+            counter: 147
+
+
+Final Exp Env: Environment { id: 10, stack_len: 0, current_func: "", output: ["7"], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [] }
+
+Variables: [] 
 

@@ -1,12 +1,12 @@
 
 
 -----------------------------------------
-            counter: 103
+            counter: 111
 
 
-Func Call:
+Check Var:
 
-Exp: FuncCall("f", [])
+Exp: Var("x")
 
-Env: Environment { id: 10, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {"x": (true, TInteger)}, functions: {}, adts: {} }] }
+Env: Environment { id: 9, stack_len: 1, current_func: "f", output: [], globals: Scope { variables: {"x": (false, TInteger)}, functions: {"f": Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Return(CVoid)])) }}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }] }
 

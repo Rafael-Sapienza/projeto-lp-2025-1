@@ -1,19 +1,20 @@
 use nom::{
+    IResult,
     branch::alt,
     bytes::complete::tag,
     character::complete::{char, multispace0},
     combinator::map,
     multi::{many1, separated_list0, separated_list1},
     sequence::{preceded, tuple},
-    IResult,
 };
 
 use crate::ir::ast::{Type, ValueConstructor};
 
 use crate::parser::parser_common::{
-    identifier, keyword, separator, ANY_TYPE, BOOLEAN_TYPE, COLON_CHAR, COMMA_CHAR, COMMA_SYMBOL,
-    DATA_KEYWORD, END_KEYWORD, FUNCTION_ARROW, INT_TYPE, LEFT_BRACKET, LEFT_PAREN, MAYBE_TYPE,
-    PIPE_CHAR, REAL_TYPE, RESULT_TYPE, RIGHT_BRACKET, RIGHT_PAREN, STRING_TYPE, UNIT_TYPE,
+    ANY_TYPE, BOOLEAN_TYPE, COLON_CHAR, COMMA_CHAR, COMMA_SYMBOL, DATA_KEYWORD, END_KEYWORD,
+    FUNCTION_ARROW, INT_TYPE, LEFT_BRACKET, LEFT_PAREN, MAYBE_TYPE, PIPE_CHAR, REAL_TYPE,
+    RESULT_TYPE, RIGHT_BRACKET, RIGHT_PAREN, STRING_TYPE, UNIT_TYPE, identifier, keyword,
+    separator,
 };
 
 pub fn parse_type(input: &str) -> IResult<&str, Type> {

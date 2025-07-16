@@ -1,35 +1,93 @@
 [
   {
-    "type": "declaration_block",
-    "id": ",@j!3Mr!xl@NlU.ULcs=",
+    "type": "function_declaration_block",
+    "id": "cf6$dFMKIZ-EAXUNy=.{",
     "fields": {
-      "TYPE": "INT",
-      "VARIABLE": "x"
+      "FUNCTION_NAME": "f",
+      "RETURN_TYPE": "VOID"
     },
-    "inputs": null,
-    "next": {
-      "block": {
-        "type": "assignment_block",
-        "id": "C#wjnOe_y,j6Sx.h`dDz",
-        "fields": {
-          "VARIABLE": "x"
-        },
-        "inputs": {
-          "EXPRESSION": {
-            "block": null,
-            "shadow": {
-              "type": "expression_block",
-              "id": ":e*`o-fg$~z~6AWw@;Hg",
-              "fields": {
-                "TEXT": "f()"
-              },
-              "inputs": null,
-              "next": null
+    "inputs": {
+      "RETURN_EXPRESSION": {
+        "block": null,
+        "shadow": {
+          "type": "expression_block",
+          "id": "R2`WL,9do?l=,DMje~mt",
+          "fields": {
+            "TEXT": ""
+          },
+          "inputs": null,
+          "next": null
+        }
+      },
+      "FUNCTION_BODY": {
+        "block": {
+          "type": "print_block",
+          "id": "[x2LFb5%+2Q|:3hy$eZl",
+          "fields": null,
+          "inputs": {
+            "EXPRESSION": {
+              "block": null,
+              "shadow": {
+                "type": "expression_block",
+                "id": "|hN!/({FBFZa:m_Q7LbH",
+                "fields": {
+                  "TEXT": "x"
+                },
+                "inputs": null,
+                "next": null
+              }
             }
-          }
+          },
+          "next": null
         },
-        "next": null
+        "shadow": null
+      },
+      "FORMAL_ARGUMENTS": {
+        "block": {
+          "type": "formal_argument_block",
+          "id": "HD6fTbR8U*DYw|g[lJ79",
+          "fields": {
+            "ARGUMENT_TYPE": "INT",
+            "FORMAL_ARGUMENT": "x"
+          },
+          "inputs": null,
+          "next": null
+        },
+        "shadow": null
       }
-    }
+    },
+    "next": null
+  },
+  {
+    "type": "sigle_func_call_block",
+    "id": "Amml@9{tl{7GlOm3QBye",
+    "fields": null,
+    "inputs": {
+      "ACTUAL_ARGS": {
+        "block": null,
+        "shadow": {
+          "type": "expression_block",
+          "id": "~J*ftA@J4Mm5Y?}C1ovL",
+          "fields": {
+            "TEXT": "7"
+          },
+          "inputs": null,
+          "next": null
+        }
+      },
+      "FUNC_NAME": {
+        "block": null,
+        "shadow": {
+          "type": "expression_block",
+          "id": "pnU^xD:5fmLA(b?wZz8m",
+          "fields": {
+            "TEXT": "f"
+          },
+          "inputs": null,
+          "next": null
+        }
+      }
+    },
+    "next": null
   }
 ]

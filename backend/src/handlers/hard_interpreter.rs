@@ -38,7 +38,7 @@ pub async fn execute(payload: web::Json<Workspace2>) -> impl Responder {
         // Retorna InternalServerError com mensagem de erro
         return HttpResponse::InternalServerError().body(err_msg);
     }
-    
+
     output = process_blocks(blocks_only);
 
     //output = process_blocks(blocks_only);
@@ -114,8 +114,7 @@ pub fn process_blocks(blocks_only: &Vec<Block2>) -> Vec<String> {
                     show_ex(format!("main statement: {:?}", statement));
                     match statement {
                         Statement::Block(vector) => global_statements = Some(vector),
-                        _ => 
-                        {
+                        _ => {
                             output = vec!["main body cannot be empty".to_string()];
                             show_ex("main body cannot be empty".to_string());
                         }
@@ -174,7 +173,14 @@ pub fn process_blocks(blocks_only: &Vec<Block2>) -> Vec<String> {
 }
 
 pub fn reset_txt_files() {
-    let txt_files = ["ex.txt", "env.txt", "exp_eval.txt", "statement_exec.txt", "tp_statement.txt", "tp_exp.txt"];
+    let txt_files = [
+        "ex.txt",
+        "env.txt",
+        "exp_eval.txt",
+        "statement_exec.txt",
+        "tp_statement.txt",
+        "tp_exp.txt",
+    ];
     for file in txt_files {
         match File::create(file) {
             Ok(_) => println!("Arquivo '{}' limpo com sucesso.", file),

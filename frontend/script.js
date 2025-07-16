@@ -221,6 +221,29 @@ Blockly.defineBlocksWithJsonArray([{
   "helpUrl": ""
 }]);
 
+/***** SINGLE FUNC CALL *****/
+Blockly.defineBlocksWithJsonArray([{
+  "type": "sigle_func_call_block",
+  "message0": "%1 (%2)",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "FUNC_NAME",
+    },
+    {
+      "type": "input_value",
+      "name": "ACTUAL_ARGS",
+    }
+  ],
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 210,
+  "tooltip": "Single func call",
+  "helpUrl": ""
+}]);
+
+
+
 // INITIALIZE BLOCKLY WORKSPACE
 const workspace = Blockly.inject('blocklyDiv', {
   renderer: "zelos", // Prettier format
@@ -256,6 +279,10 @@ const workspace = Blockly.inject('blocklyDiv', {
             inputs: {"RETURN_EXPRESSION": {shadow:{type:"expression_block"}} }
           },
           {kind: "block",type:"formal_argument_block"},
+          { kind: "block", 
+            type: "sigle_func_call_block",
+            inputs: {"FUNC_NAME": {shadow:{type:"expression_block"}}, "ACTUAL_ARGS": {shadow:{type:"expression_block"}}}
+          },
         ]
       },
       {

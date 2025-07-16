@@ -1,4 +1,5 @@
 use nom::{
+    IResult,
     branch::alt,
     bytes::complete::tag,
     character::complete::{char, multispace0, multispace1},
@@ -6,14 +7,13 @@ use nom::{
     error::Error,
     multi::separated_list0,
     sequence::{delimited, preceded, tuple},
-    IResult,
 };
 
 use crate::ir::ast::{FormalArgument, Function, Statement};
 use crate::parser::parser_common::{
-    identifier, keyword, ASSERT_KEYWORD, COLON_CHAR, COMMA_CHAR, DEF_KEYWORD, ELSE_KEYWORD,
-    END_KEYWORD, EQUALS_CHAR, FOR_KEYWORD, FUNCTION_ARROW, IF_KEYWORD, IN_KEYWORD, LEFT_PAREN,
-    RIGHT_PAREN, SEMICOLON_CHAR, VAL_KEYWORD, VAR_KEYWORD, WHILE_KEYWORD, RET_KEYWORD,
+    ASSERT_KEYWORD, COLON_CHAR, COMMA_CHAR, DEF_KEYWORD, ELSE_KEYWORD, END_KEYWORD, EQUALS_CHAR,
+    FOR_KEYWORD, FUNCTION_ARROW, IF_KEYWORD, IN_KEYWORD, LEFT_PAREN, RET_KEYWORD, RIGHT_PAREN,
+    SEMICOLON_CHAR, VAL_KEYWORD, VAR_KEYWORD, WHILE_KEYWORD, identifier, keyword,
 };
 use crate::parser::parser_expr::parse_expression;
 use crate::parser::parser_type::parse_type;
@@ -34,16 +34,10 @@ pub fn parse_statement(input: &str) -> IResult<&str, Statement> {
 
 pub fn parse_return_statement(input: &str) -> IResult<&str, Statement> {
     map(
-        tuple((
-            keyword(RET_KEYWORD),
-            multispace0,
-            parse_expression,
-        )),
+        tuple((keyword(RET_KEYWORD), multispace0, parse_expression)),
         |(_, _, expr)| Statement::Return(Box::new(expr)),
     )(input)
 }
-
-
 
 fn parse_var_declaration_statement(input: &str) -> IResult<&str, Statement> {
     map(

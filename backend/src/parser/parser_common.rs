@@ -1,11 +1,11 @@
 use nom::{
+    IResult,
     branch::alt,
     bytes::complete::tag,
     character::complete::{alpha1, multispace0},
     combinator::{not, peek, recognize},
     multi::many0,
     sequence::{delimited, terminated},
-    IResult,
 };
 
 use crate::parser::keywords::KEYWORDS;

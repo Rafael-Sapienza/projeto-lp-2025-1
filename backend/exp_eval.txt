@@ -1,0 +1,66 @@
+
+
+-----------------------------------------
+            counter: 127
+
+
+In function eval_function_call:
+
+Env: Environment { id: 10, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {}, functions: {"f": Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Return(CVoid)])) }}, adts: {} }] }
+
+
+
+-----------------------------------------
+            counter: 128
+
+
+In function eval_function_call:
+
+Function 'f' successfully found in environment
+
+
+
+-----------------------------------------
+            counter: 130
+
+
+In function eval_function_call:
+
+new_env after copying functions: Environment { id: 11, stack_len: 0, current_func: "f", output: [], globals: Scope { variables: {}, functions: {"f": Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Return(CVoid)])) }}, adts: {} }, stack: [] }
+
+
+
+-----------------------------------------
+            counter: 132
+
+
+In function eval_function_call:
+
+new_env after mapping formal args: Environment { id: 11, stack_len: 0, current_func: "f", output: [], globals: Scope { variables: {"x": (false, CInt(7))}, functions: {"f": Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Return(CVoid)])) }}, adts: {} }, stack: [] }
+
+
+
+-----------------------------------------
+            counter: 138
+
+
+Eval Var:
+
+Expression: Var("x")
+
+Env: Environment { id: 11, stack_len: 1, current_func: "f", output: [], globals: Scope { variables: {"x": (false, CInt(7))}, functions: {"f": Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Return(CVoid)])) }}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }] }
+
+
+
+-----------------------------------------
+            counter: 144
+
+
+Env is about to receive output from function f
+
+Function f generated Environment { id: 11, stack_len: 0, current_func: "f", output: ["7"], globals: Scope { variables: {"x": (false, CInt(7))}, functions: {"f": Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Return(CVoid)])) }}, adts: {} }, stack: [] }
+
+output: ["7"]
+
+Env after receiving output: Environment { id: 10, stack_len: 1, current_func: "", output: ["7"], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {}, functions: {"f": Function { name: "f", kind: TVoid, params: [FormalArgument { argument_name: "x", argument_type: TInteger }], body: Some(Block([Print(Var("x")), Return(CVoid)])) }}, adts: {} }] }
+

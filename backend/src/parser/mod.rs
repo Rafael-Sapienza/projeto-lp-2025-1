@@ -1,15 +1,15 @@
 pub mod keywords;
+pub mod parser;
 pub mod parser_common;
 pub mod parser_expr;
 pub mod parser_stmt;
 pub mod parser_type;
-pub mod parser;
 use nom::{
+    IResult,
     character::complete::{char, multispace0},
     combinator::{map, opt},
     multi::separated_list0,
     sequence::tuple,
-    IResult,
 };
 
 use crate::ir::ast::Statement;
@@ -33,6 +33,5 @@ pub fn parse(input: &str) -> IResult<&str, Vec<Statement>> {
         |(_, statements, _, _)| statements,
     )(input)
 }
-
 
 pub use parser::parse_chained_blocks;

@@ -2,6 +2,7 @@ use std::fmt::format;
 
 use super::expression_eval::{ExpressionResult, eval};
 use crate::environment::environment::Environment;
+use crate::interpreter::expression_eval::eval_function_call;
 use crate::ir::ast::{Expression, Statement};
 use crate::{show, show_counter};
 
@@ -284,6 +285,19 @@ pub fn execute(stmt: Statement, env: &Environment<Expression>) -> Result<Computa
                 }
             }
             return Ok(Computation::Continue(new_env));
+        }
+
+        Statement::SingleFuncCall(name, args) => {
+            let mut new_env = env.clone();
+            match eval_function_call(name, args, &mut new_env) {
+                Ok(ExpressionResult::Value(_)) => {
+                    return Ok(Computation::Continue(new_env));
+                }
+                Ok(ExpressionResult::Propagate(exp)) => {
+                    return Ok(Computation::PropagateError(exp, new_env));
+                }
+                Err(e) => Err(e),
+            }
         }
 
         _ => Err(String::from("not implemented yet")),

@@ -24,7 +24,6 @@ mod type_checker;
 #[actix_web::main]
 // The function return a Result. Which Result depends on the the setting / execution of the server
 
- 
 async fn main() -> std::io::Result<()> {
     const ADDRESS: &str = "127.0.0.1";
     const PORT: u16 = 8080;
@@ -56,7 +55,7 @@ async fn main() -> std::io::Result<()> {
     server.await
 }
 
-/* 
+/*
 fn main() {
     // Tenta criar um arquivo chamado "debug.txt"
     reset_txt_files();

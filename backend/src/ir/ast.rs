@@ -146,6 +146,7 @@ pub enum Statement {
     ModTestDef(Name, Box<Statement>),
     AssertFails(String),
     FuncDef(Function),
+    SingleFuncCall(Name, Vec<Expression>),
     Return(Box<Expression>),
     TypeDeclaration(Name, Vec<ValueConstructor>),
     Print(Box<Expression>),

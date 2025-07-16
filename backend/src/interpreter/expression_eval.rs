@@ -12,7 +12,10 @@ pub enum ExpressionResult {
     Propagate(Expression), // For error propagation in Maybe/Result types
 }
 
-pub fn eval(exp: Expression, env: &mut Environment<Expression>) -> Result<ExpressionResult, String> {
+pub fn eval(
+    exp: Expression,
+    env: &mut Environment<Expression>,
+) -> Result<ExpressionResult, String> {
     match exp.clone() {
         Expression::Add(lhs, rhs) => {
             show_counter_exp_eval();
@@ -422,7 +425,10 @@ fn eval_or(
     )
 }
 
-fn eval_not(lhs: Expression, env: &mut Environment<Expression>) -> Result<ExpressionResult, String> {
+fn eval_not(
+    lhs: Expression,
+    env: &mut Environment<Expression>,
+) -> Result<ExpressionResult, String> {
     let v = match eval(lhs, env)? {
         ExpressionResult::Value(expr) => expr,
         ExpressionResult::Propagate(expr) => return Ok(ExpressionResult::Propagate(expr)),
@@ -601,10 +607,7 @@ pub fn eval_function_call(
 
             show_counter_exp_eval();
             show_exp_eval(format!("In function eval_function_call:"));
-            show_exp_eval(format!(
-                "new_env after copying functions: {:?}",
-                new_env
-            ));
+            show_exp_eval(format!("new_env after copying functions: {:?}", new_env));
 
             for (formal, actual) in function_definition.params.iter().zip(args.iter()) {
                 let value = match eval(actual.clone(), env)? {
@@ -626,10 +629,12 @@ pub fn eval_function_call(
                 &mut new_env,
             ) {
                 Ok(Computation::Continue(_)) => Err("Function did not return a value".to_string()),
-                Ok(Computation::Return(value, mut func_final_env)) => 
-                {
+                Ok(Computation::Return(value, mut func_final_env)) => {
                     show_counter_exp_eval();
-                    show_exp_eval(format!("Env is about to receive output from function {}", name));
+                    show_exp_eval(format!(
+                        "Env is about to receive output from function {}",
+                        name
+                    ));
                     show_exp_eval(format!("Function {} generated {:?}", name, func_final_env));
                     show_exp_eval(format!("output: {:?}", func_final_env.output));
                     env.output.append(&mut func_final_env.output);
@@ -712,7 +717,10 @@ fn eval_iserror_expression(
         _ => Ok(ExpressionResult::Value(Expression::CFalse)),
     }
 }
-fn eval_just(exp: Expression, env: &mut Environment<Expression>) -> Result<ExpressionResult, String> {
+fn eval_just(
+    exp: Expression,
+    env: &mut Environment<Expression>,
+) -> Result<ExpressionResult, String> {
     let v = match eval(exp, env)? {
         ExpressionResult::Value(expr) => expr,
         ExpressionResult::Propagate(expr) => return Ok(ExpressionResult::Propagate(expr)),
@@ -726,7 +734,10 @@ fn eval_ok(exp: Expression, env: &mut Environment<Expression>) -> Result<Express
     };
     Ok(ExpressionResult::Value(Expression::COk(Box::new(v))))
 }
-fn eval_err(exp: Expression, env: &mut Environment<Expression>) -> Result<ExpressionResult, String> {
+fn eval_err(
+    exp: Expression,
+    env: &mut Environment<Expression>,
+) -> Result<ExpressionResult, String> {
     let v = match eval(exp, env)? {
         ExpressionResult::Value(expr) => expr,
         ExpressionResult::Propagate(expr) => return Ok(ExpressionResult::Propagate(expr)),

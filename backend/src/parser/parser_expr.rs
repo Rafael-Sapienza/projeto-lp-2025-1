@@ -1,4 +1,5 @@
 use nom::{
+    IResult,
     branch::alt,
     bytes::complete::{tag, take_while},
     character::complete::{char, digit1, multispace0, multispace1},
@@ -6,32 +7,33 @@ use nom::{
     error::Error,
     multi::{fold_many0, separated_list0},
     sequence::{delimited, pair, preceded, tuple},
-    IResult,
 };
 
 use std::str::FromStr;
 
-use crate::{ir::ast::Expression, parser::{parser_common::END_KEYWORD, parser_stmt::parse_block}};
+use crate::ir::ast::Function;
+use crate::ir::ast::Statement;
 use crate::parser::parser_common::{
-    identifier,
-    is_string_char,
-    keyword,
+    COLON_CHAR,
     // Other character constants
     COMMA_CHAR,
-    COLON_CHAR,
+    FUNCTION_ARROW,
+    LAMBDA_KEYWORD,
     // Bracket and parentheses constants
     LEFT_BRACKET,
     LEFT_PAREN,
     RIGHT_BRACKET,
     RIGHT_PAREN,
-    FUNCTION_ARROW,
-    LAMBDA_KEYWORD,
+    identifier,
+    is_string_char,
+    keyword,
 };
 use crate::parser::parser_stmt::{parse_formal_argument, parse_return_statement};
 use crate::parser::parser_type::parse_type;
-use crate::ir::ast::Function;
-use crate::ir::ast::Statement;
-
+use crate::{
+    ir::ast::Expression,
+    parser::{parser_common::END_KEYWORD, parser_stmt::parse_block},
+};
 
 pub fn parse_expression(input: &str) -> IResult<&str, Expression> {
     delimited(multispace0, parse_or, multispace0)(input)
@@ -204,7 +206,6 @@ fn parse_function_call(input: &str) -> IResult<&str, Expression> {
     Ok((input, Expression::FuncCall(name.to_string(), args)))
 }
 
-
 fn parse_lambda(input: &str) -> IResult<&str, Expression> {
     map(
         tuple((
@@ -223,9 +224,13 @@ fn parse_lambda(input: &str) -> IResult<&str, Expression> {
                 char::<&str, Error<&str>>(RIGHT_PAREN),
             ),
             preceded(multispace0, tag(FUNCTION_ARROW)),
-            delimited(multispace0, parse_type, char::<&str, Error<&str>>(COLON_CHAR)),
-            parse_return_statement, 
-            keyword(END_KEYWORD)
+            delimited(
+                multispace0,
+                parse_type,
+                char::<&str, Error<&str>>(COLON_CHAR),
+            ),
+            parse_return_statement,
+            keyword(END_KEYWORD),
         )),
         |(_, name, args, _, t, return_stmt, _)| {
             Expression::Lambda(Function {
