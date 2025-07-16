@@ -2,6 +2,7 @@ pub mod serialization;
 pub mod easy_interpreter;
 pub mod block_executor;
 pub mod helper_functions;
+pub mod sub_interpreters;
 
 pub use serialization::{Workspace, Blocks, Block, Input, Value};
 pub use serialization::{Workspace2, Blocks2, Block2, Input2, NextBlock2};

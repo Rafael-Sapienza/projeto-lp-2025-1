@@ -1,0 +1,72 @@
+
+
+-----------------------------------------
+            counter: 469
+
+
+Check Var:
+
+Exp: Var("n")
+
+Env: Environment { id: 16, stack_len: 1, current_func: "fat", output: [], globals: Scope { variables: {"n": (false, TInteger)}, functions: {"fat": Function { name: "fat", kind: TInteger, params: [FormalArgument { argument_name: "n", argument_type: TInteger }], body: Some(Block([VarDeclaration("resultado", CInt(0)), IfThenElse(LTE(Var("n"), CInt(1)), Block([Assignment("resultado", CInt(1))]), Some(Block([Assignment("resultado", Mul(Var("n"), FuncCall("fat", [Sub(Var("n"), CInt(1))])))]))), Return(Var("resultado"))])) }}, adts: {} }, stack: [Scope { variables: {"resultado": (true, TInteger)}, functions: {}, adts: {} }] }
+
+
+
+-----------------------------------------
+            counter: 477
+
+
+Check Var:
+
+Exp: Var("n")
+
+Env: Environment { id: 16, stack_len: 2, current_func: "fat", output: [], globals: Scope { variables: {"n": (false, TInteger)}, functions: {"fat": Function { name: "fat", kind: TInteger, params: [FormalArgument { argument_name: "n", argument_type: TInteger }], body: Some(Block([VarDeclaration("resultado", CInt(0)), IfThenElse(LTE(Var("n"), CInt(1)), Block([Assignment("resultado", CInt(1))]), Some(Block([Assignment("resultado", Mul(Var("n"), FuncCall("fat", [Sub(Var("n"), CInt(1))])))]))), Return(Var("resultado"))])) }}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }, Scope { variables: {"resultado": (true, TInteger)}, functions: {}, adts: {} }] }
+
+
+
+-----------------------------------------
+            counter: 478
+
+
+Func Call:
+
+Exp: FuncCall("fat", [Sub(Var("n"), CInt(1))])
+
+Env: Environment { id: 16, stack_len: 2, current_func: "fat", output: [], globals: Scope { variables: {"n": (false, TInteger)}, functions: {"fat": Function { name: "fat", kind: TInteger, params: [FormalArgument { argument_name: "n", argument_type: TInteger }], body: Some(Block([VarDeclaration("resultado", CInt(0)), IfThenElse(LTE(Var("n"), CInt(1)), Block([Assignment("resultado", CInt(1))]), Some(Block([Assignment("resultado", Mul(Var("n"), FuncCall("fat", [Sub(Var("n"), CInt(1))])))]))), Return(Var("resultado"))])) }}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }, Scope { variables: {"resultado": (true, TInteger)}, functions: {}, adts: {} }] }
+
+
+
+-----------------------------------------
+            counter: 479
+
+
+Check Var:
+
+Exp: Var("n")
+
+Env: Environment { id: 16, stack_len: 2, current_func: "fat", output: [], globals: Scope { variables: {"n": (false, TInteger)}, functions: {"fat": Function { name: "fat", kind: TInteger, params: [FormalArgument { argument_name: "n", argument_type: TInteger }], body: Some(Block([VarDeclaration("resultado", CInt(0)), IfThenElse(LTE(Var("n"), CInt(1)), Block([Assignment("resultado", CInt(1))]), Some(Block([Assignment("resultado", Mul(Var("n"), FuncCall("fat", [Sub(Var("n"), CInt(1))])))]))), Return(Var("resultado"))])) }}, adts: {} }, stack: [Scope { variables: {}, functions: {}, adts: {} }, Scope { variables: {"resultado": (true, TInteger)}, functions: {}, adts: {} }] }
+
+
+
+-----------------------------------------
+            counter: 482
+
+
+Check Var:
+
+Exp: Var("resultado")
+
+Env: Environment { id: 16, stack_len: 1, current_func: "fat", output: [], globals: Scope { variables: {"n": (false, TInteger)}, functions: {"fat": Function { name: "fat", kind: TInteger, params: [FormalArgument { argument_name: "n", argument_type: TInteger }], body: Some(Block([VarDeclaration("resultado", CInt(0)), IfThenElse(LTE(Var("n"), CInt(1)), Block([Assignment("resultado", CInt(1))]), Some(Block([Assignment("resultado", Mul(Var("n"), FuncCall("fat", [Sub(Var("n"), CInt(1))])))]))), Return(Var("resultado"))])) }}, adts: {} }, stack: [Scope { variables: {"resultado": (true, TInteger), "n": (false, TInteger)}, functions: {}, adts: {} }] }
+
+
+
+-----------------------------------------
+            counter: 486
+
+
+Func Call:
+
+Exp: FuncCall("fat", [CInt(13)])
+
+Env: Environment { id: 15, stack_len: 1, current_func: "", output: [], globals: Scope { variables: {}, functions: {}, adts: {} }, stack: [Scope { variables: {}, functions: {"fat": Function { name: "fat", kind: TInteger, params: [FormalArgument { argument_name: "n", argument_type: TInteger }], body: Some(Block([VarDeclaration("resultado", CInt(0)), IfThenElse(LTE(Var("n"), CInt(1)), Block([Assignment("resultado", CInt(1))]), Some(Block([Assignment("resultado", Mul(Var("n"), FuncCall("fat", [Sub(Var("n"), CInt(1))])))]))), Return(Var("resultado"))])) }}, adts: {} }] }
+

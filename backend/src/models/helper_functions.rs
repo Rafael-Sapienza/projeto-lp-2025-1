@@ -61,11 +61,9 @@ pub fn get_number_shadow(block: &Block) -> Option<f64> {
 
 pub fn get_text_shadow(block: &Block) -> Option<String> {
     if let Some(fields) = &block.fields {
-        if let Some(value) = fields.get("TEXT") {
-            if let JsonValue::String(s) = value {
-                if !s.is_empty() {
-                    return Some(s.to_string());
-                }
+        if let Some(JsonValue::String(s)) = fields.get("TEXT") {
+            if !s.is_empty() {
+                return Some(s.to_string());
             }
         }
     }

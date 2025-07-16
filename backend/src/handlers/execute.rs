@@ -1,13 +1,12 @@
 use actix_web::{web, HttpResponse, Responder}; 
-use serde_json::Value as JsonValue;
 use crate::models::{ EasyInterpreter, Value, Workspace, Block, Input };
 
 pub async fn execute(payload: web::Json<Workspace>) -> impl Responder {
-    let mut interpreter = EasyInterpreter::new();         // 👈 create interpreter
+    let mut interpreter = EasyInterpreter::new();
 
-    interpreter.run(&payload.blocks.blocks);          // 👈 run all blocks
+    interpreter.run(&payload.blocks.blocks);        
 
-    HttpResponse::Ok().json(interpreter.into_output()) // 👈 return output
+    HttpResponse::Ok().json(interpreter.into_output()) 
 }
 
 /*

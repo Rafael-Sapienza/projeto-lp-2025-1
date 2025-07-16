@@ -1,16 +1,136 @@
 [
   {
+    "type": "function_declaration_block",
+    "id": ":@JyemBFlK_7LJ2l/x)U",
+    "fields": {
+      "RETURN_TYPE": "INT",
+      "FUNCTION_NAME": "fat"
+    },
+    "inputs": {
+      "FORMAL_ARGUMENTS": {
+        "block": {
+          "type": "formal_argument_block",
+          "id": "?cp,gSoO^{`pj2p28rxN",
+          "fields": {
+            "ARGUMENT_TYPE": "INT",
+            "FORMAL_ARGUMENT": "n"
+          },
+          "inputs": null,
+          "next": null
+        },
+        "shadow": null
+      },
+      "RETURN_EXPRESSION": {
+        "block": null,
+        "shadow": {
+          "type": "expression_block",
+          "id": "xz2a`eHo8[(I1=wY2Y^J",
+          "fields": {
+            "TEXT": "resultado"
+          },
+          "inputs": null,
+          "next": null
+        }
+      },
+      "FUNCTION_BODY": {
+        "block": {
+          "type": "declaration_block",
+          "id": "1`uWgda#mZHQ9$[AlR20",
+          "fields": {
+            "TYPE": "INT",
+            "VARIABLE": "resultado"
+          },
+          "inputs": null,
+          "next": {
+            "block": {
+              "type": "if_else_block",
+              "id": "4io?|z#}BjX$]`OE2F2J",
+              "fields": null,
+              "inputs": {
+                "CONDITION": {
+                  "block": null,
+                  "shadow": {
+                    "type": "expression_block",
+                    "id": "-m^Q6@T?PJ%YK=(;oK~1",
+                    "fields": {
+                      "TEXT": "n <= 1"
+                    },
+                    "inputs": null,
+                    "next": null
+                  }
+                },
+                "IF_BODY": {
+                  "block": {
+                    "type": "assignment_block",
+                    "id": "g38lq8IY+6f#2X%}M/RP",
+                    "fields": {
+                      "VARIABLE": "resultado"
+                    },
+                    "inputs": {
+                      "EXPRESSION": {
+                        "block": null,
+                        "shadow": {
+                          "type": "expression_block",
+                          "id": "SI(3Mg}mO=IZ3k~N#Nd$",
+                          "fields": {
+                            "TEXT": "1"
+                          },
+                          "inputs": null,
+                          "next": null
+                        }
+                      }
+                    },
+                    "next": null
+                  },
+                  "shadow": null
+                },
+                "ELSE_BODY": {
+                  "block": {
+                    "type": "assignment_block",
+                    "id": ":-iYG26RLtJ|}HuiF8[C",
+                    "fields": {
+                      "VARIABLE": "resultado"
+                    },
+                    "inputs": {
+                      "EXPRESSION": {
+                        "block": null,
+                        "shadow": {
+                          "type": "expression_block",
+                          "id": "3_z[mT}{d:9Pyxoc9v1R",
+                          "fields": {
+                            "TEXT": "n * fat(n-1)"
+                          },
+                          "inputs": null,
+                          "next": null
+                        }
+                      }
+                    },
+                    "next": null
+                  },
+                  "shadow": null
+                }
+              },
+              "next": null
+            }
+          }
+        },
+        "shadow": null
+      }
+    },
+    "next": null
+  },
+  {
     "type": "print_block",
-    "id": "u0wtqQ6@MdlwURz;^jY(",
+    "id": "1tuuciSzWgtS}{f=d$|]",
     "fields": null,
     "inputs": {
       "EXPRESSION": {
         "block": null,
         "shadow": {
           "type": "expression_block",
-          "id": "T;2gYuL9].vjL;b^B-,]",
+          "id": "6nuDddX:1^0vv)zre#lg",
           "fields": {
-            "TEXT": "\"oi\""
+            "TEXT": "fat(13)"
           },
           "inputs": null,
           "next": null

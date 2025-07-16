@@ -2,6 +2,8 @@ use super::{Block, Input, Value};
 use super::BlockExecutor; 
 use super::{get_string_input, get_number_input, get_boolean_input, get_number_shadow, get_text_shadow};
 use std::collections::HashMap;
+use crate::models::sub_interpreters::math::{ handle_math_operations, handle_math_comparisons };
+use crate::models::sub_interpreters::text::{ print, join, num_to_text, compare_texts, text_length };
 
 pub struct EasyInterpreter {
     output: Vec<String>,
@@ -16,6 +18,10 @@ impl BlockExecutor for EasyInterpreter {
 
     fn exec_input(&mut self, input: &Input) -> Option<Value> {
         self.execute_input(input)
+    }
+
+    fn push_output(&mut self, text: String) {
+        self.output.push(text);
     }
 }
 
@@ -113,110 +119,20 @@ impl EasyInterpreter {
                 let normalized = other_type.replace(' ', "_");
                 self.variables.get(&normalized).cloned()
             }
-            "print" => {
-                let mut text = String::new();
-                if let Some(inputs) = &block.inputs {
-                    if let Some(input) = inputs.get("TEXT") {
-                        if let Some(text) = get_string_input(self, input) {
-                            self.output.push(text);
-                        }
-                    }
-                }
-                Some(Value::String(String::new()))
-            }
-            "join" => {
-                let mut left_text = String::new();
-                let mut right_text = String::new();
 
-                if let Some(inputs) = &block.inputs {
-                    if let Some(input) = inputs.get("TEXT1") {
-                        left_text = get_string_input(self, input).unwrap_or_else(|| "".to_string());
-                    }
-                    if let Some(input) = inputs.get("TEXT2") {
-                        right_text = get_string_input(self, input).unwrap_or_else(|| "".to_string());
-                    }
-                }
+            "print" => print(self, block),
 
-                Some(Value::String(format!("{}{}", left_text, right_text)))
-            }
-            "number_to_text" => {
-                if let Some(inputs) = &block.inputs {
-                    if let Some(input) = inputs.get("NUM") {
-                        if let Some(num) = get_number_input(self, input) {
-                            return Some(Value::String(num.to_string()));
-                        }
-                    }
-                }
-                Some(Value::String(String::new()))
-            }
-            "compare_texts" => {
-                if let Some(inputs) = &block.inputs {
-                    let left = inputs.get("TEXT1").and_then(|i| get_string_input(self, i)).unwrap_or_default();
-                    let right = inputs.get("TEXT2").and_then(|i| get_string_input(self, i)).unwrap_or_default();
-                    return Some(Value::Boolean(left == right));
-                }
-                Some(Value::Boolean(false))
-            }
-            "length" => {
-                let mut total: f64 = 0.0;
-                if let Some(inputs) = &block.inputs {
-                    if let Some(input) = inputs.get("TEXT") {
-                        if let Some(s) = get_string_input(self, input) {
-                            total = s.len() as f64;
-                        }
-                    }
-                }
-                Some(Value::Number(total))
-            }
+            "join" => join(self, block),
 
-            "sum" | "sub" | "mult" | "divi" => {
-                let mut num1 = 0.0;
-                let mut num2 = 0.0;
+            "number_to_text" => num_to_text(self, block),
 
-                if let Some(inputs) = &block.inputs {
-                    if let Some(input) = inputs.get("NUM1") {
-                        num1 = get_number_input(self, input).unwrap_or(0.0);
-                    }
-                    if let Some(input) = inputs.get("NUM2") {
-                        num2 = get_number_input(self, input).unwrap_or(0.0);
-                    }
-                }
+            "compare_texts" => compare_texts(self, block),
 
-                let result = match block.r#type.as_str() {
-                    "sum"  => num1 + num2,
-                    "sub"  => num1 - num2,
-                    "mult" => num1 * num2,
-                    "divi" => num1 / num2,
-                    _ => unreachable!(),
-                };
+            "length" => text_length(self, block),
 
-                Some(Value::Number(result))
-            }
+            "sum" | "sub" | "mult" | "divi" => handle_math_operations(self, block),
 
-            "bigger" | "smaller" | "equal" | "less_equal" | "greater_equal" => {
-                let mut num1 = 0.0;
-                let mut num2 = 0.0;
-
-                if let Some(inputs) = &block.inputs {
-                    if let Some(input) = inputs.get("NUM1") {
-                        num1 = get_number_input(self, input).unwrap_or(0.0);
-                    }
-                    if let Some(input) = inputs.get("NUM2") {
-                        num2 = get_number_input(self, input).unwrap_or(0.0);
-                    }
-                }
-
-                let result = match block.r#type.as_str() {
-                    "bigger"  => num1 > num2,
-                    "smaller" => num1 < num2,
-                    "equal"   => (num1 - num2).abs() < std::f64::EPSILON,
-                    "less_equal"  => num1 <= num2,
-                    "greater_equal" => num1 >= num2,
-                    _ => unreachable!(),
-                };
-
-                Some(Value::Boolean(result))
-            }
+            "bigger" | "smaller" | "equal" | "less_equal" | "greater_equal" => handle_math_comparisons(self, block),
 
             "if" => {
                 let mut condition_met = false;
