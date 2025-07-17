@@ -1,6 +1,10 @@
 # Gerado automaticamente por Cargo:
 /target/
 
+#arquivos de depuracao
+*.txt
+*.json
+
 # Arquivos de build temporários:
 **/*.rs.bk
 
