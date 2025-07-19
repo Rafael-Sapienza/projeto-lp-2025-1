@@ -1,3 +1,4 @@
+use crate::ir::ast::FuncSignature;
 use crate::ir::ast::Function;
 use crate::ir::ast::Name;
 use crate::ir::ast::ValueConstructor;
@@ -12,7 +13,7 @@ static NEXT_ENVIRONMENT_ID: AtomicUsize = AtomicUsize::new(0);
 #[derive(Clone, Debug)]
 pub struct Scope<A: Clone + Debug> {
     pub variables: HashMap<Name, (bool, A)>,
-    pub functions: HashMap<Name, Function>,
+    pub functions: HashMap<FuncSignature, Function>,
     pub adts: HashMap<Name, Vec<ValueConstructor>>,
 }
 
@@ -31,7 +32,8 @@ impl<A: Clone + Debug> Scope<A> {
     }
 
     fn map_function(&mut self, function: Function) -> () {
-        self.functions.insert(function.name.clone(), function);
+        let func_signature = FuncSignature::from_func(&function);
+        self.functions.insert(func_signature, function);
         return ();
     }
 
@@ -46,8 +48,18 @@ impl<A: Clone + Debug> Scope<A> {
             .map(|(mutable, value)| (*mutable, value.clone()))
     }
 
-    fn lookup_function(&self, name: &Name) -> Option<&Function> {
-        self.functions.get(name)
+    fn lookup_function(&self, func_signature: &FuncSignature) -> Option<&Function> {
+        self.functions.get(func_signature)
+    }
+
+    fn lookup_function_by_name(&self, name: &Name) -> Option<&Function> {
+        self.functions.iter().find_map(|(signature, function)| {
+            if &signature.name == name {
+                Some(function)
+            } else {
+                None
+            }
+        })
     }
 
     fn lookup_adt(&self, name: &Name) -> Option<&Vec<ValueConstructor>> {
@@ -59,7 +71,7 @@ impl<A: Clone + Debug> Scope<A> {
 pub struct Environment<A: Clone + Debug> {
     pub id: usize,
     pub stack_len: usize,
-    pub current_func: Name,
+    pub current_func: FuncSignature,
     pub output: Vec<String>,
     pub globals: Scope<A>,
     pub stack: LinkedList<Scope<A>>,
@@ -73,7 +85,7 @@ impl<A: Clone + Debug> Environment<A> {
         Environment {
             id,
             stack_len: 0,
-            current_func: String::new(),
+            current_func: FuncSignature::new(),
             output: Vec::new(),
             globals: Scope::new(),
             stack: LinkedList::new(),
@@ -93,14 +105,14 @@ impl<A: Clone + Debug> Environment<A> {
         self.stack = stack;
     }
 
-    pub fn set_global_functions(&mut self, global_functions: HashMap<Name, Function>) {
+    pub fn set_global_functions(&mut self, global_functions: HashMap<FuncSignature, Function>) {
         self.globals.functions = global_functions;
     }
 
     //pub fn set_stack
 
-    pub fn set_current_func(&mut self, func_name: &str) {
-        self.current_func = func_name.to_string();
+    pub fn set_current_func(&mut self, func_signature: &FuncSignature) {
+        self.current_func = func_signature.clone();
     }
 
     pub fn insert_output_line(&mut self, line: &str) {
@@ -213,13 +225,50 @@ impl<A: Clone + Debug> Environment<A> {
         self.globals.lookup_var(var)
     }
 
-    pub fn lookup_function(&self, name: &Name) -> Option<&Function> {
+    //pub fn lookup_functions_by_name(&self, func_name: Name) -> Vec<&Function> {
+    //    let mut results = Vec::new();
+    //
+    //    for scope in self.stack.iter() {
+    //        for (signature, func) in scope.functions.iter() {
+    //            if signature.name == func_name {
+    //                results.push(func);
+    //            }
+    //        }
+    //    }
+    //
+    //    for (signature, func) in self.globals.functions.iter() {
+    //        if signature.name == func_name {
+    //            results.push(func);
+    //        }
+    //    }
+    //    results
+    //}
+
+    pub fn lookup_function(&self, func_signature: &FuncSignature) -> Option<&Function> {
         for scope in self.stack.iter() {
-            if let Some(func) = scope.lookup_function(name) {
+            if let Some(func) = scope.lookup_function(func_signature) {
                 return Some(func);
             }
         }
-        self.globals.lookup_function(name)
+        self.globals.lookup_function(func_signature)
+    }
+
+    pub fn lookup_var_or_func(&self, name: &Name) -> Option<FuncOrVar<A>> {
+        for scope in self.stack.iter() {
+            if let Some(value) = scope.lookup_var(name) {
+                return Some(FuncOrVar::Var(value));
+            }
+            if let Some(func) = scope.lookup_function_by_name(name) {
+                return Some(FuncOrVar::Func(func.clone()));
+            }
+        }
+        if let Some(value) = self.globals.lookup_var(name) {
+            return Some(FuncOrVar::Var(value));
+        }
+        if let Some(func) = self.globals.lookup_function_by_name(name) {
+            return Some(FuncOrVar::Func(func.clone()));
+        }
+        return None;
     }
 
     pub fn lookup_adt(&self, name: &Name) -> Option<&Vec<ValueConstructor>> {
@@ -276,14 +325,14 @@ impl<A: Clone + Debug> Environment<A> {
     }
 
     // The type checker ensures that each function is defined only once
-    pub fn get_all_functions(&self) -> HashMap<Name, Function> {
+    pub fn get_all_functions(&self) -> HashMap<FuncSignature, Function> {
         let mut all_functions = HashMap::new();
-        for (name, func) in &self.globals.functions {
-            all_functions.insert(name.clone(), func.clone());
+        for (func_signature, func) in &self.globals.functions {
+            all_functions.insert(func_signature.clone(), func.clone());
         }
         for scope in self.stack.iter() {
-            for (name, func) in &scope.functions {
-                all_functions.insert(name.clone(), func.clone());
+            for (func_signature, func) in &scope.functions {
+                all_functions.insert(func_signature.clone(), func.clone());
             }
         }
         all_functions
@@ -298,6 +347,12 @@ fn show_counter_env() {
     show_counter("env.txt");
 }
 
+pub enum FuncOrVar<A: Clone + Debug> {
+    Func(Function),
+    Var((bool, A)),
+}
+
+/*
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -369,3 +424,4 @@ mod tests {
         assert!(env.lookup_function(&"local".to_string()).is_none()); // local gone
     }
 }
+*/

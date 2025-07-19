@@ -131,6 +131,44 @@ Blockly.defineBlocksWithJsonArray([{
   "helpUrl": ""
 }]);
 
+/***** FUNCTIONAL FORMAL ARGUMENTS BLOCK*****/
+Blockly.defineBlocksWithJsonArray([{
+  "type": "functional_formal_argument_block",
+  "message0": "(%2)->%1 %3, %4",
+  "args0": [
+    {
+      "type": "field_dropdown",
+      "name": "ARG_FUNC_RETURN_TYPE",
+      "options": [
+        ["int", "INT"],
+        ["float", "FLOAT"],
+        ["string", "STRING"],
+        ["bool", "BOOL"]
+      ]
+    },
+    {
+      "type": "field_input",
+      "name": "ARG_FUNC_PARAMS_TYPE",
+    },
+    {
+      "type": "field_input",
+      "name": "ARG_FUNC_NAME",
+    },
+    {
+      "type": "input_value",
+      "name": "NEXT_ARGUMENT",
+      "check": "FormalArgumentList"
+    }
+  ],
+  "output": "FormalArgumentList",
+  "outputShape": Blockly.OUTPUT_SHAPE_ROUND,
+  "colour": '#40679E',
+  "tooltip": "Function definition",
+  "helpUrl": ""
+}]);
+
+
+
 /***** PRINT BLOCK *****/
 Blockly.defineBlocksWithJsonArray([{
   "type": "print_block",
@@ -271,7 +309,8 @@ const workspace = Blockly.inject('blocklyDiv', {
         inputs: {"RETURN_EXPRESSION": {shadow:{type:"expression_block"}} }
       },
       { kind: "block", type: "formal_argument_block" },
-      { kind: "block", type: "sigle_func_call_block", inputs: {"FUNC_NAME": {shadow:{type:"expression_block"}}, "ACTUAL_ARGS": {shadow:{type:"expression_block"}}}}
+      { kind: "block", type: "functional_formal_argument_block" },
+      { kind: "block", type: "sigle_func_call_block", inputs: {"FUNC_NAME": {shadow:{type:"expression_block"}}, "ACTUAL_ARGS": {shadow:{type:"expression_block"}}}},
     ]
   }
 });

@@ -2,8 +2,10 @@ use core::prelude::v1;
 use std::fmt::format;
 
 use super::statement_execute::Computation;
-use crate::environment::environment::Environment;
-use crate::ir::ast::{Expression, Name};
+use crate::environment::environment::{Environment, FuncOrVar};
+use crate::ir::ast::{Expression, Function, Name};
+use crate::ir::ast::{FuncSignature, Type};
+use crate::type_checker::check_expr;
 use crate::{show, show_counter};
 
 #[derive(Debug, PartialEq, Clone)]
@@ -574,49 +576,95 @@ pub fn eval_lookup(
 
 // Function call
 pub fn eval_function_call(
-    name: Name,
+    func_name: Name,
     args: Vec<Expression>,
     env: &mut Environment<Expression>,
 ) -> Result<ExpressionResult, String> {
     show_counter_exp_eval();
     show_exp_eval(format!("In function eval_function_call:"));
     show_exp_eval(format!("Env: {:?}", env));
-    match env.lookup_function(&name).cloned() {
-        Some(function_definition) => {
+    let mut actual_arg_values = Vec::new();
+    let mut actual_arg_types = Vec::new();
+    for arg in args.iter() {
+        match arg {
+            Expression::Var(name) => match env.lookup_var_or_func(name) {
+                Some(FuncOrVar::Var((_, var_name))) => match eval_lookup(name.to_string(), env)? {
+                    ExpressionResult::Propagate(expr) => {
+                        return Ok(ExpressionResult::Propagate(expr));
+                    }
+                    ExpressionResult::Value(expr) => {
+                        actual_arg_values.push(expr);
+                    }
+                },
+                Some(FuncOrVar::Func(func)) => {
+                    actual_arg_values.push(Expression::Lambda(func));
+                }
+                None => return Err(format!("Identifier '{}' was never declared", name)),
+            },
+            _ => match eval(arg.clone(), env)? {
+                ExpressionResult::Value(expr) => {
+                    actual_arg_values.push(expr);
+                }
+                ExpressionResult::Propagate(expr) => {
+                    return Ok(ExpressionResult::Propagate(expr));
+                }
+            },
+        }
+    }
+    for value in &actual_arg_values {
+        actual_arg_types.push(check_expr(value.clone(), &Environment::<Type>::new())?);
+    }
+
+    let func_signature = FuncSignature {
+        name: func_name.clone(),
+        argument_types: actual_arg_types.clone(),
+    };
+    match env.lookup_function(&func_signature).cloned() {
+        Some(func) => {
             show_counter_exp_eval();
             show_exp_eval(format!("In function eval_function_call:"));
             show_exp_eval(format!(
                 "Function '{}' successfully found in environment",
-                name
+                func_signature
             ));
 
             let mut new_env = Environment::new();
 
-            new_env.set_current_func(&name);
+            new_env.set_current_func(&func_signature);
             // Functions from the outer environment must be propagated to new_env to ensure access to external functions within the function body.
             // This also allows the function to reference itself, which enables recursion
             new_env.set_global_functions(env.get_all_functions());
-            new_env.output = env.output.clone();
-
-            if args.len() != function_definition.params.len() {
-                return Err(format!(
-                    "[Runtime Error] Invalid number of arguments for '{}'.",
-                    name
-                ));
-            }
 
             show_counter_exp_eval();
             show_exp_eval(format!("In function eval_function_call:"));
             show_exp_eval(format!("new_env after copying functions: {:?}", new_env));
 
-            for (formal, actual) in function_definition.params.iter().zip(args.iter()) {
-                let value = match eval(actual.clone(), env)? {
-                    ExpressionResult::Value(expr) => expr,
-                    ExpressionResult::Propagate(expr) => {
-                        return Ok(ExpressionResult::Propagate(expr));
+            for (formal_arg, value) in func.params.iter().zip(actual_arg_values.iter()) {
+                match formal_arg.argument_type {
+                    Type::TFunction(..) => {
+                        match value {
+                            Expression::Lambda(arg_func) => {
+                                let mut inner_func = arg_func.clone();
+                                inner_func.name = formal_arg.argument_name.clone();
+                                new_env.map_function(inner_func);
+                            }
+                            //This will never happen, but I need to cover all cases, otherwise it won't compile
+                            _ => {
+                                return Err(format!(
+                                    "[Runtime Error] Function {} expected another function as argument, but received a non functional argument",
+                                    func_name
+                                ));
+                            }
+                        }
                     }
-                };
-                new_env.create_variable(formal.argument_name.clone(), false, value)?;
+                    _ => {
+                        new_env.create_variable(
+                            formal_arg.argument_name.clone(),
+                            false,
+                            value.clone(),
+                        )?;
+                    }
+                }
             }
 
             show_counter_exp_eval();
@@ -624,20 +672,21 @@ pub fn eval_function_call(
             show_exp_eval(format!("new_env after mapping formal args: {:?}", new_env));
 
             // Execute the body of the function.
-            match super::statement_execute::execute(
-                *function_definition.body.as_ref().unwrap().clone(),
-                &mut new_env,
-            ) {
+            match super::statement_execute::execute(*func.body.as_ref().unwrap().clone(), &new_env)
+            {
                 Ok(Computation::Continue(_)) => Err("Function did not return a value".to_string()),
-                Ok(Computation::Return(value, mut func_final_env)) => {
+                Ok(Computation::Return(value, mut final_env)) => {
                     show_counter_exp_eval();
                     show_exp_eval(format!(
                         "Env is about to receive output from function {}",
-                        name
+                        func_signature
                     ));
-                    show_exp_eval(format!("Function {} generated {:?}", name, func_final_env));
-                    show_exp_eval(format!("output: {:?}", func_final_env.output));
-                    env.output.append(&mut func_final_env.output);
+                    show_exp_eval(format!(
+                        "Function {} generated {:?}",
+                        func_signature, final_env
+                    ));
+                    show_exp_eval(format!("output: {:?}", final_env.output));
+                    env.output.append(&mut final_env.output);
                     show_exp_eval(format!("Env after receiving output: {:?}", env));
                     Ok(ExpressionResult::Value(value))
                 }
@@ -649,9 +698,12 @@ pub fn eval_function_call(
         _ => {
             show_counter_exp_eval();
             show_exp_eval(format!("In function eval_function_call:"));
-            show_exp_eval(format!("Function '{}' not found in environment", name));
+            show_exp_eval(format!(
+                "Function '{}' not found in environment",
+                func_signature
+            ));
             show_exp_eval(format!("Env: {:?}", env));
-            Err(format!("Function '{}' not found", name))
+            Err(format!("Function '{}' not found", func_signature))
         }
     }
 }
