@@ -1,8 +1,11 @@
 use crate::ir::ast::{Expression, FormalArgument, Function, Statement, Type};
 use crate::models::{Block2, Blocks2, Input2, NextBlock2, Workspace2};
-use crate::parser::parser_common::identifier;
+use crate::parser::parse_type;
+use crate::parser::parser_common::separator;
+use crate::parser::parser_common::{COMMA_CHAR, COMMA_SYMBOL, identifier};
 use crate::parser::parser_expr::parse_actual_arguments;
 use crate::parser::parser_expr::parse_expression;
+use crate::parser::parser_stmt::parse_formal_argument;
 use actix_web::{HttpResponse, Responder, post, web};
 use nom::{Err, Finish};
 use nom::{
@@ -290,34 +293,94 @@ fn parse_single_block(block: &Block2) -> Result<Statement, String> {
             {
                 let mut current_block = formal_argument_block.as_ref();
                 loop {
-                    if let Some((arg_name, arg_type_str)) =
-                        current_block.fields.as_ref().and_then(|fields| {
-                            fields
-                                .get("FORMAL_ARGUMENT")
-                                .zip(fields.get("ARGUMENT_TYPE"))
-                        })
-                    {
-                        let arg_type = match arg_type_str.as_str() {
-                            "INT" => Type::TInteger,
-                            "FLOAT" => Type::TReal,
-                            "STRING" => Type::TString,
-                            "BOOL" => Type::TBool,
-                            _ => return Err(format!("Unknown argument type: {}", arg_type_str)),
-                        };
-                        let formal_argument = FormalArgument {
-                            argument_name: arg_name.to_string(),
-                            argument_type: arg_type,
-                        };
-                        func.params.push(formal_argument);
-                        let next_block = current_block
-                            .inputs
-                            .as_ref()
-                            .and_then(|inputs| inputs.get("NEXT_ARGUMENT"))
-                            .and_then(|input| input.block.as_ref());
-                        match next_block {
-                            Some(next_block) => current_block = next_block.as_ref(),
-                            None => break,
+                    if current_block.r#type == "formal_argument_block".to_string() {
+                        if let Some((arg_name, arg_type_str)) =
+                            current_block.fields.as_ref().and_then(|fields| {
+                                fields
+                                    .get("FORMAL_ARGUMENT")
+                                    .zip(fields.get("ARGUMENT_TYPE"))
+                            })
+                        {
+                            let arg_type = match arg_type_str.as_str() {
+                                "INT" => Type::TInteger,
+                                "FLOAT" => Type::TReal,
+                                "STRING" => Type::TString,
+                                "BOOL" => Type::TBool,
+                                _ => {
+                                    return Err(format!("Unknown argument type: {}", arg_type_str));
+                                }
+                            };
+                            let formal_argument = FormalArgument {
+                                argument_name: arg_name.to_string(),
+                                argument_type: arg_type,
+                            };
+                            func.params.push(formal_argument);
                         }
+                    } else if current_block.r#type == "functional_formal_argument_block".to_string()
+                    {
+                        if let Some((arg_func_name, arg_func_return_type, arg_func_params_type)) =
+                            current_block.fields.as_ref().and_then(|fields| {
+                                let p = fields.get("ARG_FUNC_NAME")?;
+                                let q = fields.get("ARG_FUNC_RETURN_TYPE")?;
+                                let r = fields.get("ARG_FUNC_PARAMS_TYPE")?;
+                                Some((p, q, r))
+                            })
+                        {
+                            if arg_func_name.is_empty() {
+                                return Err("Argument name cannot be empty".to_string());
+                            }
+                            let (rest1, arg_func_params_type): (&str, Vec<Type>) =
+                                delimited(
+                                    multispace0,
+                                    separated_list0(separator(COMMA_SYMBOL), parse_type),
+                                    multispace0,
+                                )(arg_func_params_type)
+                                .map_err(|e| {
+                                    format!("Erro ao parsear argumentos funcionais: {:?}", e)
+                                })?;
+                            let (rest2, arg_func_name) =
+                                delimited(multispace0, identifier, multispace0)(&arg_func_name)
+                                    .map_err(|_e| {
+                                        format!("Parsing error on variable: {}", arg_func_name)
+                                    })?;
+                            if !(rest1.is_empty() && rest2.is_empty()) {
+                                //println!("rest1: {}, rest2: {}", rest1, rest2));
+                                return Err(format!(
+                                    "Parsing Error on argument {} of function {}",
+                                    arg_func_name, func.name
+                                ));
+                            }
+                            let arg_func_return_type = match arg_func_return_type.as_str() {
+                                "INT" => Type::TInteger,
+                                "FLOAT" => Type::TReal,
+                                "STRING" => Type::TString,
+                                "BOOL" => Type::TBool,
+                                _ => {
+                                    return Err(format!(
+                                        "Unknown argument type: {}",
+                                        arg_func_return_type
+                                    ));
+                                }
+                            };
+                            let arg_func_type = Type::TFunction(
+                                Box::new(arg_func_return_type),
+                                arg_func_params_type,
+                            );
+                            let formal_argument = FormalArgument {
+                                argument_name: arg_func_name.to_string(),
+                                argument_type: arg_func_type,
+                            };
+                            func.params.push(formal_argument);
+                        }
+                    }
+                    let next_block = current_block
+                        .inputs
+                        .as_ref()
+                        .and_then(|inputs| inputs.get("NEXT_ARGUMENT"))
+                        .and_then(|input| input.block.as_ref());
+                    match next_block {
+                        Some(next_block) => current_block = next_block.as_ref(),
+                        None => break,
                     }
                 }
             } else {

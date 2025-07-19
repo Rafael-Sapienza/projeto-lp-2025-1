@@ -11,10 +11,16 @@ use nom::{
 use crate::parser::keywords::KEYWORDS;
 
 // Type name constants
-pub const INT_TYPE: &str = "Int";
-pub const REAL_TYPE: &str = "Real";
-pub const BOOLEAN_TYPE: &str = "Boolean";
-pub const STRING_TYPE: &str = "String";
+//pub const INT_TYPE: &str = "Int";
+//pub const REAL_TYPE: &str = "Real";
+//pub const BOOLEAN_TYPE: &str = "Boolean";
+//pub const STRING_TYPE: &str = "String";
+
+pub const INT_TYPE: &str = "int";
+pub const REAL_TYPE: &str = "float";
+pub const BOOLEAN_TYPE: &str = "boolean";
+pub const STRING_TYPE: &str = "string";
+
 pub const UNIT_TYPE: &str = "Unit";
 pub const ANY_TYPE: &str = "Any";
 
