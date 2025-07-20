@@ -335,8 +335,7 @@ impl<A: Clone + Debug> Environment<A> {
             all_functions.insert(func_signature.clone(), func.clone());
         }
         // It is necessary to traverse the scope stack from bottom to top
-        // so that functions defined in inner scopes can shadow those
-        // defined in outer scopes.
+        // so that functions defined in inner scopes can shadow those defined in outer scopes.
         for scope in self.stack.iter().rev() {
             for (func_signature, func) in &scope.functions {
                 all_functions.insert(func_signature.clone(), func.clone());
