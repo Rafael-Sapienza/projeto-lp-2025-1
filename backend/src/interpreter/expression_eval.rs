@@ -654,8 +654,8 @@ pub fn eval_function_call(
                             //This will never happen, but I need to cover all cases, otherwise it won't compile
                             _ => {
                                 return Err(format!(
-                                    "[Runtime Error] Function {} expected another function as argument, but received a non functional argument",
-                                    func_name
+                                    "[Runtime Error] Function {:?} expected another function as argument, but received a non functional argument",
+                                    func_signature
                                 ));
                             }
                         }
@@ -677,7 +677,7 @@ pub fn eval_function_call(
             // Execute the body of the function.
             match super::statement_execute::execute(*func.body.as_ref().unwrap().clone(), &new_env)
             {
-                Ok(Computation::Continue(_)) => Err("Function did not return a value".to_string()),
+                Ok(Computation::Continue(_)) => Err(format!("Function {:?} did not return a value", func_signature)),
                 Ok(Computation::Return(value, mut final_env)) => {
                     show_counter_exp_eval();
                     show_exp_eval(format!(
@@ -702,11 +702,11 @@ pub fn eval_function_call(
             show_counter_exp_eval();
             show_exp_eval(format!("In function eval_function_call:"));
             show_exp_eval(format!(
-                "Function '{}' not found in environment",
+                "Function '{:?}' not found in environment",
                 func_signature
             ));
             show_exp_eval(format!("Env: {:?}", env));
-            Err(format!("Function '{}' not found", func_signature))
+            Err(format!("Function '{:?}' not found", func_signature))
         }
     }
 }
