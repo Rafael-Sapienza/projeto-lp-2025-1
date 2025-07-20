@@ -6,7 +6,7 @@ use nom::{
     combinator::{map, map_res, opt, value, verify},
     error::Error,
     multi::{fold_many0, separated_list0},
-    sequence::{delimited, pair, preceded, tuple},
+    sequence::{delimited, pair, preceded, terminated, tuple},
 };
 
 use std::str::FromStr;
@@ -206,11 +206,108 @@ fn parse_function_call(input: &str) -> IResult<&str, Expression> {
     Ok((input, Expression::FuncCall(name.to_string(), args)))
 }
 
-fn parse_lambda(input: &str) -> IResult<&str, Expression> {
-    map(
+//pub fn parse_lambda(input: &str) -> IResult<&str, Expression> {
+//    let mut rest = input;
+//
+//    // 1. keyword "lambda" + espaços
+//    match preceded(keyword(LAMBDA_KEYWORD), multispace0)(rest) {
+//        Ok((r, _)) => {
+//            println!("✓ Keyword 'lambda' OK. Restante: {:?}", r);
+//            rest = r;
+//        }
+//        Err(e) => {
+//            println!("✗ Erro ao parsear a keyword 'lambda': {:?}", e);
+//            return Err(e);
+//        }
+//    }
+//
+//    // 2. argumentos formais entre parênteses
+//    let args;
+//    match delimited(
+//        char::<&str, Error<&str>>(LEFT_PAREN),
+//        separated_list0(
+//            tuple((
+//                multispace0,
+//                char::<&str, Error<&str>>(COMMA_CHAR),
+//                multispace0,
+//            )),
+//            terminated(parse_formal_argument, multispace0),
+//        ),
+//        char::<&str, Error<&str>>(RIGHT_PAREN),
+//    )(rest)
+//    {
+//        Ok((r, a)) => {
+//            println!("✓ Argumentos formais OK. Restante: {:?}", r);
+//            rest = r;
+//            args = a;
+//        }
+//        Err(e) => {
+//            println!("✗ Erro ao parsear os argumentos formais: {:?}", e);
+//            return Err(e);
+//        }
+//    }
+//
+//    // 3. seta "->"
+//    match preceded(multispace0, tag(FUNCTION_ARROW))(rest) {
+//        Ok((r, _)) => {
+//            println!("✓ Seta '->' OK. Restante: {:?}", r);
+//            rest = r;
+//        }
+//        Err(e) => {
+//            println!("✗ Erro ao parsear a seta '->': {:?}", e);
+//            return Err(e);
+//        }
+//    }
+//
+//    // 4. tipo de retorno da função
+//    let tipo;
+//    match delimited(
+//        multispace0,
+//        parse_type,
+//        char::<&str, Error<&str>>(COLON_CHAR),
+//    )(rest)
+//    {
+//        Ok((r, t)) => {
+//            println!("✓ Tipo de retorno OK. Restante: {:?}", r);
+//            rest = r;
+//            tipo = t;
+//        }
+//        Err(e) => {
+//            println!("✗ Erro ao parsear o tipo de retorno: {:?}", e);
+//            return Err(e);
+//        }
+//    }
+//
+//    // 5. corpo (return ...) até o "end"
+//    let corpo;
+//    match delimited(multispace0, parse_return_statement, keyword(END_KEYWORD))(rest) {
+//        Ok((r, stmt)) => {
+//            println!("✓ Corpo da função OK. Restante: {:?}", r);
+//            rest = r;
+//            corpo = stmt;
+//        }
+//        Err(e) => {
+//            println!("✗ Erro ao parsear o corpo da função: {:?}", e);
+//            return Err(e);
+//        }
+//    }
+//
+//    // 6. construir a expressão final
+//    Ok((
+//        rest,
+//        Expression::Lambda(Function {
+//            name: "".to_string(),
+//            kind: tipo,
+//            params: args,
+//            body: Some(Box::new(Statement::Block(vec![corpo]))),
+//        }),
+//    ))
+//}
+
+
+pub fn parse_lambda(input: &str) -> IResult<&str, Expression> {  map(
         tuple((
-            keyword(LAMBDA_KEYWORD),
-            preceded(multispace1, identifier),
+            preceded(keyword(LAMBDA_KEYWORD), multispace0),
             delimited(
                 char::<&str, Error<&str>>(LEFT_PAREN),
                 separated_list0(
@@ -219,7 +316,7 @@ fn parse_lambda(input: &str) -> IResult<&str, Expression> {
                         char::<&str, Error<&str>>(COMMA_CHAR),
                         multispace0,
                     )),
-                    parse_formal_argument,
+                    terminated(parse_formal_argument, multispace0),
                 ),
                 char::<&str, Error<&str>>(RIGHT_PAREN),
             ),
@@ -229,12 +326,11 @@ fn parse_lambda(input: &str) -> IResult<&str, Expression> {
                 parse_type,
                 char::<&str, Error<&str>>(COLON_CHAR),
             ),
-            parse_return_statement,
-            keyword(END_KEYWORD),
+            delimited(multispace0, parse_return_statement, keyword(END_KEYWORD)),
         )),
-        |(_, name, args, _, t, return_stmt, _)| {
+        |(_, args, _, t, return_stmt)| {
             Expression::Lambda(Function {
-                name: name.to_string(),
+                name: "".to_string(),
                 kind: t,
                 params: args,
                 body: Some(Box::new(Statement::Block(vec![return_stmt]))),
@@ -242,6 +338,7 @@ fn parse_lambda(input: &str) -> IResult<&str, Expression> {
         },
     )(input)
 }
+
 
 pub fn parse_actual_arguments(input: &str) -> IResult<&str, Vec<Expression>> {
     map(

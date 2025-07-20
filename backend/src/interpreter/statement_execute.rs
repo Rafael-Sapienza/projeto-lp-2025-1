@@ -3,7 +3,7 @@ use std::fmt::format;
 use super::expression_eval::{ExpressionResult, eval};
 use crate::environment::environment::Environment;
 use crate::interpreter::expression_eval::eval_function_call;
-use crate::ir::ast::{Expression, Statement};
+use crate::ir::ast::{Expression, FuncSignature, Statement};
 use crate::{show, show_counter};
 
 pub enum Computation {
@@ -75,18 +75,27 @@ pub fn execute(stmt: Statement, env: &Environment<Expression>) -> Result<Computa
             show_statement_exec(format!("Exec Assignement:"));
             show_statement_exec(format!("Statement: {:?}", stmt));
             show_statement_exec(format!("Env: {:?}", new_env));
-            let value = match eval(*exp, &mut new_env)? {
-                ExpressionResult::Value(expr) => expr,
-                ExpressionResult::Propagate(expr) => {
-                    return Ok(Computation::PropagateError(expr, new_env));
+            match *exp {
+                Expression::Lambda(mut func) => {
+                    func.name = name;
+                    new_env.map_function(func);
+                    return Ok(Computation::Continue(new_env));
                 }
-            };
-            show_counter_statement_exec();
-            show_statement_exec(format!("Finishing Exec Assignement:"));
-            show_statement_exec(format!("Statement: {:?}", stmt));
-            show_statement_exec(format!("Env: {:?}", new_env));
-            new_env.change_variable_value(name, value)?;
-            Ok(Computation::Continue(new_env))
+                _ => {
+                    let value = match eval(*exp, &mut new_env)? {
+                        ExpressionResult::Value(expr) => expr,
+                        ExpressionResult::Propagate(expr) => {
+                            return Ok(Computation::PropagateError(expr, new_env));
+                        }
+                    };
+                    show_counter_statement_exec();
+                    show_statement_exec(format!("Finishing Exec Assignement:"));
+                    show_statement_exec(format!("Statement: {:?}", stmt));
+                    show_statement_exec(format!("Env: {:?}", new_env));
+                    new_env.change_variable_value(name, value)?;
+                    return Ok(Computation::Continue(new_env));
+                }
+            }
         }
 
         Statement::IfThenElse(cond, stmt_then, stmt_else) => {

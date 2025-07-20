@@ -100,6 +100,10 @@ impl<A: Clone + Debug> Environment<A> {
         return self.stack.clone();
     }
 
+    pub fn get_current_scope(&self) -> &Scope<A> {
+        self.stack.front().unwrap_or(&self.globals)
+    }
+
     pub fn set_stack(&mut self, stack: LinkedList<Scope<A>>) {
         self.stack_len = stack.len();
         self.stack = stack;
