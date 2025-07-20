@@ -18,7 +18,7 @@ use crate::parser::keywords::KEYWORDS;
 
 pub const INT_TYPE: &str = "int";
 pub const REAL_TYPE: &str = "float";
-pub const BOOLEAN_TYPE: &str = "boolean";
+pub const BOOLEAN_TYPE: &str = "bool";
 pub const STRING_TYPE: &str = "string";
 
 pub const UNIT_TYPE: &str = "Unit";
