@@ -2,6 +2,10 @@ use actix_files::Files;
 use actix_web::{App, HttpServer};
 
 use crate::handlers::hard_interpreter::{execute_with_json, reset_txt_files, show, show_counter};
+use crate::parser::{
+    keyword, parse_expression, parse_formal_argument, parse_lambda, parse_return_statement,
+    parse_statement,
+};
 use std::fs::File;
 use std::io::Write;
 use std::sync::Mutex;
@@ -23,6 +27,7 @@ mod type_checker;
 // Allows the main function to be an async function
 #[actix_web::main]
 // The function return a Result. Which Result depends on the the setting / execution of the server
+
 
 async fn main() -> std::io::Result<()> {
     const ADDRESS: &str = "127.0.0.1";
@@ -55,11 +60,22 @@ async fn main() -> std::io::Result<()> {
     server.await
 }
 
-/*
-fn main() {
-    // Tenta criar um arquivo chamado "debug.txt"
-    reset_txt_files();
 
-    execute_with_json();
-}
-*/
+//fn main() {
+//    //let a = parse_lambda("lambda(x:int,y:float, z: string) -> int:ret 2*x end")
+//    //    .map_err(|e| format!("Parsing error: {}", e));
+//    let a = parse_lambda("lambda(x:int)->int:return 2*x end")
+//        .map_err(|e| format!("Parsing error: {}", e));
+//
+//    match a {
+//        Ok((restante, resultado)) => {
+//            println!("{}", restante);
+//            println!("{:?}", resultado);
+//        }
+//        Err(e) => {
+//            print!("Erro: {}", e);
+//        }
+//    }
+//}
+//reset_txt_files();
+//execute_with_json();

@@ -132,6 +132,7 @@ fn parse_single_block(block: &Block2) -> Result<Statement, String> {
                     .and_then(|shadow_block| shadow_block.fields.as_ref())
                     .and_then(|fields| fields.get("TEXT"))
                 {
+                    //println!("Expression string: {}", expression_string);
                     if expression_string.is_empty() {
                         return Err("Variable assignment requires non-empty expression".to_string());
                     }
@@ -141,6 +142,8 @@ fn parse_single_block(block: &Block2) -> Result<Statement, String> {
                             format!("Parsing error on expression: {}", expression_string)
                         })?;
                     if !rest.is_empty() {
+                        //println!("assignment_exp: {:?}", assignment_exp);
+                        //println!("rest: {}", rest);
                         return Err(format!(
                             "Parsing error on expression: {}",
                             expression_string

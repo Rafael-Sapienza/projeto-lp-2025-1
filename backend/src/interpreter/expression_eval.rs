@@ -588,7 +588,7 @@ pub fn eval_function_call(
     for arg in args.iter() {
         match arg {
             Expression::Var(name) => match env.lookup_var_or_func(name) {
-                Some(FuncOrVar::Var((_, var_name))) => match eval_lookup(name.to_string(), env)? {
+                Some(FuncOrVar::Var((_, _var_exp))) => match eval_lookup(name.to_string(), env)? {
                     ExpressionResult::Propagate(expr) => {
                         return Ok(ExpressionResult::Propagate(expr));
                     }
@@ -601,6 +601,9 @@ pub fn eval_function_call(
                 }
                 None => return Err(format!("Identifier '{}' was never declared", name)),
             },
+            Expression::Lambda(func) => {
+                actual_arg_values.push(Expression::Lambda(func.clone()));
+            }
             _ => match eval(arg.clone(), env)? {
                 ExpressionResult::Value(expr) => {
                     actual_arg_values.push(expr);

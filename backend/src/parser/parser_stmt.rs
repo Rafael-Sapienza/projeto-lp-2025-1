@@ -39,6 +39,54 @@ pub fn parse_return_statement(input: &str) -> IResult<&str, Statement> {
     )(input)
 }
 
+//pub fn parse_return_statement(input: &str) -> IResult<&str, Statement> {
+//    println!("🔍 Entrou em parse_return_statement");
+//    println!("📥 Input: {:?}", input);
+//
+//    let mut rest = input;
+//
+//    // 1. keyword "ret"
+//    match keyword(RET_KEYWORD)(rest) {
+//        Ok((r, _)) => {
+//            println!("✓ Palavra-chave 'ret' encontrada. Restante: {:?}", r);
+//            rest = r;
+//        }
+//        Err(e) => {
+//            println!("✗ Erro ao parsear a keyword 'ret': {:?}", e);
+//            return Err(e);
+//        }
+//    }
+//
+//    // 2. espaços após "ret"
+//    match multispace0(rest) {
+//        Ok((r, _)) => {
+//            println!("✓ Espaços após 'ret' OK. Restante: {:?}", r);
+//            rest = r;
+//        }
+//        Err(e) => {
+//            println!("✗ Erro ao consumir espaços após 'ret': {:?}", e);
+//            return Err(e);
+//        }
+//    }
+//
+//    // 3. expressão de retorno (por exemplo, "2*x")
+//    let expr;
+//    match parse_expression(rest) {
+//        Ok((r, e)) => {
+//            println!("✓ Expressão de retorno OK: {:?}. Restante: {:?}", e, r);
+//            rest = r;
+//            expr = e;
+//        }
+//        Err(e) => {
+//            println!("✗ Erro ao parsear a expressão de retorno: {:?}", e);
+//            return Err(e);
+//        }
+//    }
+//
+//    // 4. Construir Statement::Return
+//    Ok((rest, Statement::Return(Box::new(expr))))
+//}
+
 fn parse_var_declaration_statement(input: &str) -> IResult<&str, Statement> {
     map(
         tuple((
