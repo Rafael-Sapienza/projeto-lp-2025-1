@@ -112,7 +112,7 @@ pub fn check_func_call(
     if func.is_none() {
         return Err(format!(
             "Function {} was called but never declared",
-            func_name
+            func_signature
         ));
     }
     let func = func.unwrap();
@@ -129,7 +129,7 @@ pub fn check_func_call(
                 "Mismatched types in function {} call \n
             Expected:{:?}\n
             Received: {:?}",
-                func_name, formal_arg_types, actual_arg_types
+                func_signature, formal_arg_types, actual_arg_types
             ));
         }
     }

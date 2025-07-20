@@ -309,8 +309,9 @@ fn check_func_def_stmt(
     env: &Environment<Type>,
 ) -> Result<Environment<Type>, ErrorMessage> {
     let mut new_env = Environment::new();
+    let func_signature = FuncSignature::from_func(&function);
     //new_env.push(); -> Push and pop will happen in check_block_statement
-    new_env.set_current_func(&FuncSignature::from_func(&function));
+    new_env.set_current_func(&func_signature);
     // Previous environment functions and the formal parameters are regarded as global
     new_env.set_global_functions(env.get_all_functions());
 
@@ -318,11 +319,11 @@ fn check_func_def_stmt(
     let current_scope = env.get_current_scope();
     if current_scope
         .functions
-        .contains_key(&FuncSignature::from_func(&function))
+        .contains_key(&func_signature)
     {
         return Err(format!(
             "Function {} is defined multiple times",
-            function.name
+            func_signature
         ));
     }
 
@@ -332,7 +333,7 @@ fn check_func_def_stmt(
         if !seen_names.insert(arg.argument_name.clone()) {
             return Err(format!(
                 "Duplicate parameter name '{}' found in function '{}'",
-                arg.argument_name, function.name
+                arg.argument_name, func_signature
             ));
         }
     }
@@ -361,7 +362,7 @@ fn check_func_def_stmt(
                     formal_arg.argument_name.clone(),
                     false,
                     formal_arg.argument_type.clone(),
-                );
+                )?;
             }
         }
     }
